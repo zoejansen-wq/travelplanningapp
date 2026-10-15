@@ -1,0 +1,1065 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FFF8EE">
+  <title>Dayfolk — room for a good day</title>
+  <link rel="stylesheet" href="summer-planner.css">
+</head>
+<body>
+  <a class="skip-link" href="#discover">Skip to your planner</a>
+  <section class="setup-screen" id="setupScreen" aria-labelledby="setupTitle">
+    <div class="brand setup-brand"><span class="brand-mark">↗</span><span>dayfolk</span></div>
+    <p id="setupStepLabel" class="eyebrow" aria-live="polite">Step 1 of 3 · Your dates</p>
+    <div class="setup-progress" aria-label="Setup progress"><span class="active"></span><span></span><span></span></div>
+    <section class="setup-step" data-step="0">
+      <p class="eyebrow">First, what are we planning?</p>
+      <h1 id="setupTitle">A little plan.<br>A good day ahead.</h1>
+      <p>Start with your dates. You can change your choices later.</p>
+      <div class="setup-options">
+        <label class="choice-card"><input type="radio" name="whenType" value="today" checked><span><strong>Today</strong><small>Start with what’s around me now</small></span></label>
+        <label class="choice-card"><input type="radio" name="whenType" value="date"><span><strong>Another date</strong><small>Choose when you’ll be there</small></span></label>
+      </div>
+      <div class="setup-fields" id="singleDateFields" hidden>
+        <label class="setup-field">Planning date<input id="planDate" type="date" value="2026-10-05"></label>
+      </div>
+      <div class="setup-options">
+        <label class="choice-card"><input type="radio" name="planLength" value="day" checked><span><strong>One day</strong><small>A flexible day plan</small></span></label>
+        <label class="choice-card"><input type="radio" name="planLength" value="period"><span><strong>A few days</strong><small>Plan each day in a period</small></span></label>
+      </div>
+      <div class="setup-fields period-fields" id="periodFields" hidden>
+        <label class="setup-field">Start date<input id="periodStart" type="date" value="2026-10-05"></label>
+        <label class="setup-field">End date<input id="periodEnd" type="date" value="2026-10-07"></label>
+      </div>
+    </section>
+    <section class="setup-step" data-step="1" hidden>
+      <p class="eyebrow">Who is this for?</p>
+      <h1>Just you,<br>or your people?</h1>
+      <p>Choose who’s coming and where you’ll be. Group choices stay separate from your personal taste.</p>
+      <div class="setup-options">
+        <label class="choice-card"><input type="radio" name="partyType" value="solo" checked><span><strong>Just me</strong><small>Suggestions shaped around my choices</small></span></label>
+        <label class="choice-card"><input type="radio" name="partyType" value="group"><span><strong>A group</strong><small>Make a temporary group profile</small></span></label>
+      </div>
+      <div class="setup-fields group-fields" id="groupFields" hidden>
+        <label class="setup-field">Youngest age<input id="groupMinAge" type="number" min="16" max="25" placeholder="Age"></label>
+        <label class="setup-field">Oldest age<input id="groupMaxAge" type="number" min="16" max="25" placeholder="Age"></label>
+      </div>
+      <div class="setup-options">
+        <label class="choice-card"><input type="radio" name="placeType" value="current" checked><span><strong>Where I am</strong><small>Use my current area (Ibiza Town demo)</small></span></label>
+        <label class="choice-card"><input type="radio" name="placeType" value="elsewhere"><span><strong>Somewhere else</strong><small>Choose a city or region</small></span></label>
+      </div>
+      <label class="setup-field" id="destinationField" hidden>City or region<input id="destinationInput" type="text" value="Ibiza Town, Ibiza"></label>
+    </section>
+    <section class="setup-step" data-step="2" hidden>
+      <p class="eyebrow">One last thing</p>
+      <h1>What feels right<br>for this trip?</h1>
+      <p>A place to stay is optional. Your budget guides suggestions quietly in the background.</p>
+      <div class="setup-fields">
+        <label class="setup-field">Where are you staying? (optional)<input id="stayInput" type="text" placeholder="Hotel, neighbourhood or address"></label>
+        <label class="setup-field">Daily spend guide (€)<input id="dailyBudgetInput" type="number" min="0" step="5" value="60"></label>
+      </div>
+      <div class="setup-hint" id="periodBudgetHint">For a multi-day trip, we’ll multiply your daily guide by the number of days. Only added choices count in your plan.</div>
+      <div class="setup-summary" id="setupSummary"></div>
+    </section>
+    <div class="setup-actions">
+      <button class="button" id="setupBack" type="button" hidden>Back</button>
+      <button class="button primary" id="setupNext" type="button">Next</button>
+      <button class="button primary" id="startPlanning" type="button" hidden>Build my day</button>
+    </div>
+  </section>
+
+  <div class="app-shell" id="appShell" hidden>
+    <aside class="side-rail" aria-label="Main navigation">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">☀</span><span class="brand-name">dayfolk</span></div>
+      <div>
+        <p class="rail-caption">Your space</p>
+        <nav class="rail-nav">
+          <a class="rail-link active" href="#discover" data-nav="day"><span class="rail-icon">✳</span><span class="nav-text">Today</span></a>
+          <a class="rail-link" href="#saved"><span class="rail-icon">♡</span><span class="nav-text">Saved for later</span><span class="rail-count" id="savedCount">0</span></a>
+          <a class="rail-link" href="#plan" data-nav="plan"><span class="rail-icon">▤</span><span class="nav-text">My day</span></a>
+        <button class="rail-link" type="button" id="settingsButton">⚙ <span>Settings</span></button></nav>
+      </div>
+      <div class="rail-bottom">
+        <div class="mini-note">
+          <strong>Made for your kind of day</strong>
+          <p>Free finds, local context and a little room to change your mind.</p>
+        </div>
+      </div>
+    </aside>
+    <main class="main-area" id="discover">
+      <div class="topline">
+        <div class="crumb"><span class="pin">●</span><span id="crumbLocation">Ibiza Town</span><span>·</span><span id="crumbPurpose">Your day, your pace</span></div>
+        <div class="top-actions">
+          <span class="live-pill"><i class="live-dot"></i><span id="scanStatus">Source snapshot · Oct 5</span></span>
+          <span class="date-pill" id="headerDate">Monday, October 5</span>
+          <span class="avatar" aria-label="Your profile">Z</span>
+        </div>
+      </div>
+
+      <div class="intro">
+        <div>
+          <p class="eyebrow">Room for a good day</p>
+          <h1 id="mainHeadline">Your day,<br>at your pace.</h1>
+          <p class="intro-copy" id="introCopy">Pick a place that catches your eye. We’ll help you give it a place in your day.</p>
+        </div>
+        <div class="edit-budget">
+          <label for="budgetGuide">Today’s spend guide
+            <input class="budget-input" id="budgetGuide" type="number" min="0" step="5" value="60" aria-label="Today's budget guide in euros">
+          </label>
+          <span class="edit-pencil" aria-hidden="true">✎</span>
+        </div>
+      </div>
+
+      <div class="daily-context" id="daily-context" aria-label="Today's local context">
+        <span><strong id="contextLocation">Ibiza Town</strong> · demo area</span>
+        <span class="context-sep">/</span>
+        <span id="weatherConditions">Mostly clear</span>
+        <span id="weatherRange">21–28°C</span>
+        <span id="sunsetTime">Sunset 19:30</span>
+        <span class="area-hint" id="weatherSource">Source snapshot: <a href="https://www.alltrails.com/trail/spain/ibiza/paseo-por-ibiza" target="_blank" rel="noreferrer">AllTrails · Oct 5</a></span>
+        <span id="stayContext" hidden></span>
+      </div>
+
+      <section class="trailer" aria-label="Ibiza activity photo trailer">
+        <div class="trailer-visual"><img class="trailer-image" id="trailerImage" alt="" decoding="async" fetchpriority="high"><img id="trailerIncoming" class="trailer-incoming" alt="" aria-hidden="true" decoding="async"></div>
+        <div class="trailer-content"><p class="eyebrow">A feel for the day</p><h2 class="trailer-title" id="trailerTitle"></h2><p class="trailer-caption" id="trailerCaption"></p><div id="trailerCredit" class="trailer-credits"></div><div class="trailer-tools"><span class="reel-count" id="reelCount"></span><button class="reel-button" id="pauseReel" type="button" aria-label="Pause photo trailer">Pause</button><button class="reel-button" id="nextReel" type="button" aria-label="Next photo">Next →</button></div><button id="exploreReel" class="button secondary" type="button">See this idea</button><p class="trailer-disclaimer">A little inspiration, not a live view. Check the source for dates and availability.</p><p id="reelStatus" class="sr-only" role="status"></p></div>
+      </section>
+
+      <div class="planner-toolbar"><div class="view-tabs" role="group" aria-label="Planner view"><button class="active" data-view="day" type="button">Day</button><button data-view="week" type="button">Week</button><button data-view="month" type="button">Month</button></div><button id="openQuickAdd" class="button primary" type="button">+ Add to plan</button></div>
+      <section id="calendarScreen" hidden aria-label="Calendar"><div class="calendar-heading"><button id="calendarPrev" class="button ghost" aria-label="Previous period" type="button">←</button><h2 id="calendarTitle"></h2><button id="calendarNext" class="button ghost" aria-label="Next period" type="button">→</button><button id="calendarToday" class="button secondary" type="button">Today</button></div><p class="calendar-hint">Choose a day to see its plan. All times are local to your trip.</p><div id="calendarGrid" class="calendar-grid"></div></section>
+      <div class="layout-grid" id="dayScreen">
+        <section aria-labelledby="ideasTitle">
+          <div class="section-head">
+            <div>
+              <h2 id="ideasTitle">Find your next little adventure</h2>
+              <p id="ideasDescription">Six ideas to start. Keep what you like; explore more when you’re ready.</p>
+            </div>
+
+          </div>
+
+          <div class="type-filters" role="group" aria-label="Filter activities by type">
+            <button class="filter-chip active" type="button" data-filter="all">All ideas</button>
+            <button class="filter-chip" type="button" data-filter="walk">Walks</button>
+            <button class="filter-chip" type="button" data-filter="nature">Nature + hikes</button>
+            <button class="filter-chip" type="button" data-filter="beach">Beaches</button>
+            <button class="filter-chip" type="button" data-filter="water">Water activities</button>
+            <button class="filter-chip" type="button" data-filter="food">Food</button>
+            <button class="filter-chip" type="button" data-filter="nightlife">Nightlife</button>
+            <button class="filter-chip" type="button" data-filter="shopping">Shopping</button>
+            <button class="filter-chip" type="button" data-filter="wellness">Wellness</button>
+            <button class="filter-chip" type="button" data-filter="culture">Art + culture</button>
+          </div>
+          <p class="results-note" id="resultsNote">4 source-checked starter ideas · the 30-idea goal depends on local source coverage</p>
+
+          <div class="ideas-list" id="ideasList">
+            <article class="idea-card free-card" data-id="citywalk" data-cost="0" data-duration="0.75" data-duration-label="30–60 min" data-kind="walk" data-area="Ibiza Town">
+              <div class="idea-photo">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Ibiza_City_from_Mirador_asv2023-04_img6.jpg/1280px-Ibiza_City_from_Mirador_asv2023-04_img6.jpg?utm_source=commons.wikimedia.org&amp;utm_campaign=index&amp;utm_content=thumbnail" alt="The harbour and historic town of Ibiza from the Mirador">
+                <span class="photo-overlay"></span><span class="kind-pill">City walk</span>
+              </div>
+              <div class="idea-main">
+                <div class="idea-topline"><span class="cost-badge free">Free</span><span class="status-tag">Self-guided</span></div>
+                <h3 class="idea-title">Ibiza City Walk, your way</h3>
+                <p class="idea-sub">A loop from Parc de Reina Sofía up through Dalt Vila and its viewpoints. Wander at your own pace.</p>
+                <div class="idea-facts"><span>↗ 1.8 km</span><span>◷ 30–60 min</span><span>↟ 74 m climb</span></div>
+                <div class="source-row"><span class="source-chip">Community route · <a href="https://www.alltrails.com/trail/spain/ibiza/paseo-por-ibiza" target="_blank" rel="noreferrer">AllTrails 4.3 ★</a></span><span class="dot-sep">·</span><span class="source-chip">Photo · Wikimedia Commons</span></div>
+              </div>
+              <div class="idea-actions">
+                <p class="price">Free <small>walk</small></p>
+                <button class="button secondary add-to-plan" type="button">Add to day</button>
+                <div class="feedback-actions">
+                  <button class="feedback-btn like-btn" type="button" aria-label="Like this idea" title="Like">♡</button>
+                  <button class="feedback-btn dislike-btn" type="button" aria-label="Hide this idea" title="Hide">×</button>
+                  <button class="feedback-btn save-btn" type="button" aria-label="Save for later" title="Save">⌑</button>
+                </div>
+              </div>
+              <div class="feedback-panel" hidden></div>
+            </article>
+
+            <article class="idea-card free-card" data-id="sa-talaia" data-cost="0" data-duration="2.25" data-duration-label="2–2.5 hr" data-kind="nature" data-area="Sant Josep de sa Talaia">
+              <div class="idea-photo route-art" role="img" aria-label="Illustrated route preview for Sa Talaia hike">
+                <span class="route-label">ROUTE PREVIEW</span><span class="route-line">⌁ ↗ ⌁</span><span class="kind-pill">Nature</span>
+              </div>
+              <div class="idea-main">
+                <div class="idea-topline"><span class="cost-badge free">Free</span><span class="status-tag">Self-guided</span></div>
+                <h3 class="idea-title">Sa Talaia, up to the high point</h3>
+                <p class="idea-sub">A steeper walk to Ibiza’s highest point, with wide island views. Start near Sant Josep church.</p>
+                <div class="idea-facts"><span>↗ 6 km</span><span>◷ 2–2.5 hr</span><span>Moderate</span></div>
+                <div class="source-row"><span class="source-chip">Community route · <a href="https://www.alltrails.com/trail/spain/ibiza/san-jose-cap-de-sa-talaia-talaia-de-sant-josep-roca-grossa" target="_blank" rel="noreferrer">AllTrails 4.6 ★</a></span><span class="dot-sep">·</span><span class="source-chip">Illustrated route · not a location photo</span></div>
+              </div>
+              <div class="idea-actions">
+                <p class="price">Free <small>route</small></p>
+                <button class="button secondary add-to-plan" type="button">Add to day</button>
+                <div class="feedback-actions">
+                  <button class="feedback-btn like-btn" type="button" aria-label="Like this idea" title="Like">♡</button>
+                  <button class="feedback-btn dislike-btn" type="button" aria-label="Hide this idea" title="Hide">×</button>
+                  <button class="feedback-btn save-btn" type="button" aria-label="Save for later" title="Save">⌑</button>
+                </div>
+              </div>
+              <div class="feedback-panel" hidden></div>
+            </article>
+
+            <article class="idea-card free-card" data-id="cala-comte" data-cost="0" data-duration="1.5" data-duration-label="1–2 hr stay estimate" data-kind="beach" data-area="Cala Comte">
+              <div class="idea-photo">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Cala_Conta_Ibiza_17_May_2011_%281%29.JPG/1280px-Cala_Conta_Ibiza_17_May_2011_%281%29.JPG?utm_source=commons.wikimedia.org&amp;utm_campaign=index&amp;utm_content=thumbnail" alt="Cala Comte beach on Ibiza, photographed in 2011">
+                <span class="photo-overlay"></span><span class="kind-pill">Beach + coast</span>
+              </div>
+              <div class="idea-main">
+                <div class="idea-topline"><span class="cost-badge free">Free</span><span class="status-tag">Go at your pace</span></div>
+                <h3 class="idea-title">Cala Comte, stay or wander</h3>
+                <p class="idea-sub">A flexible beach stop with a coastal wander. The app can add a nearby snack or water stop if you want one.</p>
+                <div class="idea-facts"><span>◷ 1–2 hr stay estimate</span><span>Bring water</span><span>Transport extra</span></div>
+                <div class="source-row"><span class="source-chip">Place photo · <a href="https://commons.wikimedia.org/wiki/File:Cala_Conta_Ibiza_17_May_2011_(1).JPG" target="_blank" rel="noreferrer">Wikimedia Commons, 2011</a></span><span class="dot-sep">·</span><span class="source-chip">Route details need your start area</span></div>
+              </div>
+              <div class="idea-actions">
+                <p class="price">Free <small>entry</small></p>
+                <button class="button secondary add-to-plan" type="button">Add to day</button>
+                <div class="feedback-actions">
+                  <button class="feedback-btn like-btn" type="button" aria-label="Like this idea" title="Like">♡</button>
+                  <button class="feedback-btn dislike-btn" type="button" aria-label="Hide this idea" title="Hide">×</button>
+                  <button class="feedback-btn save-btn" type="button" aria-label="Save for later" title="Save">⌑</button>
+                </div>
+              </div>
+              <div class="feedback-panel" hidden></div>
+            </article>
+          </div>
+          <p class="no-results" id="resultsEmpty" hidden>No source-checked ideas in this category yet. We’ll add options as local sources are verified.</p>
+
+          <div class="snack-strip" id="emptySnack">
+            <div class="snack-copy">
+              <span class="snack-emoji">🥤</span>
+              <div><strong>Quick drink or snack?</strong><small>Find a supermarket near the activity you add. It won’t count in your plan total unless you add a stop.</small></div>
+            </div>
+            <a class="button tiny" id="shopSearch" href="https://www.google.com/maps/search/supermarkets+in+Ibiza,+Spain" target="_blank" rel="noreferrer">Find nearby shops ↗</a>
+          </div>
+
+          <details class="filtered" id="filteredTours">
+            <summary>One paid guided activity is tucked away based on your feedback</summary>
+            <article class="idea-card paid-card hidden-card" id="boatCard" data-id="boat-tour" data-cost="60" data-duration="3" data-duration-label="3 hr" data-kind="water" data-area="Sant Antoni de Portmany" data-fixed-time="14:30" data-available-date="2026-10-06">
+              <div class="idea-photo">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Cala_Conta_Ibiza_17_May_2011_%281%29.JPG/1280px-Cala_Conta_Ibiza_17_May_2011_%281%29.JPG?utm_source=commons.wikimedia.org&amp;utm_campaign=index&amp;utm_content=thumbnail" alt="Blue water and coastline near Cala Comte">
+                <span class="photo-overlay"></span><span class="kind-pill">Guided boat</span>
+              </div>
+              <div class="idea-main">
+                <div class="idea-topline"><span class="cost-badge paid">Paid</span><span class="status-tag">Guided</span></div>
+                <h3 class="idea-title">Snorkel stops + sea cave by boat</h3>
+                <p class="idea-sub">Two 40-minute swim/snorkel stops. Source checked Oct 5: next displayed date Oct 6 at 14:30 from Sant Antoni. Sea conditions may change the route.</p>
+                <div class="idea-facts"><span>◷ 3 hr</span><span>2 snorkel stops</span><span>Adult ticket: ages 13–99</span></div>
+                <div class="source-row"><span class="source-chip">Booking.com · <a id="boatSource" href="https://www.booking.com/attractions/es/pr4cqxyiwiw8-boat-tour-with-cave-snorkelling-and-sup-boarding.en-gb.html?start_date=2026-10-06&amp;end_date=2026-10-06&amp;selected_currency=EUR" target="_blank" rel="noreferrer">9.4 / 10 · 77 reviews</a></span><span class="dot-sep">·</span><span class="source-chip">€60 adult · checked Oct 5, 22:17 Ibiza</span></div>
+              </div>
+              <div class="idea-actions">
+                <p class="price">€60 <small>listed</small></p>
+                <button class="button secondary add-to-plan" type="button">Add timed idea</button>
+                <div class="feedback-actions">
+                  <button class="feedback-btn like-btn" type="button" aria-label="Like this idea" title="Like">♡</button>
+                  <button class="feedback-btn dislike-btn" type="button" aria-label="Hide this idea" title="Hide">×</button>
+                  <button class="feedback-btn save-btn" type="button" aria-label="Save for later" title="Save">⌑</button>
+                </div>
+              </div>
+              <div class="feedback-panel" hidden></div>
+            </article>
+          </details>
+
+          <button id="showMoreIdeas" class="button secondary" type="button">Show 6 more ideas</button>
+          <p class="small-print">Route times and stay lengths are estimates. Prices, weather and schedules can change; check the linked source before you go. Photos are credited to their contributors and shown with their source dates. <a href="sources.html">Activity sources ↗</a></p>
+          <button class="button" id="editPurpose" type="button">Edit trip setup</button>
+        </section>
+
+        <aside>
+          <section class="plan-panel" id="plan" aria-labelledby="planTitle">
+            <div class="plan-top"><h2 id="planTitle">Your day, so far</h2><span class="plan-day" id="planDayName">MON · OCT 5</span></div>
+            <div class="period-tabs" id="periodTabs" hidden></div>
+            <div class="plan-total"><div><span>Planned choices</span><br><strong id="planTotal">Free</strong></div><small>of €<span id="guideValue">60</span> guide</small></div>
+            <div class="day-progress"><div class="progress-ring" id="dayProgress" role="progressbar" aria-label="Places visited" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressValue">0</span></div><div><strong id="progressLabel">A little room for possibility</strong><p id="progressHint">Add your first idea to shape the day.</p></div></div><div id="dayClosing" class="day-closing" role="status" hidden></div>
+            <div class="plan-items" id="planItems">
+              <div class="dayparts" id="dayparts">
+                <section class="daypart" data-period="morning"><div class="daypart-head">Morning <span>☀</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
+                <section class="daypart" data-period="afternoon"><div class="daypart-head">Afternoon <span>◒</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
+                <section class="daypart" data-period="evening"><div class="daypart-head">Evening <span>☾</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
+                <section class="daypart" data-period="night"><div class="daypart-head">Night <span>✦</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
+              </div>
+            </div>
+            <div class="plan-note"><span class="spark">✳</span><span>Your budget is a quiet guide. Free and paid ideas stay visible; only things you add count toward this total.</span></div>
+            <button id="finishDay" class="button secondary" type="button" hidden>Done for today</button>
+            <div class="trip-guide" id="tripGuide" hidden></div>
+            <div id="planNearby" class="nearby-panel" aria-live="polite"><h3>Near your plan</h3><div class="nearby-links"></div><p class="nearby-note">Check live opening hours in Maps. Food stops are not added to your budget unless you choose them.</p></div>
+            <a class="shop-link" id="planShopLink" href="https://www.google.com/maps/search/supermarkets+near+Ibiza+Town" target="_blank" rel="noreferrer" hidden>Find a quick snack near your plan ↗</a>
+          </section>
+          <section class="taste-note" aria-live="polite">
+            <h3>Your kind of day</h3>
+            <p>Your reasons help shape the next mix during this visit.</p>
+            <div class="taste-list" id="tasteList">
+              <span class="taste-chip">self-guided</span>
+              <span class="taste-chip">free options</span>
+              <span class="taste-chip">real local feel</span>
+            </div>
+          </section>
+          <section class="saved-box" id="saved" aria-labelledby="savedTitle">
+            <h3 id="savedTitle">Saved for later</h3>
+            <div class="saved-list" id="savedList"><div class="saved-empty">Ideas you save will wait here.</div></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
+    <a href="#discover"><span>✳</span><span>Today</span></a>
+    <a href="#saved"><span>♡</span><span>Saved</span></a>
+    <a href="#plan"><span>▤</span><span>My day</span></a><button id="mobileSettings" type="button">⚙<span>Settings</span></button>
+  </nav>
+  <dialog id="quickAddDialog" aria-labelledby="quickAddTitle"><form id="quickAddForm"><div class="dialog-head"><div><p class="eyebrow">A little space for your own ideas</p><h2 id="quickAddTitle">Add to your plan</h2></div><button class="icon-button" type="button" data-close="quickAddDialog" aria-label="Close add to plan">×</button></div><label class="setup-field">What have you got in mind?<input id="quickTitle" required maxlength="160" placeholder="Lunch with Ana Fri 1pm" autocomplete="off"></label><p class="field-hint">Try “Beach tomorrow 10:00” or just a place name. Review the details below.</p><p id="quickParseHint" role="status"></p><div class="form-grid"><label class="setup-field">Date<input id="quickDate" type="date" required></label><label class="setup-field">Part of day<select id="quickSlot"><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option><option value="night">Night</option></select></label><label class="setup-field">Type<select id="quickKind"><option value="walk">Walk</option><option value="nature">Nature</option><option value="beach">Beach</option><option value="food">Food</option><option value="wellness">Wellness</option><option value="water">Water</option><option value="culture">Culture</option><option value="shopping">Shopping</option><option value="nightlife">Nightlife</option></select></label><label class="setup-field">Price, if known (€)<input id="quickCost" type="number" min="0" step="0.01" placeholder="Optional"></label><label class="setup-field">Your time box (minutes)<input id="quickMinutes" type="number" min="5" max="1440" step="5" placeholder="Optional"></label></div><details><summary>Already booked?</summary><label class="check-label"><input id="quickFixed" type="checkbox"> This booking has a fixed time</label><label class="setup-field">Confirmed time<input id="quickTime" type="time"></label></details><p id="quickError" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button class="button ghost" type="button" data-close="quickAddDialog">Cancel</button><button class="button primary" type="submit">Add to plan</button></div></form></dialog>
+  <dialog id="settingsDialog" aria-labelledby="settingsTitle"><div class="dialog-head"><h2 id="settingsTitle">Make yourself at home</h2><button type="button" class="icon-button" data-close="settingsDialog" aria-label="Close settings">×</button></div><label class="setup-field">Appearance<select id="themeChoice"><option value="light">Sun-warmed day</option><option value="dark">Summer night</option><option value="system">Follow my device</option></select></label><label class="setup-field">Week starts on<select id="weekStartChoice"><option value="locale">Use my device’s region</option><option value="1">Monday</option><option value="0">Sunday</option></select></label><label class="check-label"><input id="gentleMotion" type="checkbox"> Reduce motion</label><p class="field-hint">Appearance is saved on this device. Your trip choices stay in this session.</p><button id="settingsEditTrip" class="button secondary" type="button">Edit trip details</button><p class="field-hint"><a href="sources.html">Activity sources</a> · <a href="credits.html">Photo credits</a></p><div id="settingsTools" hidden></div><div class="dialog-actions"><button type="button" class="button primary" data-close="settingsDialog">Done</button></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="photoCatalog">
+{"schemaVersion": "1.0.0", "photos": {"cala-bassa-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Cala_Bassa_%28Ibiza%29_%28190295961%29.jpg/960px-Cala_Bassa_%28Ibiza%29_%28190295961%29.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cala_Bassa_(Ibiza)_(190295961).jpg", "credit": "Eduardo Pitt from Madrid, Spain", "alt": "Vista de Cala Bassa, Eivissa", "fit": "location", "rights": "CC BY-SA 2.0", "note": ""}, "cala-benirras-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Cala_Benirras_Ibiza_18_May_2011_%281%29.JPG/960px-Cala_Benirras_Ibiza_18_May_2011_%281%29.JPG", "source": "https://commons.wikimedia.org/wiki/File:Cala_Benirras_Ibiza_18_May_2011_(1).JPG", "credit": "I, the copyright holder of this work, hereby publish it under the following license:", "alt": "Cala Benirras, Ibiza, Spain", "fit": "location", "rights": "CC BY 3.0", "note": ""}, "cala-salada-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Cala_Salada%2C_near_Sant_Antoni.jpg/960px-Cala_Salada%2C_near_Sant_Antoni.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cala_Salada,_near_Sant_Antoni.jpg", "credit": "Coniferous (talk) (Uploads)", "alt": "A view of Cala Salada, near Sant Antoni", "fit": "location", "rights": "CC BY 3.0", "note": ""}, "aigues-blanques-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/Platja_de_s%27Aigua_Blanca_Eivissa.jpg/960px-Platja_de_s%27Aigua_Blanca_Eivissa.jpg", "source": "https://commons.wikimedia.org/wiki/File:Platja_de_s%27Aigua_Blanca_Eivissa.jpg", "credit": "Bc59", "alt": "Aigües blanques beach", "fit": "location", "rights": "Public domain", "note": ""}, "cala-nova-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Cala_Nova_Eivissa.jpg/960px-Cala_Nova_Eivissa.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cala_Nova_Eivissa.jpg", "credit": "Dan Foy from Derby, England", "alt": "Cala Nova, al nord des Canar, a Santa Eulària des Riu, Eivissa", "fit": "location", "rights": "CC BY 2.0", "note": ""}, "citywalk": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Ibiza_City_from_Mirador_asv2023-04_img6.jpg/1280px-Ibiza_City_from_Mirador_asv2023-04_img6.jpg", "source": "https://commons.wikimedia.org/wiki/File:Ibiza_City_from_Mirador_asv2023-04_img6.jpg", "credit": "A.Savin, Wikipedia", "alt": "Ibiza Town harbour from the Mirador, photographed in 2023", "fit": "location", "rights": "Free Art License", "note": ""}, "cala-comte": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Cala_Conta_Ibiza_17_May_2011_%281%29.JPG/1280px-Cala_Conta_Ibiza_17_May_2011_%281%29.JPG", "source": "https://commons.wikimedia.org/wiki/File:Cala_Conta_Ibiza_17_May_2011_(1).JPG", "credit": "stavros1 / Wikimedia Commons", "alt": "Cala Comte beach and water, archive photo 2011", "fit": "location", "rights": "CC BY 3.0", "note": ""}, "sa-talaia": {"url": "https://commons.wikimedia.org/wiki/Special:FilePath/Sant_Josep_de_sa_Talaia._Talaiassa._Vistes_%283%29.jpg?width=960", "source": "https://commons.wikimedia.org/wiki/File:Sant_Josep_de_sa_Talaia._Talaiassa._Vistes_(3).jpg", "credit": "Joan Gené / Wikimedia Commons", "alt": "View from the summit of Sa Talaia, archive photo 2024", "fit": "location", "rights": "CC0", "note": ""}, "las-dalias-market-browse": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Mercadillo_Las_Dalias_en_Ibiza.jpg/1280px-Mercadillo_Las_Dalias_en_Ibiza.jpg", "source": "https://commons.wikimedia.org/wiki/File:Mercadillo_Las_Dalias_en_Ibiza.jpg", "credit": "DetFerMai / Wikimedia Commons", "alt": "People browsing the stalls at Las Dalias market, archive photo 2015", "fit": "action", "rights": "CC BY-SA 4.0", "note": ""}, "cala-dhort-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/Cala_D%C2%B4Hort_-_panoramio.jpg/960px-Cala_D%C2%B4Hort_-_panoramio.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cala_D%C2%B4Hort_-_panoramio.jpg", "credit": "anibal amaro", "alt": "Cala D´Hort", "fit": "location", "rights": "CC BY 3.0", "note": ""}}, "trailer": [{"id": "las-dalias-market-browse", "title": "Leave room for a good find.", "caption": "Las Dalias · market visitors · archive 2015"}, {"id": "cala-bassa-beach-stop", "title": "Make a little space for the sea.", "caption": "Cala Bassa · location photograph"}, {"id": "citywalk", "title": "Take the long way to the water.", "caption": "Ibiza Town · harbour view · archive 2023"}, {"id": "sa-talaia", "title": "Find a different point of view.", "caption": "Sa Talaia · summit view · archive 2024"}]}
+  </script>
+  <script type="application/json" id="activityCatalog">
+{"schemaVersion": "1.0.0", "location": "Ibiza", "activities": [{"id": "cala-bassa-beach-stop", "title": "Cala Bassa beach stop", "kind": "beach", "area": "Cala Bassa", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-benirras-beach-stop", "title": "Cala Benirràs beach stop", "kind": "beach", "area": "Cala Benirràs", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-dhort-beach-stop", "title": "Cala d’Hort beach stop", "kind": "beach", "area": "Cala d’Hort", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-salada-beach-stop", "title": "Cala Salada beach stop", "kind": "beach", "area": "Cala Salada", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "talamanca-beach-stop", "title": "Talamanca beach stop", "kind": "beach", "area": "Talamanca", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "ses-figueretes-beach-stop", "title": "Ses Figueretes beach stop", "kind": "beach", "area": "Ses Figueretes", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "ses-salines-beach-stop", "title": "Ses Salines beach stop", "kind": "beach", "area": "Ses Salines", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "es-cavallet-beach-stop", "title": "Es Cavallet beach stop", "kind": "beach", "area": "Es Cavallet", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "aigues-blanques-beach-stop", "title": "Aigües Blanques beach stop", "kind": "beach", "area": "Aigües Blanques", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-nova-beach-stop", "title": "Cala Nova beach stop", "kind": "beach", "area": "Cala Nova", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-llonga-beach-stop", "title": "Cala Llonga beach stop", "kind": "beach", "area": "Cala Llonga", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-vadella-beach-stop", "title": "Cala Vadella beach stop", "kind": "beach", "area": "Cala Vadella", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-xarraca-beach-stop", "title": "Cala Xarraca beach stop", "kind": "beach", "area": "Cala Xarraca", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "portinatx-beach-stop", "title": "Portinatx beach stop", "kind": "beach", "area": "Portinatx", "sourceUrl": "https://en.ibiza.travel/to-do/beaches/", "sourceLabel": "Ibiza Travel · beach directory", "description": "Choose a shore stop here. Transport, food and equipment are separate.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Your choice · stay estimate 1–2 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "ses-salines-nature-walk", "title": "Ses Salines nature walk", "kind": "nature", "area": "Ses Salines Natural Park", "sourceUrl": "https://en.ibiza.travel/to-do/nature/", "sourceLabel": "Ibiza Travel · nature / heritage", "description": "Explore the outdoor surroundings on public paths. Check access before setting out.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "torre-de-ses-portes-coastal-walk", "title": "Torre de Ses Portes coastal walk", "kind": "nature", "area": "Ses Salines", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · nature / heritage", "description": "Explore the outdoor surroundings on public paths. Check access before setting out.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "sa-sal-rossa-tower-exterior", "title": "Sa Sal Rossa tower exterior", "kind": "nature", "area": "Sa Sal Rossa", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · nature / heritage", "description": "Explore the outdoor surroundings on public paths. Check access before setting out.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "portinatx-tower-surroundings", "title": "Portinatx tower surroundings", "kind": "nature", "area": "Portinatx", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · nature / heritage", "description": "Explore the outdoor surroundings on public paths. Check access before setting out.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "torre-den-valls-surroundings", "title": "Torre d’en Valls surroundings", "kind": "nature", "area": "Pou des Lleó", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · nature / heritage", "description": "Explore the outdoor surroundings on public paths. Check access before setting out.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "santa-gertrudis-square-wander", "title": "Santa Gertrudis square wander", "kind": "walk", "area": "Santa Gertrudis", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · heritage", "description": "A self-guided outdoor visit. Respect private property; interiors may have separate access.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 30–60 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "sant-mateu-village-wander", "title": "Sant Mateu village wander", "kind": "walk", "area": "Sant Mateu d’Aubarca", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · heritage", "description": "A self-guided outdoor visit. Respect private property; interiors may have separate access.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 30–60 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "sant-miquel-hilltop-village-walk", "title": "Sant Miquel hilltop village walk", "kind": "walk", "area": "Sant Miquel de Balansat", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · heritage", "description": "A self-guided outdoor visit. Respect private property; interiors may have separate access.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 30–60 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "balafia-village-lanes", "title": "Balàfia village lanes", "kind": "walk", "area": "Sant Llorenç de Balàfia", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · heritage", "description": "A self-guided outdoor visit. Respect private property; interiors may have separate access.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 30–60 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "puig-de-missa-exterior-walk", "title": "Puig de Missa exterior walk", "kind": "walk", "area": "Santa Eulària des Riu", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · heritage", "description": "A self-guided outdoor visit. Respect private property; interiors may have separate access.", "cost": 0, "priceStatus": "free-outdoor", "duration": "Flexible · allow 30–60 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "mace-contemporary-art", "title": "MACE contemporary art", "kind": "culture", "area": "Ibiza Town", "sourceUrl": "https://en.ibiza.travel/discover/our-towns/", "sourceLabel": "Ibiza Travel · cultural directory", "description": "An indoor cultural visit. Check admission and opening hours before planning.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "puig-des-molins-museum", "title": "Puig des Molins museum", "kind": "culture", "area": "Ibiza Town", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · cultural directory", "description": "An indoor cultural visit. Check admission and opening hours before planning.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "can-ros-ethnographic-museum", "title": "Can Ros ethnographic museum", "kind": "culture", "area": "Santa Eulària des Riu", "sourceUrl": "https://en.ibiza.travel/discover/our-towns/", "sourceLabel": "Ibiza Travel · cultural directory", "description": "An indoor cultural visit. Check admission and opening hours before planning.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "can-planetes-river-interpretation-centre", "title": "Can Planetes river interpretation centre", "kind": "culture", "area": "Santa Eulària des Riu", "sourceUrl": "https://en.ibiza.travel/discover/our-towns/", "sourceLabel": "Ibiza Travel · cultural directory", "description": "An indoor cultural visit. Check admission and opening hours before planning.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "sa-caleta-interpretation-centre", "title": "Sa Caleta interpretation centre", "kind": "culture", "area": "Sa Caleta", "sourceUrl": "https://en.ibiza.travel/discover/our-towns/", "sourceLabel": "Ibiza Travel · cultural directory", "description": "An indoor cultural visit. Check admission and opening hours before planning.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "madina-yabisa-interpretation-centre", "title": "Madina Yabisa interpretation centre", "kind": "culture", "area": "Ibiza Town", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · cultural directory", "description": "An indoor cultural visit. Check admission and opening hours before planning.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "casa-broner-house-museum", "title": "Casa Broner house museum", "kind": "culture", "area": "Ibiza Town", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · cultural directory", "description": "An indoor cultural visit. Check admission and opening hours before planning.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "espacio-micus-art-visit", "title": "Espacio Micus art visit", "kind": "culture", "area": "Jesús", "sourceUrl": "https://en.ibiza.travel/to-do/culture-and-heritage/", "sourceLabel": "Ibiza Travel · cultural directory", "description": "An indoor cultural visit. Check admission and opening hours before planning.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "las-dalias-market-browse", "title": "Las Dalias market browse", "kind": "shopping", "area": "Sant Carles", "sourceUrl": "https://www.lasdalias.es/mercadillos", "sourceLabel": "Market operator", "description": "Browse stalls; purchases are separate. Check entrance fees and the calendar.", "cost": null, "priceStatus": "unknown", "duration": "Allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": [6, 0], "months": null}, {"id": "punta-arabi-market-browse", "title": "Punta Arabí market browse", "kind": "shopping", "area": "Es Canar", "sourceUrl": "https://www.spain.info/en/discover-spain/ibiza-markets-shopping/", "sourceLabel": "Spain.info · official tourism", "description": "Browse stalls; purchases are separate. Check entrance fees and the calendar.", "cost": null, "priceStatus": "unknown", "duration": "Allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": [3], "months": [4, 5, 6, 7, 8, 9, 10]}, {"id": "sant-jordi-second-hand-market", "title": "Sant Jordi second-hand market", "kind": "shopping", "area": "Sant Jordi", "sourceUrl": "https://www.spain.info/en/discover-spain/ibiza-markets-shopping/", "sourceLabel": "Spain.info · official tourism", "description": "Browse stalls; purchases are separate. Check entrance fees and the calendar.", "cost": null, "priceStatus": "unknown", "duration": "Allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": [6], "months": null}, {"id": "forada-market-browse", "title": "Forada market browse", "kind": "shopping", "area": "Buscastell", "sourceUrl": "https://www.spain.info/en/discover-spain/ibiza-markets-shopping/", "sourceLabel": "Spain.info · official tourism", "description": "Browse stalls; purchases are separate. Check entrance fees and the calendar.", "cost": null, "priceStatus": "unknown", "duration": "Allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": [6], "months": null}, {"id": "sant-joan-craft-market", "title": "Sant Joan craft market", "kind": "shopping", "area": "Sant Joan de Labritja", "sourceUrl": "https://www.spain.info/en/discover-spain/ibiza-markets-shopping/", "sourceLabel": "Spain.info · official tourism", "description": "Browse stalls; purchases are separate. Check entrance fees and the calendar.", "cost": null, "priceStatus": "unknown", "duration": "Allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": [0], "months": null}, {"id": "sant-rafel-craft-market", "title": "Sant Rafel craft market", "kind": "shopping", "area": "Sant Rafel", "sourceUrl": "https://www.spain.info/en/discover-spain/ibiza-markets-shopping/", "sourceLabel": "Spain.info · official tourism", "description": "Browse stalls; purchases are separate. Check entrance fees and the calendar.", "cost": null, "priceStatus": "unknown", "duration": "Allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": [4], "months": [6, 7, 8, 9]}, {"id": "la-paloma-cafe-stop", "title": "La Paloma café stop", "kind": "food", "area": "Sant Llorenç", "sourceUrl": "https://palomaibiza.com/", "sourceLabel": "Restaurant · own website", "description": "A daytime café option. Check menu prices and table availability.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": null}, {"id": "es-musset-brunch", "title": "Es Musset brunch", "kind": "food", "area": "Santa Gertrudis", "sourceUrl": "https://mussetibiza.com/", "sourceLabel": "Restaurant · own website", "description": "A café / restaurant stop. Published hours: 08:00–17:00; reconfirm.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": null}, {"id": "can-pilot-meal", "title": "Can Pilot meal", "kind": "food", "area": "Sant Rafel", "sourceUrl": "https://asadorcanpilot.com/", "sourceLabel": "Restaurant · own website", "description": "A restaurant option. Check the menu and reserve if needed.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": null}, {"id": "can-mussonet-dinner", "title": "Can Mussonet dinner", "kind": "food", "area": "Sant Rafel", "sourceUrl": "https://www.canmussonet.com/en/", "sourceLabel": "Restaurant · own website", "description": "Published Tue–Sat 19:00–00:00. Menu and table availability need checking.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": [2, 3, 4, 5, 6]}, {"id": "can-pujol-seafood-meal", "title": "Can Pujol seafood meal", "kind": "food", "area": "Cala de Bou", "sourceUrl": "https://restaurantecanpujolibiza.com/", "sourceLabel": "Restaurant · own website", "description": "A seafood restaurant option. Check current menu prices and tables.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": null}, {"id": "las-dalias-cafe-break", "title": "Las Dalias café break", "kind": "food", "area": "Sant Carles", "sourceUrl": "https://lasdalias.es/en/index", "sourceLabel": "Restaurant · own website", "description": "A café stop at Las Dalias. Menu and opening times need checking.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": null}, {"id": "palosanto-meal", "title": "Palosanto meal", "kind": "food", "area": "Sant Carles", "sourceUrl": "https://lasdalias.es/en/index", "sourceLabel": "Restaurant · own website", "description": "A restaurant option at Las Dalias. Check the menu and availability.", "cost": null, "priceStatus": "unknown", "duration": "Allow 45–90 min; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": null}, {"id": "bfit-gym-day-pass", "title": "Bfit gym day pass", "kind": "wellness", "area": "Ibiza Town", "sourceUrl": "https://www.bfitibiza.com/tienda/Entradas-puntuales-al-club-c33774010", "sourceLabel": "Bfit · own shop", "description": "A gym visit using a listed day pass. Check access rules and what is included.", "cost": 40, "priceStatus": "listed", "duration": "Your choice · allow 1–2 hr; estimate", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "weekdays": [1, 2, 3, 4, 5, 6]}, {"id": "yoga-punto-can-pal-group-class", "title": "Yoga Punto Can-Pal group class", "kind": "wellness", "area": "Sant Josep", "sourceUrl": "https://yogapuntocanpal.com/clases-y-experiencias/", "sourceLabel": "Yoga studio · own website", "description": "A small-group yoga class. Check the booking calendar and price.", "cost": null, "priceStatus": "unknown", "duration": "Class duration to check", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "ibisana-teen-aerial-yoga", "title": "Ibisana teen aerial yoga", "kind": "wellness", "area": "Ibiza Town", "sourceUrl": "https://www.ibisana.com/tienda-yoga/", "sourceLabel": "Ibisana · own shop", "description": "Listed single aerial-yoga class. Reconfirm schedule and places before adding.", "cost": 15, "priceStatus": "listed", "duration": "Listed 1 hr · schedule to reconfirm", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "minAge": 12, "maxAge": 17, "weekdays": [4]}, {"id": "ibisana-adult-aerial-yoga", "title": "Ibisana adult aerial yoga", "kind": "wellness", "area": "Ibiza Town", "sourceUrl": "https://www.ibisana.com/tienda-yoga/", "sourceLabel": "Ibisana · own shop", "description": "Listed single aerial-yoga class. Reconfirm schedule and places before adding.", "cost": 15, "priceStatus": "listed", "duration": "Listed 1 hr · schedule to reconfirm", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "minAge": 18, "maxAge": null, "weekdays": [4]}, {"id": "es-figueral-kayak-rental", "title": "Es Figueral kayak rental", "kind": "water", "area": "Es Figueral", "sourceUrl": "https://www.kayak-ibiza.com/es/rental", "sourceLabel": "Rental operator · own website", "description": "Rent equipment to explore yourself. Confirm wind, sea conditions and rental terms.", "cost": 15, "priceStatus": "from", "duration": "Listed starting rate for 1 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "es-figueral-sup-rental", "title": "Es Figueral SUP rental", "kind": "water", "area": "Es Figueral", "sourceUrl": "https://www.kayak-ibiza.com/es/rental", "sourceLabel": "Rental operator · own website", "description": "Rent equipment to explore yourself. Confirm wind, sea conditions and rental terms.", "cost": 15, "priceStatus": "from", "duration": "Listed starting rate for 1 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-vadella-sup-rental", "title": "Cala Vadella SUP rental", "kind": "water", "area": "Cala Vadella", "sourceUrl": "https://ibizaseaexperience.com/paddle-surf-kayak-ibiza/", "sourceLabel": "Rental operator · own website", "description": "Rent equipment to explore yourself. Confirm wind, sea conditions and rental terms.", "cost": 25, "priceStatus": "from", "duration": "Listed starting rate for 1 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "cala-vadella-kayak-rental", "title": "Cala Vadella kayak rental", "kind": "water", "area": "Cala Vadella", "sourceUrl": "https://www.ibizaventura.com/en/kayak-ibiza/rental", "sourceLabel": "Rental operator · own website", "description": "Rent equipment to explore yourself. Confirm wind, sea conditions and rental terms.", "cost": 15, "priceStatus": "from", "duration": "Listed starting rate for 1 hr", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card"}, {"id": "pacha-club-night", "title": "Pacha club night", "kind": "nightlife", "area": "Ibiza Town", "sourceUrl": "https://pacha.com/terms-and-conditions", "sourceLabel": "Club · official entry terms", "description": "18+ venue. Check the event calendar, ticket price and entry conditions.", "cost": null, "priceStatus": "unknown", "duration": "Event timing and duration to check", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "minAge": 18}, {"id": "hi-ibiza-club-night", "title": "Hï Ibiza club night", "kind": "nightlife", "area": "Platja d’en Bossa", "sourceUrl": "https://www.hiibiza.com/contact-faq", "sourceLabel": "Club · official entry terms", "description": "18+ venue. Check the event calendar, ticket price and entry conditions.", "cost": null, "priceStatus": "unknown", "duration": "Event timing and duration to check", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "minAge": 18}, {"id": "amnesia-club-night", "title": "Amnesia club night", "kind": "nightlife", "area": "Sant Rafel", "sourceUrl": "https://www.amnesia.es/en/faqs", "sourceLabel": "Club · official entry terms", "description": "18+ venue. Check the event calendar, ticket price and entry conditions.", "cost": null, "priceStatus": "unknown", "duration": "Event timing and duration to check", "checkedAt": "2026-10-05", "availability": "Check date, access and conditions with the source", "photoStatus": "No location photo licensed for this card", "minAge": 18}]}
+  </script>
+  <script>
+    (function () {
+      const photoCatalog = JSON.parse(document.getElementById('photoCatalog').textContent);
+      const slides = photoCatalog.trailer.map(function(entry){return {...entry,...photoCatalog.photos[entry.id]};});
+      const image=document.getElementById('trailerImage'),incoming=document.getElementById('trailerIncoming');
+      const title=document.getElementById('trailerTitle'),caption=document.getElementById('trailerCaption'),credit=document.getElementById('trailerCredit'),count=document.getElementById('reelCount'),pause=document.getElementById('pauseReel');
+      let slideIndex=0,paused=false,timer,transitionToken=0,reelInView=true;
+      const failedSlides=new Set();
+      function reducedMotion(){return window.matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.dataset.reduceMotion==='true';}
+      function updateReelText(slide){
+        title.textContent=slide.title;caption.textContent=slide.caption;credit.replaceChildren();const link=document.createElement('a');link.href=slide.source;link.target='_blank';link.rel='noreferrer';link.textContent='Photo: '+slide.credit;credit.appendChild(link);count.textContent=String(slideIndex+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+      }
+      function updateReelControl(){pause.disabled=reducedMotion();pause.textContent=reducedMotion()?'Motion off':paused?'Play':'Pause';pause.setAttribute('aria-label',reducedMotion()?'Automatic trailer off: reduced motion is enabled':paused?'Play photo trailer':'Pause photo trailer');pause.setAttribute('aria-pressed',paused?'true':'false');}
+      function showSlide(index,manual){
+        let nextIndex=(index+slides.length)%slides.length;
+        for(let attempts=0;attempts<slides.length&&failedSlides.has(nextIndex);attempts++)nextIndex=(nextIndex+1)%slides.length;
+        if(failedSlides.size===slides.length)return;
+        const slide=slides[nextIndex],token=++transitionToken;
+        const candidate=new Image();candidate.decoding='async';
+        candidate.onload=function(){
+          if(token!==transitionToken)return;
+          if(reducedMotion()){image.src=slide.url;image.alt=slide.alt;slideIndex=nextIndex;updateReelText(slide);return;}
+          incoming.src=slide.url;incoming.classList.add('visible');
+          window.setTimeout(function(){if(token!==transitionToken)return;image.src=slide.url;image.alt=slide.alt;slideIndex=nextIndex;updateReelText(slide);incoming.classList.remove('visible');},500);
+        };
+        candidate.onerror=function(){failedSlides.add(nextIndex);if(manual)document.getElementById('reelStatus').textContent='This photo could not load. You can still open the activity.';};
+        candidate.src=slide.url;
+      }
+      function startReel(){window.clearInterval(timer);if(!paused&&!reducedMotion()&&!document.hidden&&reelInView&&!document.getElementById('appShell').hidden&&!document.querySelector('.trailer').hidden){timer=window.setInterval(function(){showSlide(slideIndex+1,false);},4800);}}
+      image.src=slides[0].url;image.alt=slides[0].alt;updateReelText(slides[0]);updateReelControl();
+      pause.addEventListener('click',function(){paused=!paused;updateReelControl();startReel();});
+      document.getElementById('nextReel').addEventListener('click',function(){showSlide(slideIndex+1,true);startReel();});
+      document.addEventListener('visibilitychange',startReel);
+      const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');if(motionPreference.addEventListener)motionPreference.addEventListener('change',startReel);
+      if(window.IntersectionObserver){new IntersectionObserver(function(entries){reelInView=entries[0].isIntersecting;startReel();},{threshold:.15}).observe(document.querySelector('.trailer'));}
+
+      const catalog = JSON.parse(document.getElementById("activityCatalog").textContent);
+      const categoryLabels = {walk:"Walk",nature:"Nature walk",beach:"Beach stop",culture:"Art + culture",shopping:"Market browse",food:"Food stop",wellness:"Gym + yoga",water:"Self-guided water",nightlife:"Club night"};
+      const symbols = {walk:"↗",nature:"♧",beach:"≈",culture:"◈",shopping:"◇",food:"◒",wellness:"✳",water:"≋",nightlife:"♫"};
+      const template = document.querySelector("#ideasList .idea-card");
+      catalog.activities.forEach(function (activity) {
+        const card = template.cloneNode(true);
+        card.className = "idea-card " + (activity.priceStatus === "free-outdoor" ? "free-card" : "paid-card") + (activity.cost === null ? " unknown-card" : "");
+        card.dataset.id = activity.id; card.dataset.kind = activity.kind; card.dataset.area = activity.area;
+        card.dataset.cost = activity.cost === null ? "" : activity.cost; card.dataset.priceStatus = activity.priceStatus;
+        card.dataset.durationLabel = activity.duration;
+        if (activity.minAge) card.dataset.minAge = activity.minAge;
+        if (activity.maxAge) card.dataset.maxAge = activity.maxAge;
+        if (activity.weekdays) card.dataset.weekdays = activity.weekdays.join(",");
+        if (activity.months) card.dataset.months = activity.months.join(",");
+        const picture = card.querySelector(".idea-photo");
+        picture.classList.add("catalog-illustration"); picture.innerHTML = "<span class='category-symbol' aria-hidden='true'></span><small>Category illustration · location photo not sourced</small><span class='kind-pill'></span>";
+        picture.querySelector(".category-symbol").textContent = symbols[activity.kind];
+        picture.querySelector(".kind-pill").textContent = categoryLabels[activity.kind];
+        const badge = card.querySelector(".cost-badge"); badge.className = "cost-badge " + (activity.cost === 0 ? "free" : "paid");
+        badge.hidden = activity.cost === null;
+        badge.textContent = activity.cost === null ? "" : (activity.cost === 0 ? "Free" : "Paid");
+        card.querySelector(".status-tag").textContent = activity.minAge ? activity.minAge + "+" + (activity.maxAge ? " to " + activity.maxAge : "") : "Check date";
+        card.querySelector(".idea-title").textContent = activity.title;
+        card.querySelector(".idea-sub").textContent = activity.description;
+        card.querySelector(".idea-facts").textContent = activity.area + " · " + activity.duration;
+        const sourceRow = card.querySelector(".source-row"); sourceRow.innerHTML = "";
+        const source = document.createElement("a"); source.href = activity.sourceUrl; source.target = "_blank"; source.rel = "noreferrer"; source.textContent = activity.sourceLabel;
+        const place = document.createElement("a"); place.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(activity.title + " " + activity.area + " Ibiza"); place.target = "_blank"; place.rel = "noreferrer"; place.textContent = "Place & photos ↗";
+        sourceRow.append(source, document.createTextNode(" · Oct 5 research · "), place);
+        const price = card.querySelector(".price"); price.hidden = activity.cost === null;
+        price.textContent = activity.cost === null ? "" : (activity.cost === 0 ? "Free" : (activity.priceStatus === "from" ? "From €" : "€") + activity.cost);
+        if (activity.cost !== null) {
+          const priceNote = document.createElement("small"); priceNote.textContent = activity.cost === 0 ? "travel / extras separate" : "listed · reconfirm"; price.appendChild(priceNote);
+        }
+        card.querySelector(".feedback-panel").innerHTML = "";
+        document.getElementById("ideasList").appendChild(card);
+      });
+      // Alternate categories so the first screen does not become a wall of beaches.
+      const queues = Object.keys(categoryLabels).map(function (kind) { return Array.from(document.querySelectorAll("#ideasList .idea-card")).filter(function (card) { return card.dataset.kind === kind; }); });
+      let remaining = true;
+      while (remaining) { remaining = false; queues.forEach(function (queue) { if (queue.length) { document.getElementById("ideasList").appendChild(queue.shift()); remaining = true; } }); }
+      const cards = Array.from(document.querySelectorAll(".idea-card"));
+      const visibleIdeas = Array.from(document.querySelectorAll("#ideasList .idea-card"));
+      const plansByDate = new Map();
+      let selectedDate = "2026-10-05";
+      let plan = [];
+      let destination = "Ibiza Town";
+      let locationHasSourceSet = true;
+      let draggingId = null;
+      let dateList = [selectedDate];
+      let activeSetupStep = 0;
+      let activeFilter = "all";
+      const saved = new Set();
+      const feedback = new Map();
+      const savedReasons = new Map();
+      let stayArea = "";
+      let contextKey = "";
+      function renderTestStatus() {}
+      function recordChoice() {}
+      const categoryName = { walk:"self-guided walks", nature:"hikes", beach:"beach stops", water:"water activities", food:"food places", nightlife:"nightlife", shopping:"shopping", wellness:"wellness places", culture:"art and cultural visits" };
+      const reasonSets = {
+        like: ["Like it — but it’s expensive", "Like it — too expensive for today’s guide", "Like it — good price and a good length", "Like it — great value and a long activity", "Like it — love the location", "Like it — feels local"],
+        dislike: ["Guided tour — I want to explore myself", "Feels too touristy", "No clear duration", "Too expensive for today", "Too similar to other results"],
+        save: ["Save for later in this trip", "Save to combine with another stop", "Save to show my group", "Save for a day with more budget"]
+      };
+      const typeReasons = {
+        culture: {like:["I like this kind of art or history", "A good indoor break"],dislike:["Not my kind of museum", "I want to spend more time outdoors"],save:["Save for a rainy day", "Save to combine with a town visit"]},
+        walk: { like:["Easy to do at my own pace", "The route length works for me"], dislike:["I want a quieter route", "I prefer a more local-feeling route"], save:["Save this route for another day", "Save it for when I have more time to walk"] },
+        nature: { like:["I’m into this kind of hike", "The challenge sounds right"], dislike:["Too challenging for today", "I want a shorter nature stop"], save:["Save for a cooler day", "Save for when I have more time to hike"] },
+        beach: { like:["I want a relaxed beach stop", "I like the coast more than a tour"], dislike:["Too far from where I’m staying", "I want a livelier beach"], save:["Save for beach weather", "Save as a free stop near the coast"] },
+        water: { like:["I want to get out on the water", "The duration fits today"], dislike:["I want to explore without a guide", "I don’t want a fixed departure"], save:["Save to compare with other sea activities", "Save for a day with more budget"] },
+        food: { like:["Looks like my kind of place", "Good for a quick local stop"], dislike:["Too touristy for me", "Not the kind of food I want"], save:["Save for a meal nearby", "Save to compare with other local places"] },
+        nightlife: { like:["The atmosphere looks right", "The timing works for me"], dislike:["Too late for this trip", "Not my kind of night"], save:["Save for a night out", "Save until I know the group plan"] },
+        shopping: { like:["I like independent local shops", "Good place to browse"], dislike:["Too commercial", "I’m not shopping today"], save:["Save for a shopping afternoon", "Save to visit when I’m nearby"] },
+        wellness: { like:["I want a movement break", "This feels like my pace"], dislike:["I prefer to move outdoors", "Not the activity I want today"], save:["Save for a slower day", "Save for a movement break"] }
+      };
+      let toastTimer;
+      function toast(message) {
+        const node = document.getElementById("toast");
+        node.textContent = message;
+        node.classList.add("show");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(function () { node.classList.remove("show"); }, 2500);
+      }
+      function selectedValue(name) {
+        const input = document.querySelector("input[name='" + name + "']:checked");
+        return input ? input.value : "";
+      }
+      function dateLabel(iso, options) {
+        if (!iso) return "Choose a date";
+        return new Date(iso + "T12:00:00").toLocaleDateString("en-GB", options || { weekday:"long", month:"long", day:"numeric" });
+      }
+      function datesBetween(start, end) {
+        const output = [];
+        const cursor = new Date(start + "T12:00:00Z");
+        const last = new Date(end + "T12:00:00Z");
+        while (cursor <= last && output.length < 90) {
+          output.push(cursor.toISOString().slice(0,10));
+          cursor.setUTCDate(cursor.getUTCDate() + 1);
+        }
+        return output;
+      }
+      function updateSetupFields() {
+        document.getElementById("singleDateFields").hidden = selectedValue("whenType") !== "date";
+        document.getElementById("periodFields").hidden = selectedValue("planLength") !== "period";
+        document.getElementById("groupFields").hidden = selectedValue("partyType") !== "group";
+        document.getElementById("destinationField").hidden = selectedValue("placeType") !== "elsewhere";
+        const dates = selectedValue("planLength") === "period" ? datesBetween(document.getElementById("periodStart").value, document.getElementById("periodEnd").value) : [selectedValue("whenType") === "today" ? todayISO() : document.getElementById("planDate").value];
+        const days = Math.max(1, dates.length);
+        const budget = Number(document.getElementById("dailyBudgetInput").value || 0);
+        document.getElementById("periodBudgetHint").textContent = selectedValue("planLength") === "period" ? "Trip guide: €" + budget * days + " for " + days + (days === 1 ? " day." : " days.") + " Each day gets its own plan; only added choices count." : "Your budget guides suggestions quietly. Only choices you add count in the plan total.";
+        const group = selectedValue("partyType") === "group" ? "a group" : "just you";
+        const where = selectedValue("placeType") === "elsewhere" ? (document.getElementById("destinationInput").value || "your chosen city") : "your current area (Ibiza Town demo)";
+        document.getElementById("setupSummary").textContent = (selectedValue("planLength") === "period" ? days + " days from " + dateLabel(dates[0]) : dateLabel(dates[0])) + " · " + group + " · " + where + " · €" + budget + " per day";
+      }
+      function showSetupStep(step) {
+        activeSetupStep = step;
+        document.querySelectorAll(".setup-step").forEach(function (panel) { panel.hidden = Number(panel.dataset.step) !== step; });
+        document.querySelectorAll(".setup-progress span").forEach(function (mark, index) { mark.classList.toggle("active", index <= step); });
+        document.getElementById("setupBack").hidden = step === 0;
+        document.getElementById("setupNext").hidden = step === 2;
+        document.getElementById("startPlanning").hidden = step !== 2;
+        document.getElementById("setupStepLabel").textContent = "Step " + (step + 1) + " of 3 · " + ["Your dates", "Your people and place", "Your pace"][step];
+        if (step === 2) updateSetupFields();
+      }
+      function updateWeatherForDate(date) {
+        const isSourceDate = date === "2026-10-05" && locationHasSourceSet;
+        ["weatherConditions", "weatherRange", "sunsetTime"].forEach(function (id) { document.getElementById(id).hidden = !isSourceDate; });
+        document.getElementById("weatherSource").innerHTML = isSourceDate ? "Source snapshot: <a href='https://www.alltrails.com/trail/spain/ibiza/paseo-por-ibiza' target='_blank' rel='noreferrer'>AllTrails · Oct 5</a>" : "Check weather and daylight for your date before heading out";
+        document.getElementById("scanStatus").textContent = locationHasSourceSet ? "Activity research · Oct 5. Recheck your date." : "No collection for this place yet";
+        const boat = document.getElementById("boatCard");
+        const available = date === boat.dataset.availableDate && locationHasSourceSet;
+        boat.querySelector(".add-to-plan").disabled = !available;
+        boat.querySelector(".add-to-plan").textContent = available ? "Add timed idea" : "Availability not checked for this day";
+        const source = document.getElementById("boatSource");
+        const sourceURL = new URL(source.href); sourceURL.searchParams.set("start_date", date); sourceURL.searchParams.set("end_date", date); source.href = sourceURL.href;
+      }
+      document.querySelectorAll(".setup-screen input").forEach(function (input) { input.addEventListener("change", updateSetupFields); input.addEventListener("input", updateSetupFields); });
+      document.getElementById("setupNext").addEventListener("click", function () { showSetupStep(Math.min(2, activeSetupStep + 1)); });
+      document.getElementById("setupBack").addEventListener("click", function () { showSetupStep(Math.max(0, activeSetupStep - 1)); });
+      document.getElementById("dailyBudgetInput").addEventListener("input", updateSetupFields);
+      function startPlanning() {
+        const budgetInput = document.getElementById("dailyBudgetInput");
+        if (!budgetInput.value || !Number.isFinite(Number(budgetInput.value)) || Number(budgetInput.value) < 0) { toast("Choose a daily guide of €0 or more."); return; }
+        const minAge = document.getElementById("groupMinAge").value;
+        const maxAge = document.getElementById("groupMaxAge").value;
+        if (selectedValue("partyType") === "group" && (Boolean(minAge) !== Boolean(maxAge) || (minAge && (!Number.isInteger(Number(minAge)) || !Number.isInteger(Number(maxAge)) || Number(minAge) < 16 || Number(maxAge) > 25 || Number(minAge) > Number(maxAge))))) { toast("Add both ages between 16 and 25, youngest first, or leave both blank."); return; }
+        if (selectedValue("placeType") === "elsewhere" && !document.getElementById("destinationInput").value.trim()) { toast("Choose a city or region."); return; }
+        const start = selectedValue("planLength") === "period" ? document.getElementById("periodStart").value : (selectedValue("whenType") === "today" ? todayISO() : document.getElementById("planDate").value);
+        const end = selectedValue("planLength") === "period" ? document.getElementById("periodEnd").value : start;
+        if (!start || !end || end < start) { toast("Choose an end date on or after the start date."); return; }
+        const nextDestination = selectedValue("placeType") === "elsewhere" ? document.getElementById("destinationInput").value.trim() : "Ibiza Town";
+        const nextContext = nextDestination.toLowerCase() + "|" + selectedValue("partyType") + "|" + minAge + "|" + maxAge;
+        dateList = datesBetween(start, end);
+        if (dateList.length === 90 && dateList[dateList.length - 1] !== end) { toast("This prototype can plan periods up to 90 days."); return; }
+        if (contextKey && contextKey !== nextContext) { plansByDate.clear(); }
+        contextKey = nextContext;
+        switchPreferenceContext(selectedValue("partyType") === "solo" ? "solo" : nextContext);
+        selectedDate = dateList[0];
+        dateList.forEach(function (date) { if (!plansByDate.has(date)) plansByDate.set(date, []); });
+        plan = plansByDate.get(selectedDate);
+        destination = nextDestination;
+        locationHasSourceSet = /^(ibiza|ibiza town|ibiza town, ibiza|eivissa)$/i.test(destination);
+        const budget = Number(document.getElementById("dailyBudgetInput").value || 0);
+        document.getElementById("budgetGuide").value = budget;
+        document.getElementById("guideValue").textContent = budget;
+        document.getElementById("contextLocation").textContent = destination;
+        document.querySelector("#daily-context span:first-child").lastChild.textContent = selectedValue("placeType") === "current" ? " · demo area" : " · selected area";
+        const stay = document.getElementById("stayInput").value.trim();
+        stayArea = stay;
+        const stayContext = document.getElementById("stayContext");
+        stayContext.hidden = !stay;
+        stayContext.textContent = stay ? "Staying: " + stay : "";
+        document.getElementById("crumbLocation").textContent = destination;
+        document.getElementById("crumbPurpose").textContent = selectedValue("partyType") === "group" ? "A day for your group" : "Your day, your pace";
+        document.getElementById("headerDate").textContent = dateLabel(selectedDate);
+        document.getElementById("planDayName").textContent = dateLabel(selectedDate, { weekday:"short", month:"short", day:"numeric" });
+        document.getElementById("planTitle").textContent = dateList.length > 1 ? "Your day, so far" : "Your day, so far";
+        document.getElementById("tripGuide").hidden = dateList.length < 2;
+        document.getElementById("tripGuide").textContent = dateList.length > 1 ? "Trip guide: €" + budget * dateList.length + " across " + dateList.length + " days · €" + budget + " per day" : "";
+        updateWeatherForDate(selectedDate);
+        const dayTabs = document.getElementById("periodTabs");
+        dayTabs.innerHTML = "";
+        dayTabs.hidden = dateList.length < 2;
+        dateList.forEach(function (date) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = dateLabel(date, { weekday:"short", day:"numeric" });
+          button.classList.toggle("active", date === selectedDate);
+          button.addEventListener("click", function () { selectPlanDate(date); });
+          dayTabs.appendChild(button);
+        });
+        document.getElementById("setupScreen").hidden = true;
+        document.getElementById("appShell").hidden = false;
+        document.querySelector(".mobile-nav").hidden = false;
+        document.getElementById("mainHeadline").innerHTML = "Your day,<br>at your pace.";
+        document.querySelector(".trailer").hidden = !locationHasSourceSet;
+        document.getElementById("filteredTours").hidden = !locationHasSourceSet;
+        if (!locationHasSourceSet) {
+          visibleIdeas.forEach(function (card) { card.style.display = "none"; });
+          document.getElementById("resultsEmpty").hidden = false;
+          document.getElementById("resultsEmpty").textContent = "No source-checked activity set for " + destination + " yet. The Ibiza examples are hidden until this location has its own verified sources.";
+          document.getElementById("resultsNote").textContent = "Location-specific suggestions are not loaded for this destination.";
+          document.getElementById("ideasDescription").textContent = "Choose Ibiza to explore the verified example set, or keep this destination selected while sources are researched.";
+        } else {
+          visibleIdeas.forEach(function (card) { card.style.display = "grid"; });
+          document.getElementById("resultsEmpty").hidden = true;
+          document.getElementById("resultsNote").textContent = cards.length + " researched examples · check prices, dates and access before going";
+        }
+        if (selectedValue("partyType") === "group") {
+          const minAge = document.getElementById("groupMinAge").value;
+          const maxAge = document.getElementById("groupMaxAge").value;
+          document.getElementById("introCopy").textContent = minAge && maxAge ? "A temporary group plan for ages " + minAge + "–" + maxAge + ". Save, skip or add ideas together." : "A temporary group plan. Add age details later to refine what fits everyone.";
+        }
+        updateTotal();
+        updateShopLinks();
+        applyFilters();
+        const headline=document.getElementById("mainHeadline");headline.tabIndex=-1;headline.focus();
+        paused=reducedMotion();updateReelControl();startReel();
+        recordChoice("setup", {dates:dateList.slice(), dailyBudget:budget, stay:stay, groupAges:selectedValue("partyType") === "group" && minAge ? [Number(minAge),Number(maxAge)] : null});
+      }
+      function todayISO() { return new Intl.DateTimeFormat("en-CA", {timeZone:"Europe/Madrid",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
+      document.getElementById("editPurpose").addEventListener("click", function () {
+        document.getElementById("setupScreen").hidden = false; document.getElementById("appShell").hidden = true; document.querySelector(".mobile-nav").hidden = true; showSetupStep(0);
+      });
+      document.getElementById("startPlanning").addEventListener("click", startPlanning);
+      function selectPlanDate(date) {
+        selectedDate = date;
+        plan = plansByDate.get(date) || [];
+        document.getElementById("headerDate").textContent = dateLabel(date);
+        document.getElementById("planDayName").textContent = dateLabel(date, { weekday:"short", month:"short", day:"numeric" });
+        updateWeatherForDate(date);
+        document.querySelectorAll("#periodTabs button").forEach(function (button, index) { button.classList.toggle("active", dateList[index] === date); });
+        updateTotal();
+        updateShopLinks();
+        applyFilters();
+        recordChoice("date-select", {date:date});
+      }
+      function renderSaved() {
+        document.getElementById("savedCount").textContent = saved.size;
+        const list = document.getElementById("savedList");
+        list.innerHTML = "";
+        if (!saved.size) { list.innerHTML = "<div class='saved-empty'>Ideas you save will wait here.</div>"; return; }
+        cards.filter(function (card) { return saved.has(card.dataset.id); }).forEach(function (card) {
+          const row = document.createElement("div");
+          row.className = "saved-row";
+          row.textContent = card.querySelector(".idea-title").textContent + (savedReasons.get(card.dataset.id) ? " · " + savedReasons.get(card.dataset.id) : "");
+          const view=document.createElement('button');view.type='button';view.className='button ghost';view.textContent='View idea';view.addEventListener('click',function(){setView('day');activeFilter='all';const ordered=Array.from(document.querySelectorAll('#ideasList .idea-card'));visibleIdeaLimit=Math.max(6,ordered.indexOf(card)+1);document.querySelectorAll('[data-filter]').forEach(function(button){button.classList.toggle('active',button.dataset.filter==='all');});applyFilters();const container=card.closest('details');if(container)container.open=true;card.scrollIntoView({behavior:'smooth',block:'center'});card.tabIndex=-1;card.focus();});row.appendChild(view);
+          list.appendChild(row);
+        });
+      }
+      function addTaste(reason, kind) {
+        const phrase = reason.split("—").pop().trim().toLowerCase();
+        const tags = Array.from(document.querySelectorAll(".taste-chip")).map(function (tag) { return tag.textContent; });
+        if (!tags.includes(phrase)) {
+          const chip = document.createElement("span");
+          chip.className = "taste-chip";
+          chip.textContent = (kind === "dislike" ? "Avoid: " : kind === "save" ? "Later: " : "Like: ") + phrase;
+          document.getElementById("tasteList").appendChild(chip);
+        }
+      }
+      function openFeedback(card, kind) {
+        const panel = card.querySelector(".feedback-panel");
+        const id = card.dataset.id;
+        const previous = feedback.get(id);
+        if (panel.dataset.kind === kind && !panel.hidden) { panel.hidden = true; return; }
+        panel.dataset.kind = kind;
+        const kindSpecific = typeReasons[card.dataset.kind] || { like:[], dislike:[] };
+        const commonReasons = reasonSets[kind].filter(function (reason) { return !(card.dataset.cost === "0" && /expensive|budget|price|value/.test(reason)) && !(card.id !== "boatCard" && /Guided tour/.test(reason)); });
+        const reasons = Array.from(new Set((kindSpecific[kind] || []).concat(commonReasons)));
+        const prompt = kind === "like" ? "What works for you about this " + (categoryName[card.dataset.kind] || "idea") + "?" : (kind === "save" ? "Why keep this for later?" : "What should the app learn from this?");
+        panel.hidden = false;
+        panel.innerHTML = "<p>" + prompt + "</p><div class='reason-list'></div>";
+        const list = panel.querySelector(".reason-list");
+        const extraReasons = document.createElement("details"); extraReasons.innerHTML = "<summary>Other reasons</summary>";
+        if (reasons.length > 6) panel.appendChild(extraReasons);
+        reasons.forEach(function (reason, reasonIndex) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "reason";
+          button.textContent = reason;
+          button.addEventListener("click", function () {
+            panel.querySelectorAll(".reason").forEach(function (item) { item.classList.remove("selected"); });
+            button.classList.add("selected");
+            feedback.set(id, { kind:kind, reason:reason });
+            recordChoice("feedback", {id:id, kind:kind, reason:reason, activityType:card.dataset.kind});
+            addTaste(reason, kind);
+            if (kind === "save") {
+              saved.add(id);
+              savedReasons.set(id, reason);
+              card.querySelector(".save-btn").classList.add("selected");
+              renderSaved();
+              toast("Saved for later. I’ll remember why it caught your eye.");
+            } else if (kind === "dislike") {
+              const hidden = document.getElementById("filteredTours");
+              card.classList.add("hidden-card", "open");
+              if (card.id !== "boatCard") hidden.appendChild(card);
+              hidden.open = true;
+              hidden.querySelector("summary").textContent = "Ideas hidden based on your feedback";
+              card.querySelector(".dislike-btn").classList.add("selected");
+              toast("Noted: " + reason + ". I’ll vary the next mix.");
+              applyFilters();
+            } else {
+              if (card.id !== "boatCard" && card.classList.contains("hidden-card")) {
+                card.classList.remove("hidden-card", "open"); document.getElementById("ideasList").appendChild(card);
+                card.querySelector(".dislike-btn").classList.remove("selected");
+              }
+              card.querySelector(".like-btn").classList.add("selected");
+              visibleIdeas.forEach(function (other) {
+                if (other !== card && other.dataset.kind === card.dataset.kind && other.parentElement === document.getElementById("ideasList")) other.style.order = "-1";
+              });
+              document.getElementById("ideasDescription").textContent = "Your choices are shaping the next mix · more " + (categoryName[card.dataset.kind] || "ideas") + " like this will come first.";
+              toast("Noted: I’ll look for more " + (categoryName[card.dataset.kind] || "ideas") + " with that feel.");
+              applyFilters();
+            }
+          });
+          (reasonIndex < 6 ? list : extraReasons).appendChild(button);
+        });
+      }
+      function updateShopLinks() {
+        const last = plan.length ? plan[plan.length - 1].area : destination;
+        const region = /ibiza/i.test(destination) ? "Ibiza" : destination;
+        const href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("supermarkets " + (selectedDate === todayISO() ? "open now " : "") + "near " + last + ", " + region);
+        document.getElementById("shopSearch").href = href;
+        document.getElementById("planShopLink").href = href;
+      }
+      function updateNearby() {
+        const emptySnack = document.getElementById("emptySnack");
+        const panel = document.getElementById("planNearby");
+        const linkBox = panel.querySelector(".nearby-links");
+        emptySnack.hidden = plan.length > 0;
+        document.getElementById("planShopLink").hidden = plan.length > 0;
+        panel.classList.toggle("open", plan.length > 0 || Boolean(stayArea));
+        linkBox.innerHTML = "";
+        const areas = Array.from(new Set((stayArea ? [stayArea] : []).concat(plan.map(function (item) { return item.area; }))));
+        areas.forEach(function (area) {
+          const stop = document.createElement("div");
+          stop.className = "nearby-stop";
+          const title = document.createElement("strong");
+          title.textContent = area;
+          stop.appendChild(title);
+          const actions = document.createElement("div");
+          actions.className = "nearby-links";
+          const now = selectedDate === todayISO();
+          ["Supermarkets" + (now ? " open now" : ""), "Restaurants" + (now ? " open now" : "")].forEach(function (label) {
+            const a = document.createElement("a");
+            a.target = "_blank";
+            a.rel = "noreferrer";
+            a.textContent = label + " ↗";
+            const region = /ibiza/i.test(destination) ? "Ibiza" : destination;
+            a.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(label.toLowerCase() + " near " + area + ", " + region);
+            actions.appendChild(a);
+          });
+          stop.appendChild(actions);
+          linkBox.appendChild(stop);
+        });
+        panel.querySelector("h3").textContent = stayArea ? "Near your stay and planned stops" : "Near your planned stops";
+        panel.querySelector(".nearby-note").textContent = selectedDate === todayISO() ? "Maps searches use open now. Check each result’s hours before going. Food costs are not counted until selected." : "Check Maps opening hours for your planned date and time. Today’s open status does not confirm future availability.";
+      }
+      function updateTotal() {
+        const total = plan.reduce(function (sum, item) { return sum + (item.cost || 0); }, 0);
+        const fromPrices = plan.some(function (item) { return item.priceStatus === "from"; });
+        const knownChoices = plan.filter(function (item) { return item.cost !== null; });
+        document.querySelector(".plan-total").hidden = plan.length > 0 && !knownChoices.length;
+        document.querySelector(".plan-total div > span").textContent = "Known activity costs";
+        document.getElementById("planTotal").textContent = total === 0 ? "Free" : (fromPrices ? "From " : "") + "€" + total;
+        const guide = Number(document.getElementById("budgetGuide").value || 0);
+        document.getElementById("guideValue").textContent = guide;
+        const tripItems = dateList.flatMap(function (date) { return plansByDate.get(date) || []; });
+        const totals = tripItems.reduce(function (sum, item) { return sum + (item.cost || 0); }, 0);
+        if (dateList.length > 1) document.getElementById("tripGuide").textContent = (tripItems.some(function (item) { return item.cost !== null; }) ? "Known trip costs " + (totals === 0 ? "Free" : "€" + totals) + " · " : "") + "Trip guide €" + guide * dateList.length + " · €" + guide + " per day";
+        document.querySelectorAll(".daypart").forEach(function (section) {
+          const list = section.querySelector(".daypart-items");
+          list.innerHTML = "";
+          const items = plan.filter(function (item) { return item.slot === section.dataset.period; });
+          if (!items.length) { list.innerHTML = "<div class='plan-empty'>Room for a little adventure</div>"; return; }
+          items.forEach(function (item) {
+            const row = document.createElement("div");
+            row.className = "plan-item" + (item.fixed ? " fixed" : "");
+            row.draggable = !item.fixed;
+            row.dataset.itemId = item.id;
+            row.dataset.kind = item.kind || "walk";
+            const complete = document.createElement("input"); complete.type = "checkbox"; complete.checked = Boolean(item.done); complete.setAttribute("aria-label", "Mark " + item.title + " as visited"); complete.addEventListener("change", function () { item.done = complete.checked; recordChoice("plan-complete", {id:item.id,done:item.done}); updateTotal(); });
+            const costLabel = item.cost === null ? "" : (item.cost === 0 ? "Free" : (item.priceStatus === "from" ? "from €" : "€") + item.cost);
+            const info = (item.fixed ? item.time + " · " + item.duration + (item.confirmed ? " · confirmed booking" : " · timed idea — booking not confirmed") : "Flexible · " + item.area) + (costLabel ? " · " + costLabel : "");
+            row.innerHTML = "<label class='plan-time'>" + (item.fixed ? item.time : "↕") + "</label><div><p class='plan-item-title'></p><p class='plan-item-sub'></p></div><div class='plan-controls'></div>";
+            row.querySelector(".plan-time").replaceChildren(complete);
+            row.classList.toggle("completed", Boolean(item.done));
+            row.querySelector(".plan-item-title").textContent = item.title;
+            row.querySelector(".plan-item-sub").textContent = info;
+            if (item.timeBox && !item.fixed) {const box=document.createElement('details');box.className='personal-timebox';const summary=document.createElement('summary');summary.textContent='Your time box';const text=document.createElement('p');text.textContent=item.timeBox+' min · your intention, not a booking duration';box.append(summary,text);row.querySelector('.plan-item-sub').after(box);}
+            if (!item.fixed) {
+              const move = document.createElement("button");
+              move.type = "button";
+              move.className = "move-item";
+              move.setAttribute("aria-label", "Move " + item.title + " to the next part of day");
+              move.title = "Move to next part of day";
+              move.textContent = "↻";
+              move.addEventListener("click", function () {
+                const slots = ["morning", "afternoon", "evening", "night"];
+                item.slot = slots[(slots.indexOf(item.slot) + 1) % slots.length];
+                recordChoice("plan-move", {id:item.id,slot:item.slot,method:"button"});
+                updateTotal();
+                toast("Moved to " + item.slot + ".");
+              });
+              row.querySelector(".plan-controls").appendChild(move);
+            }
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.className = "remove-item";
+            remove.setAttribute("aria-label", "Remove " + item.title);
+            remove.textContent = "×";
+            remove.addEventListener("click", function () {
+              const index = plan.findIndex(function (entry) { return entry.id === item.id; });
+              const removedDate=selectedDate;
+              if (index >= 0) plan.splice(index,1);
+              recordChoice("plan-remove", {id:item.id});
+              updateTotal();
+              toast('Removed from your day.');
+              const undo=document.createElement('button');undo.type='button';undo.className='button ghost';undo.textContent='Undo';undo.addEventListener('click',function(){const day=plansByDate.get(removedDate);if(day&&!day.some(function(existing){return existing.id===item.id;})){day.splice(Math.max(0,index),0,item);updateTotal();recordChoice('plan-remove-undo',{id:item.id});toast('Back in your plan.');}});document.getElementById('toast').appendChild(undo);
+            });
+            row.querySelector(".plan-controls").appendChild(remove);
+            row.addEventListener("dragstart", function (event) { if (item.fixed) { event.preventDefault(); return; } draggingId = item.id; event.dataTransfer.setData("text/plain", item.id); });
+            row.addEventListener("dragend", function () { draggingId = null; });
+            list.appendChild(row);
+          });
+        });
+        document.querySelector(".plan-note span:last-child").textContent = (total > guide ? "Known costs are €" + (total - guide) + " above your guide. " : "Your budget is a quiet guide. ") + "Only displayed prices of selected activities count." + (fromPrices ? " Rental starting rates may increase." : "");
+        updateNearby();
+        updateShopLinks();
+        renderPlannerViews();
+      }
+      document.querySelectorAll(".daypart").forEach(function (section) {
+        section.addEventListener("dragover", function (event) {
+          const item = plan.find(function (entry) { return entry.id === draggingId; });
+          if (item && !item.fixed) { event.preventDefault(); section.classList.add("drag-over"); }
+        });
+        section.addEventListener("dragleave", function () { section.classList.remove("drag-over"); });
+        section.addEventListener("drop", function (event) {
+          event.preventDefault();
+          section.classList.remove("drag-over");
+          const item = plan.find(function (entry) { return entry.id === draggingId; });
+          if (item && !item.fixed) { item.slot = section.dataset.period; recordChoice("plan-move", {id:item.id,slot:item.slot,method:"drag"}); updateTotal(); }
+        });
+      });
+      cards.forEach(function (card) {
+        card.querySelector(".like-btn").addEventListener("click", function () { openFeedback(card, "like"); });
+        card.querySelector(".dislike-btn").addEventListener("click", function () { openFeedback(card, "dislike"); });
+        card.querySelector(".save-btn").addEventListener("click", function () {
+          if (saved.has(card.dataset.id)) {
+            saved.delete(card.dataset.id);
+            savedReasons.delete(card.dataset.id);
+            recordChoice("save-remove", {id:card.dataset.id});
+            card.querySelector(".save-btn").classList.remove("selected");
+            renderSaved();
+            toast("Removed from your saved ideas.");
+          } else openFeedback(card, "save");
+        });
+        card.querySelector(".add-to-plan").addEventListener("click", function () {
+          if (!activityCanBeAdded(card)) { toast("Check the source: this idea does not fit the selected day or group ages."); return; }
+          const id = card.dataset.id;
+          if (plan.some(function (item) { return item.id === id; })) { toast("Already in this day’s plan."); return; }
+          const fixedTime = card.dataset.fixedTime || "";
+          if (fixedTime && selectedDate !== card.dataset.availableDate) { toast("Check availability for this date before adding a timed idea."); return; }
+          const defaultSlot = card.dataset.kind === "nature" || card.dataset.kind === "walk" ? "morning" : (card.dataset.kind === "nightlife" ? "night" : "afternoon");
+          const item = { id:id, title:card.querySelector(".idea-title").textContent, kind:card.dataset.kind, done:false, cost:card.dataset.priceStatus === "unknown" ? null : Number(card.dataset.cost || 0), priceStatus:card.dataset.priceStatus || "listed", fixed:Boolean(fixedTime), time:fixedTime, duration:fixedTime ? (card.dataset.durationLabel || "") : "", area:card.dataset.area, slot:fixedTime ? "afternoon" : defaultSlot };
+          plan.push(item);
+          plansByDate.set(selectedDate, plan);
+          recordChoice("plan-add", {id:id,cost:item.cost,slot:item.slot,fixed:item.fixed,bookingConfirmed:false});
+          updateTotal();
+          document.getElementById("plan").scrollIntoView({ behavior:"smooth", block:"nearest" });
+          toast(fixedTime ? "Added as a timed idea at " + fixedTime + ". Booking still needs confirmation with the provider." : "Added as a flexible idea. Drag it to another part of your day.");
+        });
+      });
+      function activityFitsGroup(card) {
+        if (selectedValue("partyType") !== "group") return true;
+        const min = Number(document.getElementById("groupMinAge").value), max = Number(document.getElementById("groupMaxAge").value);
+        if (!min || !max) return true;
+        return (!card.dataset.minAge || min >= Number(card.dataset.minAge)) && (!card.dataset.maxAge || max <= Number(card.dataset.maxAge));
+      }
+      function activityCanBeAdded(card) {
+        if (!locationHasSourceSet || !activityFitsGroup(card)) return false;
+        const day = new Date(selectedDate + "T12:00:00Z");
+        if (card.dataset.weekdays && !card.dataset.weekdays.split(",").map(Number).includes(day.getUTCDay())) return false;
+        if (card.dataset.months && !card.dataset.months.split(",").map(Number).includes(day.getUTCMonth() + 1)) return false;
+        return !card.dataset.availableDate || selectedDate === card.dataset.availableDate;
+      }
+      function applyFilters() {
+        renderDiscoveryPage();
+      }
+      function applyAllFilters() {
+        let shown = 0;
+        cards.forEach(function (card) {
+          const matches = locationHasSourceSet && activityFitsGroup(card) && (activeFilter === "all" || card.dataset.kind === activeFilter);
+          card.style.display = matches ? "grid" : "none";
+          if (matches && !card.classList.contains("hidden-card")) shown++;
+          const add = card.querySelector(".add-to-plan");
+          add.disabled = !activityCanBeAdded(card);
+          add.textContent = add.disabled ? "Check another day / source" : (card.dataset.fixedTime ? "Add timed idea" : "Add to day");
+        });
+        const details = document.getElementById("filteredTours");
+        details.hidden = !locationHasSourceSet || !Array.from(details.querySelectorAll(".idea-card")).some(function (card) { return card.style.display !== "none"; });
+        if (activeFilter === "water" && locationHasSourceSet) { details.open = true; shown++; }
+        document.getElementById("resultsEmpty").hidden = shown > 0;
+        document.getElementById("resultsEmpty").textContent = locationHasSourceSet ? "No visible " + (categoryName[activeFilter] || "ideas") + " in this starter set. Try another type or review your hidden ideas." : "No source-checked activity set for " + destination + " yet.";
+        document.getElementById("resultsNote").textContent = shown ? shown + " visible of " + cards.length + " researched examples · prices and availability need reconfirming" : "No matching suggestions loaded.";
+      }
+      document.querySelectorAll(".filter-chip").forEach(function (button) {
+        button.addEventListener("click", function () {
+          activeFilter = button.dataset.filter;
+          visibleIdeaLimit = 6;
+          document.querySelectorAll(".filter-chip").forEach(function (chip) { chip.classList.toggle("active", chip === button); });
+          applyFilters(); recordChoice("filter", {activityType:activeFilter});
+        });
+      });
+      document.getElementById("budgetGuide").addEventListener("input", function () {
+        const input = document.getElementById("budgetGuide");
+        if (Number(input.value) < 0) input.value = 0;
+        updateTotal();
+      });
+      document.getElementById("budgetGuide").addEventListener("change", function () { updateTotal(); recordChoice("budget-change", {dailyBudget:Number(this.value || 0)}); toast("Daily guide updated — free and paid ideas remain visible."); });
+      ["planDate", "periodStart"].forEach(function (id) { document.getElementById(id).value = todayISO(); });
+      const defaultEnd = new Date(todayISO() + "T12:00:00Z"); defaultEnd.setUTCDate(defaultEnd.getUTCDate() + 2); document.getElementById("periodEnd").value = defaultEnd.toISOString().slice(0,10);
+      let activePreferenceContext = 'solo';
+      const preferenceContexts = new Map();
+      let currentView = 'day';
+      let visibleIdeaLimit = 6;
+      let calendarCursor = selectedDate;
+      let savedAppearance = {};
+      try { savedAppearance = JSON.parse(localStorage.getItem('dayfolk.appearance.v1') || '{}'); } catch (_) {}
+      const categoryTints = {walk:'mint',nature:'mint',beach:'sky',water:'sea',food:'peach',shopping:'lemon',culture:'lemon',wellness:'lavender',nightlife:'lavender'};
+      cards.forEach(function(card) {
+        card.dataset.tint = categoryTints[card.dataset.kind] || 'mint';
+        card.querySelector('.status-tag').textContent=categoryLabels[card.dataset.kind]+(card.dataset.minAge?' · '+card.dataset.minAge+(card.dataset.maxAge?'–'+card.dataset.maxAge:'+'):'');
+        card.querySelector('.like-btn').textContent = '♡ Like';
+        card.querySelector('.dislike-btn').textContent = '× Hide';
+        card.querySelector('.save-btn').textContent = '⌑ Save';
+        const details = document.createElement('details'); details.className = 'activity-details';
+        const summary = document.createElement('summary'); summary.textContent = 'Details & sources'; details.appendChild(summary);
+        const main = card.querySelector('.idea-main');
+        ['.idea-sub','.idea-facts','.source-row'].forEach(function(selector) { const node = card.querySelector(selector); if(node) details.appendChild(node); });
+        main.appendChild(details);
+      });
+      cards.forEach(function(card){
+        const photo=photoCatalog.photos[card.dataset.id],picture=card.querySelector('.idea-photo');
+        if(!photo){picture.hidden=true;return;}
+        picture.hidden=false;picture.className='idea-photo has-photo';picture.replaceChildren();
+        const img=document.createElement('img');img.src=photo.url;img.alt=photo.alt;img.loading='lazy';img.decoding='async';img.width=960;img.height=600;
+        img.addEventListener('error',function(){picture.hidden=true;});picture.appendChild(img);
+        const attribution=document.createElement('a');attribution.className='photo-attribution';attribution.href=photo.source;attribution.target='_blank';attribution.rel='noreferrer';attribution.textContent=photo.fit==='action'?'In the moment · photo source ↗':'At this place · photo source ↗';picture.appendChild(attribution);
+        const details=card.querySelector('.activity-details'),note=document.createElement('p');note.className='photo-provenance';note.textContent='Photo: '+photo.credit+(photo.rights.startsWith('Rights not established')?'':' · '+photo.rights)+(photo.note?' · '+photo.note:'');details.appendChild(note);
+      });
+      document.getElementById('exploreReel').addEventListener('click',function(){
+        const card=cards.find(function(card){return card.dataset.id===slides[slideIndex].id;});if(!card)return;
+        setView('day');activeFilter='all';const ordered=Array.from(document.querySelectorAll('#ideasList .idea-card'));visibleIdeaLimit=Math.max(6,ordered.indexOf(card)+1);applyFilters();const container=card.closest('details');if(container)container.open=true;card.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'center'});card.tabIndex=-1;card.focus();
+      });
+      const moreInterests = document.createElement('details'); moreInterests.className = 'more-interests';
+      moreInterests.innerHTML = '<summary>More interests</summary><div></div>';
+      ['water','nightlife','shopping','wellness','culture'].forEach(function(kind) { moreInterests.querySelector('div').appendChild(document.querySelector('[data-filter="'+kind+'"]')); });
+      document.querySelector('.type-filters').appendChild(moreInterests);
+      document.querySelectorAll('[data-filter]').forEach(function(button) { button.dataset.tint=categoryTints[button.dataset.filter] || 'mint'; button.setAttribute('aria-pressed',button.dataset.filter==='all'?'true':'false'); });
+      document.getElementById('settingsTools').appendChild(document.getElementById('editPurpose'));
+      document.getElementById('themeChoice').value = savedAppearance.theme || 'light';
+      document.getElementById('weekStartChoice').value = savedAppearance.weekStart || 'locale';
+      document.getElementById('gentleMotion').checked = Boolean(savedAppearance.reduceMotion);
+      function applyAppearance() {
+        const theme = document.getElementById('themeChoice').value;
+        const dark = theme==='dark' || (theme==='system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme=dark?'dark':'light';
+        document.documentElement.dataset.reduceMotion=document.getElementById('gentleMotion').checked?'true':'false';
+        try {localStorage.setItem('dayfolk.appearance.v1',JSON.stringify({theme:theme,weekStart:document.getElementById('weekStartChoice').value,reduceMotion:document.getElementById('gentleMotion').checked}));} catch (_) {}
+        if(reducedMotion()){paused=true;updateReelControl();} startReel();
+        renderCalendar();
+      }
+      ['themeChoice','weekStartChoice','gentleMotion'].forEach(function(id) {document.getElementById(id).addEventListener('change',applyAppearance);});
+      const systemScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      if(systemScheme.addEventListener) systemScheme.addEventListener('change',applyAppearance);
+      function openDialog(id) {
+        const dialog=document.getElementById(id); dialog._returnFocus=document.activeElement;
+        if(dialog.showModal) dialog.showModal(); else dialog.setAttribute('open','');
+        const field=dialog.querySelector('input,select,button'); if(field) field.focus();
+      }
+      function closeDialog(id) {
+        const dialog=document.getElementById(id); if(dialog.close) dialog.close(); else dialog.removeAttribute('open');
+        if(dialog._returnFocus) dialog._returnFocus.focus();
+      }
+      document.querySelectorAll('[data-close]').forEach(function(button) {button.addEventListener('click',function(){closeDialog(button.dataset.close);});});
+      ['settingsButton','mobileSettings'].forEach(function(id) {document.getElementById(id).addEventListener('click',function(){openDialog('settingsDialog');});});
+      document.getElementById('settingsEditTrip').addEventListener('click',function(){closeDialog('settingsDialog');document.getElementById('editPurpose').click();});
+      function switchPreferenceContext(key) {
+        if (key === activePreferenceContext) return;
+        preferenceContexts.set(activePreferenceContext,{feedback:Array.from(feedback),saved:Array.from(saved),savedReasons:Array.from(savedReasons)});
+        activePreferenceContext=key;
+        const next=preferenceContexts.get(key)||{feedback:[],saved:[],savedReasons:[]};
+        feedback.clear();saved.clear();savedReasons.clear();
+        next.feedback.forEach(function(entry){feedback.set(entry[0],entry[1]);});next.saved.forEach(function(id){saved.add(id);});next.savedReasons.forEach(function(entry){savedReasons.set(entry[0],entry[1]);});
+        document.getElementById('tasteList').replaceChildren();
+        cards.forEach(function(card){
+          card.querySelector('.feedback-panel').hidden=true;
+          ['like','dislike','save'].forEach(function(kind){card.querySelector('.'+kind+'-btn').classList.remove('selected');});
+          const choice=feedback.get(card.dataset.id);
+          if(card.id!=='boatCard') {card.classList.remove('hidden-card','open');document.getElementById('ideasList').appendChild(card);}
+          if(choice){card.querySelector('.'+choice.kind+'-btn').classList.add('selected');addTaste(choice.reason,choice.kind);if(choice.kind==='dislike'&&card.id!=='boatCard'){card.classList.add('hidden-card','open');document.getElementById('filteredTours').appendChild(card);}}
+          if(saved.has(card.dataset.id))card.querySelector('.save-btn').classList.add('selected');
+        });
+        renderSaved();
+      }
+      function renderDiscoveryPage() {
+        applyAllFilters();
+        const eligible=cards.filter(function(card){return card.parentElement.id==='ideasList' && card.style.display!=='none';});
+        eligible.forEach(function(card,index){card.hidden=index>=visibleIdeaLimit;});
+        cards.filter(function(card){return card.parentElement.id!=='ideasList';}).forEach(function(card){card.hidden=false;});
+        const count=Math.min(visibleIdeaLimit,eligible.length);
+        const more=document.getElementById('showMoreIdeas'); more.hidden=count>=eligible.length;
+        more.textContent='Show '+Math.min(6,eligible.length-count)+' more ideas';
+        document.getElementById('resultsNote').textContent=eligible.length ? 'Showing '+count+' of '+eligible.length+' ideas · '+cards.length+' in the Ibiza collection' : 'No matching ideas. Try another interest.';
+        document.querySelectorAll('[data-filter]').forEach(function(button){button.setAttribute('aria-pressed',button.dataset.filter===activeFilter?'true':'false');button.classList.toggle('active',button.dataset.filter===activeFilter);});
+        moreInterests.querySelector('summary').textContent=['water','nightlife','shopping','wellness','culture'].includes(activeFilter)?categoryLabels[activeFilter]:'More interests';
+      }
+      document.getElementById('showMoreIdeas').addEventListener('click',function(){visibleIdeaLimit+=6;renderDiscoveryPage();});
+      function setView(view) {
+        currentView=view;
+        document.getElementById('dayScreen').hidden=view!=='day';
+        document.getElementById('calendarScreen').hidden=view==='day';
+        document.querySelector('.trailer').hidden=view!=='day'||!locationHasSourceSet;startReel();
+        document.querySelectorAll('[data-view]').forEach(function(button){button.classList.toggle('active',button.dataset.view===view);button.setAttribute('aria-pressed',button.dataset.view===view?'true':'false');});
+        renderCalendar();
+      }
+      document.querySelectorAll('[data-view]').forEach(function(button){button.addEventListener('click',function(){calendarCursor=selectedDate;setView(button.dataset.view);});});
+      function ensureDay(date) {
+        if(!plansByDate.has(date)) plansByDate.set(date,[]);
+        if(!dateList.includes(date)) dateList.push(date);
+        dateList.sort();
+        selectPlanDate(date);
+        const tabs=document.getElementById('periodTabs'); tabs.replaceChildren(); tabs.hidden=dateList.length<2;
+        dateList.forEach(function(d){const b=document.createElement('button');b.type='button';b.textContent=dateLabel(d,{weekday:'short',day:'numeric'});b.classList.toggle('active',d===selectedDate);b.addEventListener('click',function(){selectPlanDate(d);});tabs.appendChild(b);});
+      }
+      function shiftDate(iso,days){const date=new Date(iso+'T12:00:00Z');date.setUTCDate(date.getUTCDate()+days);return date.toISOString().slice(0,10);}
+      function firstWeekDay(){const chosen=document.getElementById('weekStartChoice').value;if(chosen!=='locale')return Number(chosen);try {const loc=new Intl.Locale(navigator.language||'en-GB');const info=loc.weekInfo||(loc.getWeekInfo&&loc.getWeekInfo());return info?info.firstDay%7:1;}catch(_){return 1;}}
+      function renderCalendar(){
+        if(currentView==='day') return;
+        const grid=document.getElementById('calendarGrid');grid.replaceChildren();grid.classList.toggle('week-grid',currentView==='week');
+        const date=new Date(calendarCursor+'T12:00:00Z'), weekStart=firstWeekDay();
+        const first=currentView==='month'?new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),1,12)):date;
+        const begin=shiftDate(first.toISOString().slice(0,10),-((first.getUTCDay()-weekStart+7)%7));
+        document.getElementById('calendarTitle').textContent=currentView==='month'?dateLabel(calendarCursor,{month:'long',year:'numeric'}):dateLabel(begin,{month:'short',day:'numeric'})+' – '+dateLabel(shiftDate(begin,6),{month:'short',day:'numeric',year:'numeric'});
+        for(let i=0;i<7;i++){const label=document.createElement('div');label.className='weekday-label';label.textContent=dateLabel(shiftDate(begin,i),{weekday:'short'});grid.appendChild(label);}
+        const total=currentView==='week'?7:Math.ceil((((first.getUTCDay()-weekStart+7)%7)+new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth()+1,0)).getUTCDate())/7)*7;
+        for(let i=0;i<total;i++){
+          const iso=shiftDate(begin,i), day=new Date(iso+'T12:00:00Z');const cell=document.createElement('button');cell.type='button';cell.className='calendar-cell';cell.classList.toggle('today',iso===todayISO());cell.classList.toggle('outside-month',currentView==='month'&&day.getUTCMonth()!==date.getUTCMonth());cell.setAttribute('aria-label','Open '+dateLabel(iso));
+          const number=document.createElement('span');number.className='calendar-number';number.textContent=currentView==='week'?dateLabel(iso,{weekday:'short',day:'numeric'}):day.getUTCDate();cell.appendChild(number);
+          const events=plansByDate.get(iso)||[];
+          events.slice(0,currentView==='week'?5:2).forEach(function(item){const event=document.createElement('span');event.className='calendar-event';event.dataset.tint=categoryTints[item.kind]||'mint';event.textContent=(item.done?'✓ ':'')+(item.fixed?item.time+' · ':'')+item.title;cell.appendChild(event);});
+          if(!events.length&&currentView==='week'){const empty=document.createElement('span');empty.className='calendar-empty';empty.textContent='A little room to explore';cell.appendChild(empty);}
+          if(events.length>(currentView==='week'?5:2)){const extra=document.createElement('span');extra.textContent='+'+(events.length-(currentView==='week'?5:2))+' more';cell.appendChild(extra);}
+          cell.addEventListener('click',function(){ensureDay(iso);calendarCursor=iso;setView('day');document.getElementById('plan').scrollIntoView({behavior:'smooth',block:'start'});});grid.appendChild(cell);
+        }
+      }
+      ['calendarPrev','calendarNext'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){const sign=id==='calendarPrev'?-1:1;if(currentView==='week')calendarCursor=shiftDate(calendarCursor,sign*7);else {const d=new Date(calendarCursor+'T12:00:00Z');d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+sign);calendarCursor=d.toISOString().slice(0,10);}renderCalendar();});});
+      document.getElementById('calendarToday').addEventListener('click',function(){calendarCursor=todayISO();renderCalendar();});
+      document.querySelector('[data-nav="day"]').addEventListener('click',function(){ensureDay(todayISO());setView('day');});
+      document.querySelector('[data-nav="plan"]').addEventListener('click',function(){setView('day');});
+      document.querySelectorAll('.mobile-nav a').forEach(function(a){a.addEventListener('click',function(){setView('day');});});
+      document.querySelector('a[href="#saved"]').addEventListener('click',function(){setView('day');});
+      function renderPlannerViews(){
+        document.querySelectorAll('.plan-item').forEach(function(row){row.dataset.tint=categoryTints[row.dataset.kind]||'mint';});
+        document.querySelectorAll('.daypart-items').forEach(function(list){const rows=Array.from(list.querySelectorAll('.plan-item'));rows.forEach(function(row,index){row.hidden=index>=5;});if(rows.length>5){const more=document.createElement('button');more.type='button';more.className='button ghost';more.textContent='Show '+(rows.length-5)+' more';more.addEventListener('click',function(){rows.forEach(function(row){row.hidden=false;});more.remove();});list.appendChild(more);}});
+        const done=plan.filter(function(item){return item.done;}).length;
+        const progress=document.getElementById('dayProgress');const percentage=plan.length?Math.round(done/plan.length*100):0;
+        progress.style.setProperty('--progress',percentage+'%');progress.setAttribute('aria-valuenow',percentage);document.getElementById('progressValue').textContent=done;
+        document.getElementById('progressLabel').textContent=plan.length?done+' of '+plan.length+' visited':'A little room for possibility';
+        document.getElementById('progressHint').textContent=plan.length?(done===plan.length?'☀ A day worth keeping.':'No rush. Leave a little space between stops.'):'Add your first idea to shape the day.';
+        document.getElementById('finishDay').hidden=!plan.length;
+        document.getElementById('dayClosing').hidden=true;
+        renderCalendar();
+      }
+      document.getElementById('finishDay').addEventListener('click',function(){const done=plan.filter(function(item){return item.done;}).length;const closing=document.getElementById('dayClosing');closing.hidden=false;closing.textContent='☀ That’s your day. '+done+' visited'+(plan.length-done?' · '+(plan.length-done)+' ideas can wait for another day.':'. A little adventure, well spent.');recordChoice('day-finish',{visited:done,remaining:plan.length-done});});
+      function openQuickAdd(){document.getElementById('quickAddForm').reset();document.getElementById('quickDate').value=selectedDate;document.getElementById('quickError').hidden=true;document.getElementById('quickParseHint').textContent='';openDialog('quickAddDialog');document.getElementById('quickTitle').focus();}
+      document.getElementById('openQuickAdd').addEventListener('click',openQuickAdd);
+      function parseQuickInput(){
+        const text=document.getElementById('quickTitle').value;let date=selectedDate;
+        if(/\btomorrow\b/i.test(text))date=shiftDate(todayISO(),1);else if(/\btoday\b/i.test(text))date=todayISO();
+        const iso=text.match(/\b(\d{4})-(\d{2})-(\d{2})\b/), local=text.match(/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/);
+        if(iso)date=iso[0];else if(local)date=local[3]+'-'+local[2].padStart(2,'0')+'-'+local[1].padStart(2,'0');
+        else {const names=['sun','mon','tue','wed','thu','fri','sat'];const day=text.match(/\b(sun(?:day)?|mon(?:day)?|tue(?:sday)?|wed(?:nesday)?|thu(?:rsday)?|fri(?:day)?|sat(?:urday)?)\b/i);if(day){const target=names.indexOf(day[1].slice(0,3).toLowerCase());const from=new Date(selectedDate+'T12:00:00Z');date=shiftDate(selectedDate,(target-from.getUTCDay()+7)%7);}}
+        const validDate=new Date(date+'T12:00:00Z');if(!Number.isNaN(validDate.valueOf())&&validDate.toISOString().slice(0,10)===date)document.getElementById('quickDate').value=date;
+        const time=text.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i)||text.match(/\b(\d{1,2}):(\d{2})\b/);
+        if(time){let hour=Number(time[1]),minute=Number(time[2]||0);if(time[3]&&hour>=1&&hour<=12){hour%=12;if(time[3].toLowerCase()==='pm')hour+=12;}if(hour<24&&minute<60){document.getElementById('quickTime').value=String(hour).padStart(2,'0')+':'+String(minute).padStart(2,'0');document.getElementById('quickSlot').value=hour<12?'morning':hour<18?'afternoon':hour<23?'evening':'night';}}
+        if(/lunch|dinner|breakfast|cafe|coffee/i.test(text))document.getElementById('quickKind').value='food';else if(/beach/i.test(text))document.getElementById('quickKind').value='beach';
+        const minutes=text.match(/\b(\d+)\s*(?:min(?:ute)?s?)\b/i);if(minutes)document.getElementById('quickMinutes').value=minutes[1];
+        document.getElementById('quickParseHint').textContent=text?'Suggested: '+dateLabel(document.getElementById('quickDate').value,{weekday:'short',month:'short',day:'numeric'})+' · '+document.getElementById('quickSlot').value+'. You can change these details.':'';
+      }
+      document.getElementById('quickTitle').addEventListener('input',parseQuickInput);
+      document.getElementById('quickAddForm').addEventListener('submit',function(event){
+        event.preventDefault();const title=document.getElementById('quickTitle').value.trim(),date=document.getElementById('quickDate').value,costInput=document.getElementById('quickCost').value, fixed=document.getElementById('quickFixed').checked,time=document.getElementById('quickTime').value,minutes=document.getElementById('quickMinutes').value;
+        if(!title||!date||(fixed&&!time)||(costInput!==''&&Number(costInput)<0)||(minutes&&(Number(minutes)<5||Number(minutes)>1440))){const error=document.getElementById('quickError');error.hidden=false;error.textContent='ⓘ Add a title and date. Confirmed bookings also need a time.';return;}
+        const id='personal-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),kind=document.getElementById('quickKind').value;
+        const item={id:id,title:title,kind:kind,done:false,cost:costInput===''?null:Number(costInput),priceStatus:costInput===''?'unknown':'personal',fixed:fixed,confirmed:fixed,time:fixed?time:'',duration:fixed&&minutes?minutes+' min':'',timeBox:minutes?Number(minutes):null,area:stayArea||destination,slot:document.getElementById('quickSlot').value};
+        if(fixed){const hour=Number(time.slice(0,2));item.slot=hour<12?'morning':hour<18?'afternoon':hour<23?'evening':'night';}
+        if(!plansByDate.has(date))plansByDate.set(date,[]);plansByDate.get(date).push(item);ensureDay(date);setView('day');updateTotal();recordChoice('personal-plan-add',{id:id,kind:kind,date:date,cost:item.cost,timeBox:item.timeBox,confirmed:fixed});closeDialog('quickAddDialog');toast('Added. There’s still room to change your mind.');
+      });
+      applyAppearance();
+
+      renderTestStatus();
+      updateSetupFields();
+      showSetupStep(0);
+    })();
+  </script>
+</body>
+</html>
