@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="summer-planner.css">
 </head>
 <body>
-  <a class="skip-link" href="#discover">Skip to your planner</a>
+  <a class="skip-link" href="#plan">Skip to your planner</a>
   <section class="setup-screen" id="setupScreen" aria-labelledby="setupTitle">
     <div class="brand setup-brand"><span class="brand-mark">↗</span><span>dayfolk</span></div>
     <p id="setupStepLabel" class="eyebrow" aria-live="polite">Step 1 of 3 · Your dates</p>
@@ -263,29 +263,11 @@
 
           <button id="showMoreIdeas" class="button secondary" type="button">Show 6 more ideas</button>
           <p class="small-print">Route times and stay lengths are estimates. Prices, weather and schedules can change; check the linked source before you go. Photos are credited to their contributors and shown with their source dates. <a href="sources.html">Activity sources ↗</a></p>
-          <button class="button" id="editPurpose" type="button">Edit trip setup</button>
-        </section>
-
-        <aside>
-          <section class="plan-panel" id="plan" aria-labelledby="planTitle">
-            <div class="plan-top"><h2 id="planTitle">Your day, so far</h2><span class="plan-day" id="planDayName">MON · OCT 5</span></div>
-            <div class="period-tabs" id="periodTabs" hidden></div>
-            <div class="plan-total"><div><span>Planned choices</span><br><strong id="planTotal">Free</strong></div><small>of €<span id="guideValue">60</span> guide</small></div>
-            <div class="day-progress"><div class="progress-ring" id="dayProgress" role="progressbar" aria-label="Places visited" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressValue">0</span></div><div><strong id="progressLabel">A little room for possibility</strong><p id="progressHint">Add your first idea to shape the day.</p></div></div><div id="dayClosing" class="day-closing" role="status" hidden></div>
-            <div class="plan-items" id="planItems">
-              <div class="dayparts" id="dayparts">
-                <section class="daypart" data-period="morning"><div class="daypart-head">Morning <span>☀</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
-                <section class="daypart" data-period="afternoon"><div class="daypart-head">Afternoon <span>◒</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
-                <section class="daypart" data-period="evening"><div class="daypart-head">Evening <span>☾</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
-                <section class="daypart" data-period="night"><div class="daypart-head">Night <span>✦</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
-              </div>
-            </div>
-            <div class="plan-note"><span class="spark">✳</span><span>Your budget is a quiet guide. Free and paid ideas stay visible; only things you add count toward this total.</span></div>
+          <div class="plan-support">            <div class="plan-note"><span class="spark">✳</span><span>Your budget is a quiet guide. Free and paid ideas stay visible; only things you add count toward this total.</span></div>
             <button id="finishDay" class="button secondary" type="button" hidden>Done for today</button>
             <div class="trip-guide" id="tripGuide" hidden></div>
             <div id="planNearby" class="nearby-panel" aria-live="polite"><h3>Near your plan</h3><div class="nearby-links"></div><p class="nearby-note">Check live opening hours in Maps. Food stops are not added to your budget unless you choose them.</p></div>
             <a class="shop-link" id="planShopLink" href="https://www.google.com/maps/search/supermarkets+near+Ibiza+Town" target="_blank" rel="noreferrer" hidden>Find a quick snack near your plan ↗</a>
-          </section>
           <section class="taste-note" aria-live="polite">
             <h3>Your kind of day</h3>
             <p>Your reasons help shape the next mix during this visit.</p>
@@ -299,6 +281,29 @@
             <h3 id="savedTitle">Saved for later</h3>
             <div class="saved-list" id="savedList"><div class="saved-empty">Ideas you save will wait here.</div></div>
           </section>
+</div>
+          <button class="button" id="editPurpose" type="button">Edit trip setup</button>
+        </section>
+
+        <aside class="planner-anchor" aria-label="Your day plan">
+          <section class="plan-panel" id="plan" aria-labelledby="planTitle" tabindex="-1" data-sheet="collapsed">
+            <button class="plan-handle" id="planHandle" type="button" aria-expanded="false" aria-controls="planContent"><span class="sheet-grabber" aria-hidden="true"></span><span class="plan-bar-copy"><strong>Your day <span id="barDate"></span></strong><span id="barSummary">Room for your first idea</span></span><span class="sheet-chevron" aria-hidden="true">⌃</span></button>
+            <header class="plan-header" id="planHeader">
+            <div class="plan-top"><div><span class="plan-day" id="planDayName">MON · OCT 5</span><h2 id="planTitle">Your day, so far</h2></div><button class="button ghost sheet-expand" id="planExpand" type="button">Full view</button></div>
+            <div class="period-tabs" id="periodTabs" hidden></div>
+            <div class="plan-total"><div><span>Planned choices</span><br><strong id="planTotal">Free</strong></div><small>of €<span id="guideValue">60</span> guide</small></div>
+            <p class="plan-count" id="planActivityCount">Room for your first idea</p></header>
+            <div class="plan-scroll" id="planContent" role="region" aria-label="Activities in your day" tabindex="0"><div class="day-progress"><div class="progress-ring" id="dayProgress" role="progressbar" aria-label="Places visited" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressValue">0</span></div><div><strong id="progressLabel">A little room for possibility</strong><p id="progressHint">Add your first idea to shape the day.</p></div></div><div id="dayClosing" class="day-closing" role="status" hidden></div>
+            <div class="plan-items" id="planItems">
+              <div class="dayparts" id="dayparts">
+                <section class="daypart" data-period="morning"><div class="daypart-head">Morning <span>☀</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
+                <section class="daypart" data-period="afternoon"><div class="daypart-head">Afternoon <span>◒</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
+                <section class="daypart" data-period="evening"><div class="daypart-head">Evening <span>☾</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
+                <section class="daypart" data-period="night"><div class="daypart-head">Night <span>✦</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
+              </div>
+            </div>
+            </div><footer class="plan-footer"><button class="button primary" id="reviewPlan" type="button">Review my day</button><a class="plan-saved-link" href="#saved">Saved for later · <span id="planSavedCount">0</span></a></footer>
+          </section>
         </aside>
       </div>
     </main>
@@ -310,6 +315,7 @@
   </nav>
   <dialog id="quickAddDialog" aria-labelledby="quickAddTitle"><form id="quickAddForm"><div class="dialog-head"><div><p class="eyebrow">A little space for your own ideas</p><h2 id="quickAddTitle">Add to your plan</h2></div><button class="icon-button" type="button" data-close="quickAddDialog" aria-label="Close add to plan">×</button></div><label class="setup-field">What have you got in mind?<input id="quickTitle" required maxlength="160" placeholder="Lunch with Ana Fri 1pm" autocomplete="off"></label><p class="field-hint">Try “Beach tomorrow 10:00” or just a place name. Review the details below.</p><p id="quickParseHint" role="status"></p><div class="form-grid"><label class="setup-field">Date<input id="quickDate" type="date" required></label><label class="setup-field">Part of day<select id="quickSlot"><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option><option value="night">Night</option></select></label><label class="setup-field">Type<select id="quickKind"><option value="walk">Walk</option><option value="nature">Nature</option><option value="beach">Beach</option><option value="food">Food</option><option value="wellness">Wellness</option><option value="water">Water</option><option value="culture">Culture</option><option value="shopping">Shopping</option><option value="nightlife">Nightlife</option></select></label><label class="setup-field">Price, if known (€)<input id="quickCost" type="number" min="0" step="0.01" placeholder="Optional"></label><label class="setup-field">Your time box (minutes)<input id="quickMinutes" type="number" min="5" max="1440" step="5" placeholder="Optional"></label></div><details><summary>Already booked?</summary><label class="check-label"><input id="quickFixed" type="checkbox"> This booking has a fixed time</label><label class="setup-field">Confirmed time<input id="quickTime" type="time"></label></details><p id="quickError" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button class="button ghost" type="button" data-close="quickAddDialog">Cancel</button><button class="button primary" type="submit">Add to plan</button></div></form></dialog>
   <dialog id="settingsDialog" aria-labelledby="settingsTitle"><div class="dialog-head"><h2 id="settingsTitle">Make yourself at home</h2><button type="button" class="icon-button" data-close="settingsDialog" aria-label="Close settings">×</button></div><label class="setup-field">Appearance<select id="themeChoice"><option value="light">Sun-warmed day</option><option value="dark">Summer night</option><option value="system">Follow my device</option></select></label><label class="setup-field">Week starts on<select id="weekStartChoice"><option value="locale">Use my device’s region</option><option value="1">Monday</option><option value="0">Sunday</option></select></label><label class="check-label"><input id="gentleMotion" type="checkbox"> Reduce motion</label><p class="field-hint">Appearance is saved on this device. Your trip choices stay in this session.</p><button id="settingsEditTrip" class="button secondary" type="button">Edit trip details</button><p class="field-hint"><a href="sources.html">Activity sources</a> · <a href="credits.html">Photo credits</a></p><div id="settingsTools" hidden></div><div class="dialog-actions"><button type="button" class="button primary" data-close="settingsDialog">Done</button></div></dialog>
+  <div class="sr-only" id="planAnnouncement" role="status" aria-live="polite" aria-atomic="true"></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="application/json" id="photoCatalog">
 {"schemaVersion": "1.0.0", "photos": {"cala-bassa-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Cala_Bassa_%28Ibiza%29_%28190295961%29.jpg/960px-Cala_Bassa_%28Ibiza%29_%28190295961%29.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cala_Bassa_(Ibiza)_(190295961).jpg", "credit": "Eduardo Pitt from Madrid, Spain", "alt": "Vista de Cala Bassa, Eivissa", "fit": "location", "rights": "CC BY-SA 2.0", "note": ""}, "cala-benirras-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Cala_Benirras_Ibiza_18_May_2011_%281%29.JPG/960px-Cala_Benirras_Ibiza_18_May_2011_%281%29.JPG", "source": "https://commons.wikimedia.org/wiki/File:Cala_Benirras_Ibiza_18_May_2011_(1).JPG", "credit": "I, the copyright holder of this work, hereby publish it under the following license:", "alt": "Cala Benirras, Ibiza, Spain", "fit": "location", "rights": "CC BY 3.0", "note": ""}, "cala-salada-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Cala_Salada%2C_near_Sant_Antoni.jpg/960px-Cala_Salada%2C_near_Sant_Antoni.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cala_Salada,_near_Sant_Antoni.jpg", "credit": "Coniferous (talk) (Uploads)", "alt": "A view of Cala Salada, near Sant Antoni", "fit": "location", "rights": "CC BY 3.0", "note": ""}, "aigues-blanques-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/Platja_de_s%27Aigua_Blanca_Eivissa.jpg/960px-Platja_de_s%27Aigua_Blanca_Eivissa.jpg", "source": "https://commons.wikimedia.org/wiki/File:Platja_de_s%27Aigua_Blanca_Eivissa.jpg", "credit": "Bc59", "alt": "Aigües blanques beach", "fit": "location", "rights": "Public domain", "note": ""}, "cala-nova-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Cala_Nova_Eivissa.jpg/960px-Cala_Nova_Eivissa.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cala_Nova_Eivissa.jpg", "credit": "Dan Foy from Derby, England", "alt": "Cala Nova, al nord des Canar, a Santa Eulària des Riu, Eivissa", "fit": "location", "rights": "CC BY 2.0", "note": ""}, "citywalk": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Ibiza_City_from_Mirador_asv2023-04_img6.jpg/1280px-Ibiza_City_from_Mirador_asv2023-04_img6.jpg", "source": "https://commons.wikimedia.org/wiki/File:Ibiza_City_from_Mirador_asv2023-04_img6.jpg", "credit": "A.Savin, Wikipedia", "alt": "Ibiza Town harbour from the Mirador, photographed in 2023", "fit": "location", "rights": "Free Art License", "note": ""}, "cala-comte": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Cala_Conta_Ibiza_17_May_2011_%281%29.JPG/1280px-Cala_Conta_Ibiza_17_May_2011_%281%29.JPG", "source": "https://commons.wikimedia.org/wiki/File:Cala_Conta_Ibiza_17_May_2011_(1).JPG", "credit": "stavros1 / Wikimedia Commons", "alt": "Cala Comte beach and water, archive photo 2011", "fit": "location", "rights": "CC BY 3.0", "note": ""}, "sa-talaia": {"url": "https://commons.wikimedia.org/wiki/Special:FilePath/Sant_Josep_de_sa_Talaia._Talaiassa._Vistes_%283%29.jpg?width=960", "source": "https://commons.wikimedia.org/wiki/File:Sant_Josep_de_sa_Talaia._Talaiassa._Vistes_(3).jpg", "credit": "Joan Gené / Wikimedia Commons", "alt": "View from the summit of Sa Talaia, archive photo 2024", "fit": "location", "rights": "CC0", "note": ""}, "las-dalias-market-browse": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Mercadillo_Las_Dalias_en_Ibiza.jpg/1280px-Mercadillo_Las_Dalias_en_Ibiza.jpg", "source": "https://commons.wikimedia.org/wiki/File:Mercadillo_Las_Dalias_en_Ibiza.jpg", "credit": "DetFerMai / Wikimedia Commons", "alt": "People browsing the stalls at Las Dalias market, archive photo 2015", "fit": "action", "rights": "CC BY-SA 4.0", "note": ""}, "cala-dhort-beach-stop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/Cala_D%C2%B4Hort_-_panoramio.jpg/960px-Cala_D%C2%B4Hort_-_panoramio.jpg", "source": "https://commons.wikimedia.org/wiki/File:Cala_D%C2%B4Hort_-_panoramio.jpg", "credit": "anibal amaro", "alt": "Cala D´Hort", "fit": "location", "rights": "CC BY 3.0", "note": ""}}, "trailer": [{"id": "las-dalias-market-browse", "title": "Leave room for a good find.", "caption": "Las Dalias · market visitors · archive 2015"}, {"id": "cala-bassa-beach-stop", "title": "Make a little space for the sea.", "caption": "Cala Bassa · location photograph"}, {"id": "citywalk", "title": "Take the long way to the water.", "caption": "Ibiza Town · harbour view · archive 2023"}, {"id": "sa-talaia", "title": "Find a different point of view.", "caption": "Sa Talaia · summit view · archive 2024"}]}
@@ -432,10 +438,11 @@
       let toastTimer;
       function toast(message) {
         const node = document.getElementById("toast");
+        node.inert = false;
         node.textContent = message;
         node.classList.add("show");
         window.clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(function () { node.classList.remove("show"); }, 2500);
+        toastTimer = window.setTimeout(function () { if(!node.contains(document.activeElement)){node.classList.remove("show");node.inert=true;} }, 5000);
       }
       function selectedValue(name) {
         const input = document.querySelector("input[name='" + name + "']:checked");
@@ -547,6 +554,7 @@
         });
         document.getElementById("setupScreen").hidden = true;
         document.getElementById("appShell").hidden = false;
+        document.body.classList.toggle("planner-browsing",currentView==='day');
         document.querySelector(".mobile-nav").hidden = false;
         document.getElementById("mainHeadline").innerHTML = "Your day,<br>at your pace.";
         document.querySelector(".trailer").hidden = !locationHasSourceSet;
@@ -576,7 +584,7 @@
       }
       function todayISO() { return new Intl.DateTimeFormat("en-CA", {timeZone:"Europe/Madrid",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
       document.getElementById("editPurpose").addEventListener("click", function () {
-        document.getElementById("setupScreen").hidden = false; document.getElementById("appShell").hidden = true; document.querySelector(".mobile-nav").hidden = true; showSetupStep(0);
+        setPlanSheet("collapsed",false); document.body.classList.remove("planner-browsing"); document.getElementById("setupScreen").hidden = false; document.getElementById("appShell").hidden = true; document.querySelector(".mobile-nav").hidden = true; showSetupStep(0);
       });
       document.getElementById("startPlanning").addEventListener("click", startPlanning);
       function selectPlanDate(date) {
@@ -593,6 +601,7 @@
       }
       function renderSaved() {
         document.getElementById("savedCount").textContent = saved.size;
+        document.getElementById("planSavedCount").textContent = saved.size;
         const list = document.getElementById("savedList");
         list.innerHTML = "";
         if (!saved.size) { list.innerHTML = "<div class='saved-empty'>Ideas you save will wait here.</div>"; return; }
@@ -713,6 +722,11 @@
         panel.querySelector(".nearby-note").textContent = selectedDate === todayISO() ? "Maps searches use open now. Check each result’s hours before going. Food costs are not counted until selected." : "Check Maps opening hours for your planned date and time. Today’s open status does not confirm future availability.";
       }
       function updateTotal() {
+        const scrollNode=document.getElementById('planContent');const planScrollTop=scrollNode.scrollTop;
+        const activeRow=document.activeElement&&document.activeElement.closest('.plan-item');
+        const activeItem=activeRow&&activeRow.dataset.itemId;
+        const activeControl=activeRow?(document.activeElement.matches('input')?'input':document.activeElement.matches('summary')?'summary':document.activeElement.classList.contains('move-item')?'.move-item':'.remove-item'):null;
+        const openItems=new Set(Array.from(document.querySelectorAll('.plan-item-info[open]')).map(function(node){return node.closest('.plan-item').dataset.itemId;}));
         const total = plan.reduce(function (sum, item) { return sum + (item.cost || 0); }, 0);
         const fromPrices = plan.some(function (item) { return item.priceStatus === "from"; });
         const knownChoices = plan.filter(function (item) { return item.cost !== null; });
@@ -738,7 +752,7 @@
             const complete = document.createElement("input"); complete.type = "checkbox"; complete.checked = Boolean(item.done); complete.setAttribute("aria-label", "Mark " + item.title + " as visited"); complete.addEventListener("change", function () { item.done = complete.checked; recordChoice("plan-complete", {id:item.id,done:item.done}); updateTotal(); });
             const costLabel = item.cost === null ? "" : (item.cost === 0 ? "Free" : (item.priceStatus === "from" ? "from €" : "€") + item.cost);
             const info = (item.fixed ? item.time + " · " + item.duration + (item.confirmed ? " · confirmed booking" : " · timed idea — booking not confirmed") : "Flexible · " + item.area) + (costLabel ? " · " + costLabel : "");
-            row.innerHTML = "<label class='plan-time'>" + (item.fixed ? item.time : "↕") + "</label><div><p class='plan-item-title'></p><p class='plan-item-sub'></p></div><div class='plan-controls'></div>";
+            row.innerHTML = "<label class='plan-time'>" + (item.fixed ? item.time : "↕") + "</label><details class='plan-item-info'><summary class='plan-item-title'></summary><p class='plan-item-sub'></p></details><div class='plan-controls'></div>";
             row.querySelector(".plan-time").replaceChildren(complete);
             row.classList.toggle("completed", Boolean(item.done));
             row.querySelector(".plan-item-title").textContent = item.title;
@@ -784,6 +798,9 @@
         updateNearby();
         updateShopLinks();
         renderPlannerViews();
+        document.querySelectorAll('.plan-item').forEach(function(row){if(openItems.has(row.dataset.itemId))row.querySelector('.plan-item-info').open=true;});
+        if(activeItem){const replacement=Array.from(document.querySelectorAll('.plan-item')).find(function(row){return row.dataset.itemId===activeItem;});const control=replacement&&replacement.querySelector(activeControl);if(control)control.focus({preventScroll:true});else document.getElementById('reviewPlan').focus({preventScroll:true});}
+        scrollNode.scrollTop=planScrollTop;
       }
       document.querySelectorAll(".daypart").forEach(function (section) {
         section.addEventListener("dragover", function (event) {
@@ -823,8 +840,7 @@
           plansByDate.set(selectedDate, plan);
           recordChoice("plan-add", {id:id,cost:item.cost,slot:item.slot,fixed:item.fixed,bookingConfirmed:false});
           updateTotal();
-          document.getElementById("plan").scrollIntoView({ behavior:"smooth", block:"nearest" });
-          toast(fixedTime ? "Added as a timed idea at " + fixedTime + ". Booking still needs confirmation with the provider." : "Added as a flexible idea. Drag it to another part of your day.");
+          planAddedFeedback(item, card, selectedDate);
         });
       });
       function activityFitsGroup(card) {
@@ -975,6 +991,8 @@
       document.getElementById('showMoreIdeas').addEventListener('click',function(){visibleIdeaLimit+=6;renderDiscoveryPage();});
       function setView(view) {
         currentView=view;
+        document.body.classList.toggle('planner-browsing',view==='day'&&!document.getElementById('appShell').hidden);
+        if(view!=='day')setPlanSheet('collapsed',false);
         document.getElementById('dayScreen').hidden=view!=='day';
         document.getElementById('calendarScreen').hidden=view==='day';
         document.querySelector('.trailer').hidden=view!=='day'||!locationHasSourceSet;startReel();
@@ -1008,7 +1026,7 @@
           events.slice(0,currentView==='week'?5:2).forEach(function(item){const event=document.createElement('span');event.className='calendar-event';event.dataset.tint=categoryTints[item.kind]||'mint';event.textContent=(item.done?'✓ ':'')+(item.fixed?item.time+' · ':'')+item.title;cell.appendChild(event);});
           if(!events.length&&currentView==='week'){const empty=document.createElement('span');empty.className='calendar-empty';empty.textContent='A little room to explore';cell.appendChild(empty);}
           if(events.length>(currentView==='week'?5:2)){const extra=document.createElement('span');extra.textContent='+'+(events.length-(currentView==='week'?5:2))+' more';cell.appendChild(extra);}
-          cell.addEventListener('click',function(){ensureDay(iso);calendarCursor=iso;setView('day');document.getElementById('plan').scrollIntoView({behavior:'smooth',block:'start'});});grid.appendChild(cell);
+          cell.addEventListener('click',function(){ensureDay(iso);calendarCursor=iso;setView('day');openPlanReview();});grid.appendChild(cell);
         }
       }
       ['calendarPrev','calendarNext'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){const sign=id==='calendarPrev'?-1:1;if(currentView==='week')calendarCursor=shiftDate(calendarCursor,sign*7);else {const d=new Date(calendarCursor+'T12:00:00Z');d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+sign);calendarCursor=d.toISOString().slice(0,10);}renderCalendar();});});
@@ -1019,7 +1037,7 @@
       document.querySelector('a[href="#saved"]').addEventListener('click',function(){setView('day');});
       function renderPlannerViews(){
         document.querySelectorAll('.plan-item').forEach(function(row){row.dataset.tint=categoryTints[row.dataset.kind]||'mint';});
-        document.querySelectorAll('.daypart-items').forEach(function(list){const rows=Array.from(list.querySelectorAll('.plan-item'));rows.forEach(function(row,index){row.hidden=index>=5;});if(rows.length>5){const more=document.createElement('button');more.type='button';more.className='button ghost';more.textContent='Show '+(rows.length-5)+' more';more.addEventListener('click',function(){rows.forEach(function(row){row.hidden=false;});more.remove();});list.appendChild(more);}});
+        document.querySelectorAll('.daypart-items').forEach(function(list){const rows=Array.from(list.querySelectorAll('.plan-item'));rows.forEach(function(row,index){row.hidden=index>=3&&!expandedPlanParts.has(list.closest(".daypart").dataset.period);});if(rows.length>3&&!expandedPlanParts.has(list.closest(".daypart").dataset.period)){const more=document.createElement('button');more.type='button';more.className='button ghost';more.textContent='Show '+(rows.length-3)+' more';more.addEventListener('click',function(){expandedPlanParts.add(list.closest('.daypart').dataset.period);rows.forEach(function(row){row.hidden=false;});more.remove();});list.appendChild(more);}});
         const done=plan.filter(function(item){return item.done;}).length;
         const progress=document.getElementById('dayProgress');const percentage=plan.length?Math.round(done/plan.length*100):0;
         progress.style.setProperty('--progress',percentage+'%');progress.setAttribute('aria-valuenow',percentage);document.getElementById('progressValue').textContent=done;
@@ -1027,6 +1045,7 @@
         document.getElementById('progressHint').textContent=plan.length?(done===plan.length?'☀ A day worth keeping.':'No rush. Leave a little space between stops.'):'Add your first idea to shape the day.';
         document.getElementById('finishDay').hidden=!plan.length;
         document.getElementById('dayClosing').hidden=true;
+        syncPersistentPlan();
         renderCalendar();
       }
       document.getElementById('finishDay').addEventListener('click',function(){const done=plan.filter(function(item){return item.done;}).length;const closing=document.getElementById('dayClosing');closing.hidden=false;closing.textContent='☀ That’s your day. '+done+' visited'+(plan.length-done?' · '+(plan.length-done)+' ideas can wait for another day.':'. A little adventure, well spent.');recordChoice('day-finish',{visited:done,remaining:plan.length-done});});
@@ -1055,6 +1074,101 @@
         if(!plansByDate.has(date))plansByDate.set(date,[]);plansByDate.get(date).push(item);ensureDay(date);setView('day');updateTotal();recordChoice('personal-plan-add',{id:id,kind:kind,date:date,cost:item.cost,timeBox:item.timeBox,confirmed:fixed});closeDialog('quickAddDialog');toast('Added. There’s still room to change your mind.');
       });
       applyAppearance();
+
+      // Persistent plan: one set of controls and one source of trip state.
+      const expandedPlanParts = new Set();
+      const planPanel = document.getElementById('plan');
+      const planScroller = document.getElementById('planContent');
+      const planHandle = document.getElementById('planHandle');
+      const sheetMedia = window.matchMedia('(max-width: 1023px)');
+      let sheetState = 'collapsed', sheetReturnFocus = null, inertPlanBackground = [];
+      function quietMotion() { return document.documentElement.dataset.reduceMotion==='true'||window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+      function releasePlanBackground() {
+        inertPlanBackground.forEach(function(entry){entry.node.inert=entry.wasInert;});inertPlanBackground=[];
+        document.body.classList.remove('plan-modal-open');
+        planPanel.removeAttribute('role');planPanel.removeAttribute('aria-modal');
+      }
+      function setPlanSheet(next, restoreFocus) {
+        const wasFull=sheetState==='full';releasePlanBackground();
+        sheetState=sheetMedia.matches?next:'collapsed';planPanel.dataset.sheet=sheetState;
+        const opened=sheetState!=='collapsed';
+        planHandle.setAttribute('aria-expanded',String(opened));
+        planHandle.setAttribute('aria-label',opened?'Hide my day':'Show my day');
+        document.getElementById('planExpand').textContent=sheetState==='full'?'Half view':'Full view';
+        // Collapsed content is truly unavailable to keyboard and screen reader users.
+        ['planHeader','planContent'].forEach(function(id){document.getElementById(id).inert=sheetMedia.matches&&!opened;});
+        planPanel.querySelector('.plan-footer').inert=sheetMedia.matches&&!opened;
+        if(sheetState==='full') {
+          if(!wasFull)sheetReturnFocus=document.activeElement;
+          const main=document.querySelector('.main-area');
+          const background=[document.querySelector('#dayScreen > section'),document.querySelector('.side-rail')].concat(Array.from(main.children).filter(function(node){return node.id!=='dayScreen';}));
+          background.filter(Boolean).forEach(function(node){inertPlanBackground.push({node:node,wasInert:node.inert});node.inert=true;});
+          document.body.classList.add('plan-modal-open');planPanel.setAttribute('role','dialog');planPanel.setAttribute('aria-modal','true');
+          planHandle.focus({preventScroll:true});
+        } else if(restoreFocus && wasFull && sheetReturnFocus && sheetReturnFocus.isConnected && !sheetReturnFocus.closest('[inert]')) {
+          sheetReturnFocus.focus({preventScroll:true});
+        } else if(sheetState==='collapsed'&&restoreFocus)planHandle.focus({preventScroll:true});
+      }
+      function openPlanReview() {
+        if(sheetMedia.matches)setPlanSheet('full',false);
+        else {planPanel.scrollIntoView({behavior:quietMotion()?'auto':'smooth',block:'nearest'});planScroller.scrollTop=0;planPanel.focus({preventScroll:true});}
+      }
+      function syncPersistentPlan() {
+        const count=plan.length;
+        const label=count?count+' '+(count===1?'activity':'activities')+' planned':'Room for your first idea';
+        document.getElementById('planActivityCount').textContent=label;
+        document.getElementById('barDate').textContent='· '+document.getElementById('planDayName').textContent;
+        const known=plan.filter(function(item){return item.cost!==null;});
+        const total=known.reduce(function(sum,item){return sum+(item.cost||0);},0);
+        const from=known.some(function(item){return item.priceStatus==='from';});
+        const budget=Number(document.getElementById('budgetGuide').value||0);
+        const cost=known.length?' · '+(from?'From ':'')+(total===0?'Free':'€'+total)+' · €'+budget+' guide':'';
+        document.getElementById('barSummary').textContent=label+cost;
+        document.querySelectorAll('.add-to-plan').forEach(function(button){
+          if(!button.dataset.originalLabel)button.dataset.originalLabel=button.textContent;
+          const card=button.closest('.idea-card');const item=card&&plan.find(function(entry){return entry.id===card.dataset.id;});
+          button.textContent=item?'✓ Added to '+item.slot[0].toUpperCase()+item.slot.slice(1):button.dataset.originalLabel;
+          button.setAttribute('aria-pressed',String(Boolean(item)));
+        });
+      }
+      function planAddedFeedback(item,card,date) {
+        const slot=item.slot[0].toUpperCase()+item.slot.slice(1);
+        document.getElementById('planAnnouncement').textContent=item.title+' added to '+slot+'. '+plan.length+' '+(plan.length===1?'activity':'activities')+' planned.';
+        const section=Array.from(document.querySelectorAll('.daypart')).find(function(node){return node.dataset.period===item.slot;});
+        if(section){section.classList.remove('just-added');requestAnimationFrame(function(){section.classList.add('just-added');});window.setTimeout(function(){section.classList.remove('just-added');},450);}
+        planHandle.classList.remove('plan-bar-added');requestAnimationFrame(function(){planHandle.classList.add('plan-bar-added');});window.setTimeout(function(){planHandle.classList.remove('plan-bar-added');},450);
+        toast('Added to '+slot+'.'+(item.fixed&&!item.confirmed?' Confirm the booking with the provider.':''));
+        const toastNode=document.getElementById('toast');
+        const undo=document.createElement('button');undo.type='button';undo.className='button ghost';undo.textContent='Undo';
+        undo.addEventListener('click',function(){const day=plansByDate.get(date);const at=day?day.findIndex(function(entry){return entry.id===item.id;}):-1;if(at>=0){day.splice(at,1);updateTotal();recordChoice('plan-add-undo',{id:item.id,date:date});toast('Addition undone.');document.getElementById('planAnnouncement').textContent=item.title+' removed from your day.';}});
+        const view=document.createElement('button');view.type='button';view.className='button ghost';view.textContent='View addition';view.addEventListener('click',function(){if(selectedDate!==date)selectPlanDate(date);openPlanReview();expandedPlanParts.add(item.slot);updateTotal();const target=Array.from(document.querySelectorAll('.plan-item')).find(function(row){return row.dataset.itemId===item.id;});if(target){const detail=target.querySelector('details');if(detail)detail.open=true;target.scrollIntoView({behavior:quietMotion()?'auto':'smooth',block:'nearest'});target.querySelector('summary').focus({preventScroll:true});}});
+        toastNode.append(undo,view);
+      }
+      planHandle.addEventListener('click',function(){setPlanSheet(sheetState==='collapsed'?'half':'collapsed',true);});
+      document.getElementById('planExpand').addEventListener('click',function(){setPlanSheet(sheetState==='full'?'half':'full',true);});
+      document.getElementById('reviewPlan').addEventListener('click',openPlanReview);
+      document.querySelector('.skip-link').addEventListener('click',function(event){if(document.getElementById('appShell').hidden)return;event.preventDefault();openPlanReview();});
+      document.querySelectorAll('a[href="#plan"]').forEach(function(link){if(link.classList.contains('skip-link'))return;link.addEventListener('click',function(event){event.preventDefault();setView('day');openPlanReview();});});
+      planPanel.addEventListener('keydown',function(event){
+        if(document.querySelector('dialog[open]'))return;
+        if(event.key==='Escape'&&sheetMedia.matches&&sheetState!=='collapsed'){event.preventDefault();setPlanSheet('collapsed',true);}
+        if(event.key==='Tab'&&sheetMedia.matches&&sheetState==='full'){
+          const focusable=Array.from(planPanel.querySelectorAll('button,a[href],input,summary,[tabindex="0"]')).filter(function(node){return !node.disabled&&!node.closest('[inert]')&&!node.closest('[hidden]')&&node.getClientRects().length;});
+          const first=focusable[0],last=focusable[focusable.length-1];
+          if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+        }
+      });
+      document.querySelector('.plan-saved-link').addEventListener('click',function(){setPlanSheet('collapsed',false);});
+      document.addEventListener('focusin',function(event){if(sheetMedia.matches&&sheetState==='half'&&!planPanel.contains(event.target)&&!event.target.closest('#toast'))setPlanSheet('collapsed',false);});
+      let swipeStart=null;
+      planHandle.addEventListener('pointerdown',function(event){if(event.pointerType==='mouse')return;swipeStart={y:event.clientY,id:event.pointerId};planHandle.setPointerCapture(event.pointerId);});
+      planHandle.addEventListener('pointerup',function(event){if(!swipeStart)return;const delta=swipeStart.y-event.clientY;swipeStart=null;if(Math.abs(delta)<35)return;event.preventDefault();const states=['collapsed','half','full'];const next=states[Math.max(0,Math.min(2,states.indexOf(sheetState)+(delta>0?1:-1)))];setPlanSheet(next,true);suppressHandleClick=true;window.setTimeout(function(){suppressHandleClick=false;},400);});
+      let suppressHandleClick=false;
+      planHandle.addEventListener('click',function(event){if(suppressHandleClick){event.preventDefault();event.stopImmediatePropagation();}},true);
+      planHandle.addEventListener('pointercancel',function(){swipeStart=null;});
+      function refreshSheetBreakpoint(){setPlanSheet('collapsed',false);}
+      if(sheetMedia.addEventListener)sheetMedia.addEventListener('change',refreshSheetBreakpoint);
+      setPlanSheet('collapsed',false);
 
       renderTestStatus();
       updateSetupFields();
