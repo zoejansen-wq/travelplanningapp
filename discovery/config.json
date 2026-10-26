@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "policy": {
+    "scope": "exactly_four_regions",
+    "publication": "review_only",
+    "overpass_endpoint": "https://overpass-api.de/api/interpreter",
+    "commons_endpoint": "https://commons.wikimedia.org/w/api.php",
+    "max_queries_per_region_per_week": 3,
+    "max_records_per_query": 90,
+    "max_image_lookups_per_region": 5,
+    "request_delay_seconds": 1.5,
+    "source_freshness_days": 90,
+    "event_freshness_days": 14
+  },
+  "regions": {
+    "ibiza": {"name":"Ibiza","bbox":[38.8,1.15,39.13,1.64],"timezone":"Europe/Madrid","languages":["es","ca","en"],"jurisdictions":["ES"],"local_terms":["mercadillo","agenda cultural","ruta","calas"],"currencies":["EUR"]},
+    "lisbon": {"name":"Lisbon","bbox":[38.69,-9.24,38.81,-9.08],"timezone":"Europe/Lisbon","languages":["pt","en"],"jurisdictions":["PT"],"local_terms":["agenda cultural","miradouro","feira","gratuito"],"currencies":["EUR"]},
+    "sint_maarten": {"name":"Sint Maarten / Saint-Martin","bbox":[17.98,-63.17,18.14,-62.95],"timezone":"America/Lower_Princes","languages":["en","fr","nl"],"jurisdictions":["SX","MF"],"local_terms":["marché","evenements","markt","hiking"],"currencies":["XCG","USD","EUR"]},
+    "nyc": {"name":"New York City","bbox":[40.48,-74.26,40.92,-73.70],"timezone":"America/New_York","languages":["en","es"],"jurisdictions":["US"],"local_terms":["free events","parks events","community calendar","greenmarket"],"currencies":["USD"]}
+  },
+  "strategies": [
+    {"id":"beach","category":"beach","key":"natural","value":"beach"},
+    {"id":"walk","category":"walk","key":"tourism","value":"viewpoint"},
+    {"id":"nature","category":"nature","key":"leisure","value":"park"},
+    {"id":"culture","category":"culture","key":"tourism","value":"museum"},
+    {"id":"food","category":"food","key":"amenity","value":"marketplace"},
+    {"id":"shopping","category":"shopping","key":"shop","value":"gift"},
+    {"id":"wellness","category":"wellness","key":"leisure","value":"fitness_centre"},
+    {"id":"nightlife","category":"nightlife","key":"amenity","value":"nightclub"},
+    {"id":"water","category":"water","key":"sport","value":"diving"}
+  ],
+  "official_event_feeds": {
+    "nyc_parks": {
+      "enabled":true,
+      "url":"https://data.cityofnewyork.us/resource/w3wp-dpdi.json",
+      "dataset_url":"https://data.cityofnewyork.us/d/w3wp-dpdi",
+      "license_status":"terms_review_required",
+      "max_records":1000
+    },
+    "lisbon_agendalx":{"enabled":false,"reason":"API access and publisher attribution confirmation pending"},
+    "ibiza_events":{"enabled":false,"reason":"No approved machine-readable event feed"},
+    "sint_maarten_events":{"enabled":false,"reason":"No approved machine-readable event feed"}
+  }
+}
+
