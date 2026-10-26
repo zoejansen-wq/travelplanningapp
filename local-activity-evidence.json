@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "0.1.0",
+  "purpose": "Evidence relationships only; no claim of live availability",
+  "items": [
+    {
+      "region": "ibiza",
+      "place_title": "Hippy Market Las Dahlias",
+      "source_url": "https://en.ibiza.travel/listing/las-dalias-ibiza/30951101/",
+      "relationship": "seasonal market",
+      "claim": "October Saturdays 10:00–19:00 and Sundays 11:00–18:00; exceptions not confirmed",
+      "valid_from": "2026-10-01",
+      "valid_to": "2026-10-31",
+      "verified_at": "2026-10-26",
+      "license_status": "link_only_pending_terms_review",
+      "photo_status": "not_assigned",
+      "published": false
+    },
+    {
+      "region": "lisbon",
+      "place_title": "Centro de Arte Moderna Gulbenkian (CAM)",
+      "source_url": "https://www.visitlisboa.com/en/events",
+      "relationship": "dated exhibition",
+      "claim": "CAM exhibition from 20 September 2025 to 20 September 2027; daily access not confirmed",
+      "valid_from": "2025-09-20",
+      "valid_to": "2027-09-20",
+      "verified_at": "2026-10-26",
+      "license_status": "link_only_pending_terms_review",
+      "photo_status": "not_assigned",
+      "published": false
+    },
+    {
+      "region": "sint_maarten",
+      "place_title": "Marigot Market",
+      "source_url": "https://www.visitstmaarten.com/bespoke-sxm/",
+      "relationship": "recurring market",
+      "claim": "Wednesday and Saturday mornings per local tourism editorial; exact hours and exceptions unconfirmed",
+      "valid_from": null,
+      "valid_to": null,
+      "verified_at": "2026-10-26",
+      "license_status": "link_only_pending_terms_review",
+      "photo_status": "not_assigned",
+      "published": false
+    },
+    {
+      "region": "nyc",
+      "place_title": "Fort Tryon Park hillside paths",
+      "source_url": "https://data.cityofnewyork.us/City-Government/NYC-Parks-Public-Events-Upcoming-14-Days/w3wp-dpdi",
+      "relationship": "park events",
+      "claim": "Official event feed supplies park ID, dates, times, categories and location. No specific future event verified.",
+      "valid_from": null,
+      "valid_to": null,
+      "verified_at": "2026-10-26",
+      "license_status": "link_only_pending_terms_review",
+      "photo_status": "not_assigned",
+      "published": false
+    }
+  ]
+}
