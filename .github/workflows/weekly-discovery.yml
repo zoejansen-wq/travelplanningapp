@@ -1,0 +1,82 @@
+name: Weekly activity research
+on:
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -v
+        working-directory: tests
+  collect:
+    needs: test
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        region: [ibiza, lisbon, sint_maarten, nyc]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect candidate POIs, image metadata, and approved event feeds
+        run: |
+          mkdir -p output/${{ matrix.region }}
+          python scripts/discover.py \
+            --region ${{ matrix.region }} \
+            --out output/${{ matrix.region }}/${{ matrix.region }}.json \
+            --learning-out output/${{ matrix.region }}/${{ matrix.region }}-learning.json
+      - name: Preserve results even if the collector partially fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: discovery-${{ matrix.region }}
+          path: output/${{ matrix.region }}/
+          if-no-files-found: warn
+          retention-days: 30
+  propose:
+    needs: [test, collect]
+    if: always() && needs.test.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: discovery-*
+          path: data/research
+          merge-multiple: true
+      - name: Ensure at least one region produced data
+        run: |
+          test -n "$(find data/research -name '*-learning.json' -print -quit)"
+      - name: Make candidate review PR (never update production catalog)
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/weekly-activity-research
+          title: "Research: weekly activity and source-discovery refresh"
+          commit-message: "chore(research): refresh four-region activity candidates"
+          body: |
+            Automated collection for Ibiza, Lisbon, Sint Maarten/Saint-Martin, and NYC only.
+
+            These files are NOT production-ready content. Review source terms,
+            local schedule validity, event dates, cross-source matches,
+            duplicate candidates, and original Wikimedia Commons photo licenses.
+            The public activity catalog and site UI are NOT modified by this workflow.
+
+            **Check logs and artifacts for failed regions before merging.**
+          add-paths: |
+            data/research/*.json
+          delete-branch: false
+          draft: true
