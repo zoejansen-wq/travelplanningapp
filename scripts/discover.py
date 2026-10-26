@@ -143,6 +143,14 @@ def fetch_nyc_events(cfg,now):
           "source_freshness":None,"observed_at":now,"availability_on_travel_date":"date_unverified",
           "photo_approved":False,"publishable":False})
     return output
+def suggested_search_queries(region,strategies,learned):
+    """Generate official-source search proposals; never scrape unrestricted sites."""
+    terms = {"beach":"public beaches","walk":"walking routes","nature":"nature trails","culture":"cultural events","food":"local markets","shopping":"craft markets","wellness":"community wellness","nightlife":"local music events","water":"water activities"}
+    prefixes = [region["name"]] + region.get("local_terms",[])
+    scores = learned.get("strategy_stats",{})
+    ranked = sorted(strategies,key=lambda x:-scores.get(x["id"],{}).get("score",0))
+    return [{"query":prefix+" "+terms[x["category"]]+" official schedule","category":x["category"],"strategy":x["id"],"status":"query_proposal_not_executed","access":"official_or_open_data_only"} for x in ranked for prefix in prefixes[:3]][:18]
+
 def run_region(region_key,config,previous=None,learning=None,offline=False,fetch=request_json,lookup=commons_candidates):
     region=config["regions"][region_key];policy=config["policy"];now=iso_now()
     previous=previous if isinstance(previous,dict) else {}
@@ -169,6 +177,7 @@ def run_region(region_key,config,previous=None,learning=None,offline=False,fetch
             update_learning(learning,strategy["id"],compute_quality([]),False)
         time.sleep(0 if offline else policy["request_delay_seconds"])
     learning["iteration"]=iteration+1
+    query_proposals=suggested_search_queries(region,config["strategies"],learning)
     places=list(existing.values())
     places.sort(key=lambda x:x["source_id"])
     for item in places[:policy["max_image_lookups_per_region"]]:
@@ -189,6 +198,7 @@ def run_region(region_key,config,previous=None,learning=None,offline=False,fetch
             "source":"OpenStreetMap via Overpass + region-allowed official feeds",
             "state":"partial" if failures else "complete","places":places,"events":events,
             "coverage_by_category":dict(counts),"collection_attempts":executed,
+            "query_proposals":query_proposals,
             "errors":failures,"quality":compute_quality(places),
             "publication_status":"review_only"}
     return result,learning
