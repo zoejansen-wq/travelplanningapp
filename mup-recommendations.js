@@ -68,5 +68,5 @@
     return [...feedback].map(([id,value])=>({id,kind:value.kind,reason:value.reason,
       category:lookup.get(id)?.kind})).filter(x=>x.category);
   }
-  root.DayfolkMUP=Object.freeze({VERSION,CATEGORIES,hash,random,features,model,rank,activityVotes});
+  root.DayfolkMUP=Object.freeze({VERSION,CATEGORIES,hash,random,features,model,score,rank,activityVotes});
 })(typeof window!=='undefined'?window:globalThis);
