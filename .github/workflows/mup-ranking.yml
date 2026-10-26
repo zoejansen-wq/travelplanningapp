@@ -1,0 +1,22 @@
+name: MUP ranking tests
+on:
+  push:
+    paths:
+      - 'mup-recommendations.js'
+      - 'index.html'
+      - 'tests/test-mup-ranking.cjs'
+      - '.github/workflows/mup-ranking.yml'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/test-mup-ranking.cjs
+      - run: node scripts/check-catalog.mjs
