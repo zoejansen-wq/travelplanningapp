@@ -700,9 +700,7 @@
                 card.querySelector(".dislike-btn").classList.remove("selected");
               }
               card.querySelector(".like-btn").classList.add("selected");
-              visibleIdeas.forEach(function (other) {
-                if (other !== card && other.dataset.kind === card.dataset.kind && other.parentElement === document.getElementById("ideasList")) other.style.order = "-1";
-              });
+              // New diversified ranking replaces the old permanent CSS priority.
               document.getElementById("ideasDescription").textContent = "Your choices are shaping the next mix · more " + (categoryName[card.dataset.kind] || "ideas") + " like this will come first.";
               toast("Noted: I’ll look for more " + (categoryName[card.dataset.kind] || "ideas") + " with that feel.");
               applyFilters();
