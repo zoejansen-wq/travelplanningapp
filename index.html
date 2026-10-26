@@ -1013,7 +1013,7 @@
         const count=Math.min(visibleIdeaLimit,eligible.length);
         const more=document.getElementById('showMoreIdeas'); more.hidden=count>=eligible.length;
         more.textContent='Show '+Math.min(6,eligible.length-count)+' more ideas';
-        document.getElementById('resultsNote').textContent=eligible.length ? 'Showing '+count+' of '+eligible.length+' ideas · '+cards.filter(function(card){return card.dataset.regionId===selectedRegionId;}).length+' in '+destination+' collection' : 'No matching ideas. Try another interest.';
+        document.getElementById('resultsNote').textContent=eligible.length ? 'Showing '+count+' of '+eligible.length+' photo-credited ideas · more places in research review' : 'No photo-credited ideas for this date and category yet. Try another interest or date.';
         document.querySelectorAll('[data-filter]').forEach(function(button){button.setAttribute('aria-pressed',button.dataset.filter===activeFilter?'true':'false');button.classList.toggle('active',button.dataset.filter===activeFilter);});
         moreInterests.querySelector('summary').textContent=['water','nightlife','shopping','wellness','culture'].includes(activeFilter)?categoryLabels[activeFilter]:'More interests';
       }
