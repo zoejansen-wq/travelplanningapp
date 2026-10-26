@@ -184,7 +184,9 @@ def run_region(region_key,config,previous=None,learning=None,offline=False,fetch
             fresh=normalize_osm(source.get("elements",[]),region,strategy,now)
             for item in fresh:
                 old=existing.get(item["source_id"])
-                if old and old.get("photo_candidates"):item["photo_candidates"]=old["photo_candidates"]
+                if old:
+                    if "photo_candidates" in old:item["photo_candidates"]=old["photo_candidates"]
+                    if old.get("photo_lookup_at"):item["photo_lookup_at"]=old["photo_lookup_at"]
                 existing[item["source_id"]]=item
             quality=compute_quality(fresh)
             update_learning(learning,strategy["id"],quality,True)
