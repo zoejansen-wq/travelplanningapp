@@ -4377,8 +4377,18 @@
           "duration": "Choose your own pace · duration not sourced",
           "checkedAt": "2026-10-16T11:22:15.898708+00:00",
           "availability": "Check source · active",
-          "photoStatus": "none",
-          "photo": null,
+          "photoStatus": "place_photo",
+          "photo": {
+            "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Lisboa%20-%20Miradouro%20de%20Santa%20Catarina%20(53897765512).jpg",
+            "credit": "Jorge Franganillo",
+            "license": "CC BY 2.0",
+            "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+            "date": "2024-06-24",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lisboa_-_Miradouro_de_Santa_Catarina_(53897765512).jpg",
+            "rightsCheckedAt": "2026-10-26",
+            "matchType": "exact-location",
+            "contentChange": "none"
+          },
           "minAge": null,
           "maxAge": null,
           "fixedTime": null,
@@ -5176,8 +5186,18 @@
           "duration": "Choose your own pace · duration not sourced",
           "checkedAt": "2026-10-16T11:22:15.898708+00:00",
           "availability": "Check source · active",
-          "photoStatus": "none",
-          "photo": null,
+          "photoStatus": "place_photo",
+          "photo": {
+            "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Main%20fa%C3%A7ade%20of%20Pal%C3%A1cio%20Nacional%20da%20Ajuda%20048.jpg",
+            "credit": "Kent Wang",
+            "license": "CC BY 4.0",
+            "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+            "date": "2026-02-06",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Main_fa%C3%A7ade_of_Pal%C3%A1cio_Nacional_da_Ajuda_048.jpg",
+            "rightsCheckedAt": "2026-10-26",
+            "matchType": "exact-location",
+            "contentChange": "none"
+          },
           "minAge": null,
           "maxAge": null,
           "fixedTime": null,
@@ -8183,7 +8203,7 @@
           "duration": "Self-guided · choose your stay",
           "checkedAt": "2026-10-20",
           "availability": "Outdoor public space · check park advisories and facility hours for your date",
-          "photoStatus": "illustration",
+          "photoStatus": "place_photo",
           "minAge": null,
           "maxAge": null,
           "fixedTime": null,
@@ -8201,7 +8221,18 @@
           "timezone": "America/New_York",
           "side": null,
           "isTestFixture": false,
-          "dayPartBasis": "editorial suggestion, not official opening-hours verification"
+          "dayPartBasis": "editorial suggestion, not official opening-hours verification",
+          "photo": {
+            "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Clove%20Lakes%20Park.jpg",
+            "credit": "Gimjom",
+            "license": "CC BY-SA 4.0",
+            "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+            "date": "2016-01-18",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Clove_Lakes_Park.jpg",
+            "rightsCheckedAt": "2026-10-26",
+            "matchType": "exact-location",
+            "contentChange": "none"
+          }
         },
         {
           "id": "nyc-starter-05",
@@ -8218,7 +8249,7 @@
           "duration": "Self-guided · choose your stay",
           "checkedAt": "2026-10-20",
           "availability": "Outdoor public space · check park advisories and facility hours for your date",
-          "photoStatus": "illustration",
+          "photoStatus": "place_photo",
           "minAge": null,
           "maxAge": null,
           "fixedTime": null,
@@ -8236,7 +8267,18 @@
           "timezone": "America/New_York",
           "side": null,
           "isTestFixture": false,
-          "dayPartBasis": "editorial suggestion, not official opening-hours verification"
+          "dayPartBasis": "editorial suggestion, not official opening-hours verification",
+          "photo": {
+            "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Van%20Cortlandt%20Park%2C%20Bronx%2C%20NY%20(32616620620).jpg",
+            "credit": "Kristine Paulus",
+            "license": "CC BY 2.0",
+            "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+            "date": "2017-02 (source image date to verify)",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Van_Cortlandt_Park%2C_Bronx%2C_NY_(32616620620).jpg",
+            "rightsCheckedAt": "2026-10-26",
+            "matchType": "exact-location",
+            "contentChange": "none"
+          }
         },
         {
           "id": "nyc-starter-06",
