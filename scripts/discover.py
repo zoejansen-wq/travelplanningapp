@@ -151,6 +151,23 @@ def suggested_search_queries(region,strategies,learned):
     ranked = sorted(strategies,key=lambda x:-scores.get(x["id"],{}).get("score",0))
     return [{"query":prefix+" "+terms[x["category"]]+" official schedule","category":x["category"],"strategy":x["id"],"status":"query_proposal_not_executed","access":"official_or_open_data_only"} for x in ranked for prefix in prefixes[:3]][:18]
 
+def normalize_place(value):
+    return re.sub(r"[^a-z0-9]+"," ",str(value or "").casefold()).strip()
+def event_place_candidates(events,places):
+    """Strong name matches only; suggestion is never proof of availability."""
+    by_name={}
+    for place in places:
+        by_name.setdefault(normalize_place(place["name"]),[]).append(place["source_id"])
+    result=[]
+    for event in events:
+        venue=event.get("venue")
+        ids=by_name.get(normalize_place(venue),[])
+        if not venue or len(ids)!=1:continue
+        result.append({"event_name":event["name"],"place_id":ids[0],
+                       "match_method":"exact_normalized_name","confidence":"candidate",
+                       "publishable":False,"event_start":event.get("start_local")})
+    return result
+
 def run_region(region_key,config,previous=None,learning=None,offline=False,fetch=request_json,lookup=commons_candidates):
     region=config["regions"][region_key];policy=config["policy"];now=iso_now()
     previous=previous if isinstance(previous,dict) else {}
@@ -180,14 +197,22 @@ def run_region(region_key,config,previous=None,learning=None,offline=False,fetch
     query_proposals=suggested_search_queries(region,config["strategies"],learning)
     places=list(existing.values())
     places.sort(key=lambda x:x["source_id"])
-    for item in places[:policy["max_image_lookups_per_region"]]:
-        if item.get("photo_candidates"):continue
+    # Spread discovery across the entire pool; revisit unsuccessful lookups only after 30 days.
+    photo_queue=sorted(places,key=lambda x:(x.get("photo_lookup_at") or "",x["source_id"]))
+    searched=0
+    for item in photo_queue:
+        if searched>=policy["max_image_lookups_per_region"] or offline:break
+        last=parse_date(item.get("photo_lookup_at"))
+        if last and last>dt.datetime.now(UTC)-dt.timedelta(days=30):continue
         try:
-            if offline:break
             item["photo_candidates"]=lookup(item["name"],region)
+            item["photo_lookup_at"]=now
+            searched+=1
         except Exception as exc:
+            item["photo_lookup_at"]=now
+            searched+=1
             failures.append({"photo_for":item["source_id"],"reason":str(exc)[:300]})
-        time.sleep(0 if offline else policy["request_delay_seconds"])
+        time.sleep(policy["request_delay_seconds"])
     events=list(previous.get("events",[]))
     if region_key=="nyc" and not offline:
         try:events=fetch_nyc_events(config,now)
@@ -197,6 +222,7 @@ def run_region(region_key,config,previous=None,learning=None,offline=False,fetch
     result={"schemaVersion":"0.1","region":region_key,"collected_at":now,
             "source":"OpenStreetMap via Overpass + region-allowed official feeds",
             "state":"partial" if failures else "complete","places":places,"events":events,
+            "event_place_candidates":event_place_candidates(events,places),
             "coverage_by_category":dict(counts),"collection_attempts":executed,
             "query_proposals":query_proposals,
             "errors":failures,"quality":compute_quality(places),
