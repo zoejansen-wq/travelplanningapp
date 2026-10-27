@@ -965,6 +965,8 @@
         card.querySelector('.save-btn').setAttribute('title','Save for later');
         const feedbackActions=card.querySelector('.feedback-actions');
         if(feedbackActions && !feedbackActions.closest('details')){
+          const saveControl=card.querySelector('.save-btn');
+          feedbackActions.parentNode.insertBefore(saveControl,feedbackActions);
           const quiet=document.createElement('details');quiet.className='quiet-feedback';
           const trigger=document.createElement('summary');trigger.textContent='Your preference';trigger.setAttribute('aria-label','More like this or not for me');
           feedbackActions.parentNode.insertBefore(quiet,feedbackActions);
