@@ -1,0 +1,25 @@
+name: Purposeful UI regression
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'destination-glass.css'
+      - 'destination-stage.js'
+      - 'credits.html'
+      - 'tests/test-purposeful-ui.cjs'
+      - '.github/workflows/purposeful-ui.yml'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/test-purposeful-ui.cjs
+      - run: node tests/test-mup-ranking.cjs
+      - run: node scripts/check-catalog.mjs
