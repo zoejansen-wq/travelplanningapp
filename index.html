@@ -130,9 +130,10 @@
       </section>
 
       
-      <section id="calendarScreen" hidden aria-label="Calendar"><div class="calendar-heading"><h2 id="calendarTitle"></h2><button id="calendarToday" class="button secondary" type="button">Today</button></div><p class="calendar-hint">Choose a day to see its plan. All times are local to your trip.</p><div id="calendarGrid" class="calendar-grid"></div></section>
       <div class="layout-grid" id="dayScreen">
         <section aria-labelledby="ideasTitle">
+      <section id="calendarScreen" hidden aria-label="Calendar"><div class="calendar-heading"><h2 id="calendarTitle"></h2><button id="calendarToday" class="button secondary" type="button">Today</button></div><p class="calendar-hint">Choose a day to see its plan. All times are local to your trip.</p><div id="calendarGrid" class="calendar-grid"></div></section>
+          <div class="discovery-content">
           <div class="section-head">
             <div>
               <h2 id="ideasTitle">Explore places worth your time</h2>
@@ -286,6 +287,7 @@
           </section>
 </div>
           <button class="button" id="editPurpose" type="button">Edit trip setup</button>
+          </div><!-- discovery content -->
         </section>
 
         <aside class="planner-anchor" aria-label="Your day plan">
@@ -295,7 +297,7 @@
             <div class="plan-top"><div><span class="plan-day" id="planDayName">MON · OCT 5</span><h2 id="planTitle">Your day, so far</h2></div><button class="button ghost sheet-expand" id="planExpand" type="button">Full view</button></div>
             <div class="planner-view-tools"><div class="view-tabs" role="group" aria-label="Planner view"><button class="active" data-view="day" type="button">Day</button><button data-view="week" type="button">Week</button><button data-view="month" type="button">Month</button></div><div class="planner-date-arrows"><button id="calendarPrev" class="button ghost" aria-label="Previous period" type="button">←</button><button id="calendarNext" class="button ghost" aria-label="Next period" type="button">→</button></div></div><button id="openQuickAdd" class="button secondary" type="button">+ Add your own idea</button><div class="period-tabs" id="periodTabs" hidden></div>
             <div class="plan-total"><div><span>Planned choices</span><br><strong id="planTotal">Free</strong></div><small>of €<span id="guideValue">60</span> guide</small></div>
-            <p class="plan-count" id="planActivityCount">Room for your first idea</p></header>
+            <p class="plan-count" id="planActivityCount">Room for your first idea</p><p class="planner-parts-progress" id="plannerPartProgress" role="status" aria-live="polite">0 of 4 parts planned</p></header>
             <div class="plan-scroll" id="planContent" role="region" aria-label="Activities in your day" tabindex="0">
             <div class="plan-items" id="planItems">
               <div class="dayparts" id="dayparts">
@@ -1061,7 +1063,8 @@
         currentView=view;
         document.body.classList.toggle('planner-browsing',view==='day'&&!document.getElementById('appShell').hidden);
         if(view!=='day')setPlanSheet('collapsed',false);
-        document.getElementById('dayScreen').hidden=view!=='day';
+        document.getElementById('dayScreen').hidden=false;
+        document.querySelector('#dayScreen .discovery-content').hidden=view!=='day';
         document.getElementById('calendarScreen').hidden=view==='day';
         document.querySelector('.trailer').hidden=view!=='day'||!locationHasSourceSet||selectedRegionId!=='ibiza';startReel();
         document.querySelectorAll('[data-view]').forEach(function(button){button.classList.toggle('active',button.dataset.view===view);button.setAttribute('aria-pressed',button.dataset.view===view?'true':'false');});
@@ -1097,7 +1100,7 @@
           cell.addEventListener('click',function(){ensureDay(iso);calendarCursor=iso;setView('day');openPlanReview();});grid.appendChild(cell);
         }
       }
-      ['calendarPrev','calendarNext'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){const sign=id==='calendarPrev'?-1:1;if(currentView==='week')calendarCursor=shiftDate(calendarCursor,sign*7);else {const d=new Date(calendarCursor+'T12:00:00Z');d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+sign);calendarCursor=d.toISOString().slice(0,10);}renderCalendar();});});
+      ['calendarPrev','calendarNext'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){const sign=id==='calendarPrev'?-1:1;if(currentView==='day'){const next=shiftDate(selectedDate,sign);ensureDay(next);selectPlanDate(next);calendarCursor=next;return;}if(currentView==='week')calendarCursor=shiftDate(calendarCursor,sign*7);else {const d=new Date(calendarCursor+'T12:00:00Z');d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+sign);calendarCursor=d.toISOString().slice(0,10);}renderCalendar();});});
       document.getElementById('calendarToday').addEventListener('click',function(){calendarCursor=todayISO();renderCalendar();});
       document.querySelector('[data-nav="day"]').addEventListener('click',function(){ensureDay(todayISO());setView('day');});
       document.querySelector('[data-nav="plan"]').addEventListener('click',function(){setView('day');});
@@ -1178,6 +1181,11 @@
         const count=plan.length;
         const label=count?count+' '+(count===1?'activity':'activities')+' planned':'Room for your first idea';
         document.getElementById('planActivityCount').textContent=label;
+        const usedDayParts=new Set(plan.map(function(item){return item.slot;}).filter(function(slot){return ['morning','afternoon','evening','night'].includes(slot);}));
+        document.getElementById('plannerPartProgress').textContent=usedDayParts.size+' of 4 parts planned';
+        document.getElementById('plan').classList.toggle('has-planned-ideas',count>0);
+        document.getElementById('reviewPlan').classList.toggle('primary',count>0);
+        document.getElementById('reviewPlan').classList.toggle('secondary',count===0);
         document.getElementById('barDate').textContent='· '+document.getElementById('planDayName').textContent;
         const known=plan.filter(function(item){return item.cost!==null;});
         const totals={};known.forEach(function(item){const c=item.currency||'EUR';totals[c]=(totals[c]||0)+(item.cost||0);});
