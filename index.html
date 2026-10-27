@@ -83,12 +83,7 @@
           <a class="rail-link" href="#plan" data-nav="plan"><span class="rail-icon">▤</span><span class="nav-text">My day</span></a>
         <button class="rail-link" type="button" id="settingsButton">⚙ <span>Settings</span></button></nav>
       </div>
-      <div class="rail-bottom">
-        <div class="mini-note">
-          <strong>Made for your kind of day</strong>
-          <p>Free finds, local context and a little room to change your mind.</p>
-        </div>
-      </div>
+      
     </aside>
     <main class="main-area" id="discover">
       <div class="topline">
@@ -588,8 +583,8 @@
         document.getElementById("appShell").hidden = false;
         document.body.classList.toggle("planner-browsing",currentView==='day');
         document.querySelector(".mobile-nav").hidden = false;
-        document.getElementById("mainHeadline").innerHTML = "Your day,<br>at your pace.";
-        document.querySelector(".trailer").hidden = !locationHasSourceSet||selectedRegionId!=='ibiza';
+        document.getElementById("mainHeadline").textContent = destination;
+        document.querySelector(".trailer").hidden = true; // Background establishes place; a second trailer would compete.
         document.getElementById("filteredTours").hidden = !locationHasSourceSet;
         if (!locationHasSourceSet) {
           visibleIdeas.forEach(function (card) { card.style.display = "none"; });
