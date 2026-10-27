@@ -7,6 +7,7 @@
   <title>Dayfolk — room for a good day</title>
   <link rel="stylesheet" href="summer-planner.css">
   <link rel="stylesheet" href="destination-glass.css">
+  <link rel="stylesheet" href="golden-city.css">
   <script defer src="destination-stage.js"></script>
 </head>
 <body>
@@ -86,53 +87,58 @@
       
     </aside>
     <main class="main-area" id="discover">
+      <section class="destination-hero" aria-label="Destination overview">
       <div class="topline">
-        <div class="crumb"><span class="pin">●</span><span id="crumbLocation">Ibiza Town</span><span>·</span><span id="crumbPurpose">Your day, your pace</span></div>
+        <div class="crumb"><span class="pin">●</span><span id="crumbLocation">Ibiza Town</span><span>·</span><span id="crumbPurpose">Your day, your pace</span><button class="hero-change" id="heroChangeDestination" type="button" aria-label="Change destination">Change place</button></div>
         <div class="top-actions">
-          <span class="live-pill"><span id="scanStatus">Source snapshot · dates need checking</span></span>
+          <span class="live-pill"><span id="scanStatus">Source snapshot · check your date</span></span>
           <span class="date-pill" id="headerDate">Monday, October 5</span>
           <!-- Account/profile is intentionally not advertised before accounts exist. -->
         </div>
       </div>
 
       <div class="intro">
-        <div>
+        <div class="hero-story">
           <p class="eyebrow">Room for a good day</p>
           <h1 id="mainHeadline">Your day,<br>at your pace.</h1>
           <p class="intro-copy" id="introCopy">Pick a place that catches your eye. We’ll help you give it a place in your day.</p>
-          <p class="eyebrow" id="catalogPolicyNote">Photo-credited places only · opening times and access must be checked with each source</p>
+          <details class="hero-provenance"><summary aria-label="Explain data quality and photo requirements">How is this data checked?</summary><p id="catalogPolicyNote">Photo-credited places only · opening times and access must be checked with each source.</p><p>Collection timestamps describe research snapshots, not confirmed open-now availability. Check each activity’s original source for your travel date.</p></details>
         </div>
+
+      </div>
+
+      <div class="daily-context" id="daily-context" aria-label="Today's local context">
         <div class="edit-budget">
           <label for="budgetGuide">Today’s spend guide
             <input class="budget-input" id="budgetGuide" type="number" min="0" step="5" value="60" aria-label="Today's budget guide in euros">
           </label>
           <span class="edit-pencil" aria-hidden="true">✎</span>
         </div>
-      </div>
-
-      <div class="daily-context" id="daily-context" aria-label="Today's local context">
-        <span><strong id="contextLocation">Ibiza Town</strong> · demo area</span>
+        <span><strong id="contextLocation">Ibiza Town</strong></span>
         <span class="context-sep">/</span>
         <span id="weatherConditions">Mostly clear</span>
         <span id="weatherRange">21–28°C</span>
         <span id="sunsetTime">Sunset 19:30</span>
-        <span class="area-hint" id="weatherSource">Source snapshot: <a href="https://www.alltrails.com/trail/spain/ibiza/paseo-por-ibiza" target="_blank" rel="noreferrer">AllTrails · Oct 5</a></span>
+        <span class="area-hint" id="weatherSource" hidden></span>
         <span id="stayContext" hidden></span>
       </div>
+
+      </section><!-- destination hero -->
 
       <section class="trailer" aria-label="Ibiza activity photo trailer">
         <div class="trailer-visual"><img class="trailer-image" id="trailerImage" alt="" decoding="async" fetchpriority="high"><img id="trailerIncoming" class="trailer-incoming" alt="" aria-hidden="true" decoding="async"></div>
         <div class="trailer-content"><p class="eyebrow">A feel for the day</p><h2 class="trailer-title" id="trailerTitle"></h2><p class="trailer-caption" id="trailerCaption"></p><div id="trailerCredit" class="trailer-credits"></div><div class="trailer-tools"><span class="reel-count" id="reelCount"></span><button class="reel-button" id="pauseReel" type="button" aria-label="Pause photo trailer">Pause</button><button class="reel-button" id="nextReel" type="button" aria-label="Next photo">Next →</button></div><button id="exploreReel" class="button secondary" type="button">See this idea</button><p class="trailer-disclaimer">A little inspiration, not a live view. Check the source for dates and availability.</p><p id="reelStatus" class="sr-only" role="status"></p></div>
       </section>
 
-      <div class="planner-toolbar"><div class="view-tabs" role="group" aria-label="Planner view"><button class="active" data-view="day" type="button">Day</button><button data-view="week" type="button">Week</button><button data-view="month" type="button">Month</button></div><button id="openQuickAdd" class="button primary" type="button">+ Add to plan</button></div>
-      <section id="calendarScreen" hidden aria-label="Calendar"><div class="calendar-heading"><button id="calendarPrev" class="button ghost" aria-label="Previous period" type="button">←</button><h2 id="calendarTitle"></h2><button id="calendarNext" class="button ghost" aria-label="Next period" type="button">→</button><button id="calendarToday" class="button secondary" type="button">Today</button></div><p class="calendar-hint">Choose a day to see its plan. All times are local to your trip.</p><div id="calendarGrid" class="calendar-grid"></div></section>
+      
       <div class="layout-grid" id="dayScreen">
         <section aria-labelledby="ideasTitle">
+      <section id="calendarScreen" hidden aria-label="Calendar"><div class="calendar-heading"><h2 id="calendarTitle"></h2><button id="calendarToday" class="button secondary" type="button">Today</button></div><p class="calendar-hint">Choose a day to see its plan. All times are local to your trip.</p><div id="calendarGrid" class="calendar-grid"></div></section>
+          <div class="discovery-content">
           <div class="section-head">
             <div>
               <h2 id="ideasTitle">Explore places worth your time</h2>
-              <p id="ideasDescription">Browse photo-credited places, then add ideas to your day.</p>
+              <p id="ideasDescription">Choose one good idea to start your day.</p>
             </div>
 
           </div>
@@ -282,6 +288,7 @@
           </section>
 </div>
           <button class="button" id="editPurpose" type="button">Edit trip setup</button>
+          </div><!-- discovery content -->
         </section>
 
         <aside class="planner-anchor" aria-label="Your day plan">
@@ -289,9 +296,9 @@
             <button class="plan-handle" id="planHandle" type="button" aria-expanded="false" aria-controls="planContent"><span class="sheet-grabber" aria-hidden="true"></span><span class="plan-bar-copy"><strong>Your day <span id="barDate"></span></strong><span id="barSummary">Room for your first idea</span></span><span class="sheet-chevron" aria-hidden="true">⌃</span></button>
             <header class="plan-header" id="planHeader">
             <div class="plan-top"><div><span class="plan-day" id="planDayName">MON · OCT 5</span><h2 id="planTitle">Your day, so far</h2></div><button class="button ghost sheet-expand" id="planExpand" type="button">Full view</button></div>
-            <div class="period-tabs" id="periodTabs" hidden></div>
+            <div class="planner-view-tools"><div class="view-tabs" role="group" aria-label="Planner view"><button class="active" data-view="day" type="button">Day</button><button data-view="week" type="button">Week</button><button data-view="month" type="button">Month</button></div><div class="planner-date-arrows"><button id="calendarPrev" class="button ghost" aria-label="Previous period" type="button">←</button><button id="calendarNext" class="button ghost" aria-label="Next period" type="button">→</button></div></div><button id="openQuickAdd" class="button secondary" type="button">+ Add your own idea</button><div class="period-tabs" id="periodTabs" hidden></div>
             <div class="plan-total"><div><span>Planned choices</span><br><strong id="planTotal">Free</strong></div><small>of €<span id="guideValue">60</span> guide</small></div>
-            <p class="plan-count" id="planActivityCount">Room for your first idea</p></header>
+            <p class="plan-count" id="planActivityCount">Room for your first idea</p><p class="plan-count" id="planPartsProgress" aria-live="polite">0 of 4 day parts planned</p><p class="planner-parts-progress" id="plannerPartProgress" role="status" aria-live="polite">0 of 4 parts planned</p></header>
             <div class="plan-scroll" id="planContent" role="region" aria-label="Activities in your day" tabindex="0">
             <div class="plan-items" id="planItems">
               <div class="dayparts" id="dayparts">
@@ -301,7 +308,7 @@
                 <section class="daypart" data-period="night"><div class="daypart-head">Night <span>✦</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
               </div>
             </div>
-            </div><footer class="plan-footer"><button class="button primary" id="reviewPlan" type="button">Review my day</button><a class="plan-saved-link" href="#saved">Saved for later · <span id="planSavedCount">0</span></a></footer>
+            </div><footer class="plan-footer"><button class="button secondary" id="reviewPlan" type="button">Review my day</button><a class="plan-saved-link" href="#saved">Saved for later · <span id="planSavedCount">0</span></a></footer>
           </section>
         </aside>
       </div>
@@ -403,6 +410,7 @@
         card.querySelector(".idea-title").textContent = activity.title;
         card.querySelector(".idea-sub").textContent = activity.description;
         card.querySelector(".idea-facts").textContent = activity.area + " · " + activity.duration;
+        card.querySelector(".idea-facts").classList.add("activity-meta");
         const sourceRow = card.querySelector(".source-row"); sourceRow.innerHTML = "";
         const source = document.createElement("a"); source.href = activity.sourceUrl; source.target = "_blank"; source.rel = "noreferrer"; source.textContent = activity.sourceLabel;
         const place = document.createElement("a"); place.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(activity.title + " " + activity.area); place.target = "_blank"; place.rel = "noreferrer"; place.textContent = "Place & photos ↗";
@@ -512,7 +520,7 @@
         document.getElementById('weatherSource').replaceChildren();
         const weatherSource=document.getElementById('weatherSource');
         if(context){const link=document.createElement('a');link.href='https://open-meteo.com/';link.textContent='Open-Meteo · forecast checked '+context.checked_at.slice(0,10);link.target='_blank';link.rel='noreferrer';weatherSource.appendChild(link);}else weatherSource.textContent='Forecast not available for this date; check conditions before you go.';
-        document.getElementById('scanStatus').textContent=set?'Weekly collection · '+set.generatedAt+' · recheck access and prices':locationHasSourceSet?'Curated Ibiza snapshot · Oct 5. Recheck your date.':'No collection for this place yet';
+        document.getElementById('scanStatus').textContent=set?'Research updated '+set.generatedAt+' · check your date':locationHasSourceSet?'Curated Ibiza snapshot · Oct 5. Recheck your date.':'No collection for this place yet';
         const boat = document.getElementById("boatCard");
         const available = date === boat.dataset.availableDate && selectedRegionId==='ibiza';
         boat.querySelector(".add-to-plan").disabled = !available;
@@ -613,6 +621,7 @@
       document.getElementById("editPurpose").addEventListener("click", function () {
         setPlanSheet("collapsed",false); document.body.classList.remove("planner-browsing"); document.getElementById("setupScreen").hidden = false; document.getElementById("appShell").hidden = true; document.querySelector(".mobile-nav").hidden = true; showSetupStep(0);
       });
+      document.getElementById('heroChangeDestination').addEventListener('click',function(){document.getElementById('editPurpose').click();});
       document.getElementById("startPlanning").addEventListener("click", startPlanning);
       function selectPlanDate(date) {
         selectedDate = date;
@@ -857,7 +866,8 @@
         card.querySelector(".add-to-plan").addEventListener("click", function () {
           if (!activityCanBeAdded(card)) { toast("Check the source: this idea does not fit the selected day or group ages."); return; }
           const id = card.dataset.id;
-          if (plan.some(function (item) { return item.id === id; })) { toast("Already in this day’s plan."); return; }
+          const existingIndex=plan.findIndex(function(item){return item.id===id;});
+          if(existingIndex>=0){const removed=plan.splice(existingIndex,1)[0];recordChoice('plan-remove',{id:id,method:'card-undo'});updateTotal();applyFilters();toast(removed.title+' removed from your day.');return;}
           const fixedTime = card.dataset.fixedTime || "";
           if (fixedTime && selectedDate !== card.dataset.availableDate) { toast("Check availability for this date before adding a timed idea."); return; }
           const suggestedSlot=(card.dataset.bestParts||'').split(',')[0];
@@ -868,6 +878,7 @@
           recordChoice("plan-add", {id:id,cost:item.cost,slot:item.slot,fixed:item.fixed,bookingConfirmed:false});
           updateTotal();
           planAddedFeedback(item, card, selectedDate);
+          applyFilters();
         });
       });
       function activityFitsGroup(card) {
@@ -894,7 +905,13 @@
           if (matches && !card.classList.contains("hidden-card")) shown++;
           const add = card.querySelector(".add-to-plan");
           add.disabled = !activityCanBeAdded(card);
-          add.textContent = add.disabled ? "Check another day / source" : (card.dataset.fixedTime ? "Add timed idea" : "Add to day");
+          const added=plan.some(function(item){return item.id===card.dataset.id;});
+          add.classList.toggle('primary',!added);
+          add.classList.toggle('secondary',added);
+          const planned=added?plan.find(function(item){return item.id===card.dataset.id;}):null;
+          const part=planned&&planned.slot?planned.slot[0].toUpperCase()+planned.slot.slice(1):'your day';
+          add.textContent = add.disabled ? "Check date / source" : added ? "✓ Added to "+part+" · Undo" : "Add to day";
+          add.setAttribute('aria-label', added?'Remove '+card.querySelector('.idea-title').textContent+' from your day':'Add '+card.querySelector('.idea-title').textContent+' to your day');
         });
         const details = document.getElementById("filteredTours");
         details.hidden = !locationHasSourceSet || !Array.from(details.querySelectorAll(".idea-card")).some(function (card) { return card.style.display !== "none"; });
@@ -948,9 +965,20 @@
       cards.forEach(function(card) {
         card.dataset.tint = categoryTints[card.dataset.kind] || 'mint';
         card.querySelector('.status-tag').textContent=categoryLabels[card.dataset.kind]+(card.dataset.minAge?' · '+card.dataset.minAge+(card.dataset.maxAge?'–'+card.dataset.maxAge:'+'):'');
-        card.querySelector('.like-btn').textContent = '♡ Like';
-        card.querySelector('.dislike-btn').textContent = '× Hide';
-        card.querySelector('.save-btn').textContent = '⌑ Save';
+        card.querySelector('.like-btn').textContent = 'More like this';
+        card.querySelector('.dislike-btn').textContent = 'Not for me';
+        card.querySelector('.save-btn').textContent = '♧';
+        card.querySelector('.save-btn').setAttribute('aria-label', 'Save '+card.querySelector('.idea-title').textContent+' for later');
+        card.querySelector('.save-btn').setAttribute('title','Save for later');
+        const feedbackActions=card.querySelector('.feedback-actions');
+        if(feedbackActions && !feedbackActions.closest('details')){
+          const saveControl=card.querySelector('.save-btn');
+          feedbackActions.parentNode.insertBefore(saveControl,feedbackActions);
+          const quiet=document.createElement('details');quiet.className='quiet-feedback';
+          const trigger=document.createElement('summary');trigger.textContent='Your preference';trigger.setAttribute('aria-label','More like this or not for me');
+          feedbackActions.parentNode.insertBefore(quiet,feedbackActions);
+          quiet.append(trigger,feedbackActions);
+        }
         const details = document.createElement('details'); details.className = 'activity-details';
         const summary = document.createElement('summary'); summary.textContent = 'Details & sources'; details.appendChild(summary);
         const main = card.querySelector('.idea-main');
@@ -1030,7 +1058,7 @@
         const count=Math.min(visibleIdeaLimit,eligible.length);
         const more=document.getElementById('showMoreIdeas'); more.hidden=count>=eligible.length;
         more.textContent='Show '+Math.min(6,eligible.length-count)+' more ideas';
-        document.getElementById('resultsNote').textContent=eligible.length ? 'Showing '+count+' of '+eligible.length+' photo-credited ideas · more places in research review' : 'No photo-credited ideas for this date and category yet. Try another interest or date.';
+        document.getElementById('resultsNote').textContent=eligible.length ? 'Showing '+count+' of '+eligible.length+' ideas' : 'No photo-credited ideas for this date and category yet. Try another interest or date.';
         document.querySelectorAll('[data-filter]').forEach(function(button){button.setAttribute('aria-pressed',button.dataset.filter===activeFilter?'true':'false');button.classList.toggle('active',button.dataset.filter===activeFilter);});
         moreInterests.querySelector('summary').textContent=['water','nightlife','shopping','wellness','culture'].includes(activeFilter)?categoryLabels[activeFilter]:'More interests';
       }
@@ -1040,7 +1068,8 @@
         currentView=view;
         document.body.classList.toggle('planner-browsing',view==='day'&&!document.getElementById('appShell').hidden);
         if(view!=='day')setPlanSheet('collapsed',false);
-        document.getElementById('dayScreen').hidden=view!=='day';
+        document.getElementById('dayScreen').hidden=false;
+        document.querySelector('#dayScreen .discovery-content').hidden=view!=='day';
         document.getElementById('calendarScreen').hidden=view==='day';
         document.querySelector('.trailer').hidden=view!=='day'||!locationHasSourceSet||selectedRegionId!=='ibiza';startReel();
         document.querySelectorAll('[data-view]').forEach(function(button){button.classList.toggle('active',button.dataset.view===view);button.setAttribute('aria-pressed',button.dataset.view===view?'true':'false');});
@@ -1076,7 +1105,7 @@
           cell.addEventListener('click',function(){ensureDay(iso);calendarCursor=iso;setView('day');openPlanReview();});grid.appendChild(cell);
         }
       }
-      ['calendarPrev','calendarNext'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){const sign=id==='calendarPrev'?-1:1;if(currentView==='week')calendarCursor=shiftDate(calendarCursor,sign*7);else {const d=new Date(calendarCursor+'T12:00:00Z');d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+sign);calendarCursor=d.toISOString().slice(0,10);}renderCalendar();});});
+      ['calendarPrev','calendarNext'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){const sign=id==='calendarPrev'?-1:1;if(currentView==='day'){const next=shiftDate(selectedDate,sign);ensureDay(next);selectPlanDate(next);calendarCursor=next;return;}if(currentView==='week')calendarCursor=shiftDate(calendarCursor,sign*7);else {const d=new Date(calendarCursor+'T12:00:00Z');d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+sign);calendarCursor=d.toISOString().slice(0,10);}renderCalendar();});});
       document.getElementById('calendarToday').addEventListener('click',function(){calendarCursor=todayISO();renderCalendar();});
       document.querySelector('[data-nav="day"]').addEventListener('click',function(){ensureDay(todayISO());setView('day');});
       document.querySelector('[data-nav="plan"]').addEventListener('click',function(){setView('day');});
@@ -1155,8 +1184,18 @@
       }
       function syncPersistentPlan() {
         const count=plan.length;
+        const filledParts=new Set(plan.map(function(item){return item.slot;}).filter(function(slot){return ['morning','afternoon','evening','night'].includes(slot);}));
+        document.getElementById('planPartsProgress').textContent=filledParts.size+' of 4 day parts planned';
+        planPanel.classList.toggle('has-planned-ideas',count>0);
+        document.getElementById('reviewPlan').classList.toggle('primary',count>0);
+        document.getElementById('reviewPlan').classList.toggle('secondary',count===0);
         const label=count?count+' '+(count===1?'activity':'activities')+' planned':'Room for your first idea';
         document.getElementById('planActivityCount').textContent=label;
+        const usedDayParts=new Set(plan.map(function(item){return item.slot;}).filter(function(slot){return ['morning','afternoon','evening','night'].includes(slot);}));
+        document.getElementById('plannerPartProgress').textContent=usedDayParts.size+' of 4 parts planned';
+        document.getElementById('plan').classList.toggle('has-planned-ideas',count>0);
+        document.getElementById('reviewPlan').classList.toggle('primary',count>0);
+        document.getElementById('reviewPlan').classList.toggle('secondary',count===0);
         document.getElementById('barDate').textContent='· '+document.getElementById('planDayName').textContent;
         const known=plan.filter(function(item){return item.cost!==null;});
         const totals={};known.forEach(function(item){const c=item.currency||'EUR';totals[c]=(totals[c]||0)+(item.cost||0);});
@@ -1167,7 +1206,7 @@
         document.querySelectorAll('.add-to-plan').forEach(function(button){
           if(!button.dataset.originalLabel)button.dataset.originalLabel=button.textContent;
           const card=button.closest('.idea-card');const item=card&&plan.find(function(entry){return entry.id===card.dataset.id;});
-          button.textContent=item?'✓ Added to '+item.slot[0].toUpperCase()+item.slot.slice(1):button.dataset.originalLabel;
+          button.textContent=item?'✓ Added to '+item.slot[0].toUpperCase()+item.slot.slice(1)+' · Undo':button.dataset.originalLabel;
           button.setAttribute('aria-pressed',String(Boolean(item)));
         });
       }

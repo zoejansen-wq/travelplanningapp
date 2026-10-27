@@ -5,6 +5,8 @@ on:
       - 'index.html'
       - 'destination-glass.css'
       - 'destination-stage.js'
+      - 'golden-city.css'
+      - 'tests/test-destination-time.cjs'
       - 'credits.html'
       - 'tests/test-purposeful-ui.cjs'
       - '.github/workflows/purposeful-ui.yml'
@@ -21,5 +23,6 @@ jobs:
         with:
           node-version: '22'
       - run: node tests/test-purposeful-ui.cjs
+      - run: node tests/test-destination-time.cjs
       - run: node tests/test-mup-ranking.cjs
       - run: node scripts/check-catalog.mjs
