@@ -1,191 +1,106 @@
-/* Destination photography is selected by destination-local clock at page opening.
-   Scenes are attributed Wikimedia Commons originals, not live conditions. */
+/* Dayfolk destination atmosphere.
+   Photographs are licensed archive images, not real-time conditions.
+   A scene is selected once per destination selection using the destination's local clock. */
 (() => {
-  'use strict';
-  const scenes={
-  "ibiza": {
-    "timezone": "Europe/Madrid",
-    "morning": {
-      "filename": "Sunrise Ibiza.JPG",
-      "creator": "Juliahoffmann27",
-      "licence": "CC BY-SA 3.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Sunrise_Ibiza.JPG",
-      "focal": "center 55%"
-    },
-    "midday": {
-      "filename": "Ibiza City Dalt Vila from seaport asv2023-04.jpg",
-      "creator": "A.Savin, Wikipedia",
-      "licence": "Free Art License",
-      "licenceUrl": "https://artlibre.org/licence/lal/en/",
-      "page": "https://commons.wikimedia.org/wiki/File:Ibiza_City_Dalt_Vila_from_seaport_asv2023-04.jpg",
-      "focal": "center 48%"
-    },
-    "night": {
-      "filename": "Ibiza night.JPG",
-      "creator": "Vwpolonia75 (Jens K. Müller)",
-      "licence": "CC BY-SA 3.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Ibiza_night.JPG",
-      "focal": "center 55%"
-    }
-  },
-  "lisbon": {
-    "timezone": "Europe/Lisbon",
-    "morning": {
-      "filename": "Lisbon Sunrise (16910916059).jpg",
-      "creator": "mhx (Marcus Holland-Moritz)",
-      "licence": "CC BY-SA 2.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Lisbon_Sunrise_(16910916059).jpg",
-      "focal": "center 53%"
-    },
-    "midday": {
-      "filename": "The rooftops of Lisbon.jpg",
-      "creator": "Bert K.",
-      "licence": "CC BY 2.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by/2.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:The_rooftops_of_Lisbon.jpg",
-      "focal": "center 52%"
-    },
-    "night": {
-      "filename": "Lisbon at night (24553104372).jpg",
-      "creator": "Boris Dzhingarov",
-      "licence": "CC BY 2.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by/2.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Lisbon_at_night_(24553104372).jpg",
-      "focal": "center 53%"
-    }
-  },
-  "sint_maarten": {
-    "timezone": "America/Lower_Princes",
-    "morning": {
-      "filename": "Sunrise over Simpson Bay, St Maarten, Oct 2014 (15571250198).jpg",
-      "creator": "alljengi",
-      "licence": "CC BY-SA 2.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Sunrise_over_Simpson_Bay%2C_St_Maarten%2C_Oct_2014_(15571250198).jpg",
-      "focal": "center 54%"
-    },
-    "midday": {
-      "filename": "St. Maarten Philipsburg Great Bay Beach.jpg",
-      "creator": "Dr. Thomas Liptak",
-      "licence": "CC BY-SA 4.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:St._Maarten_Philipsburg_Great_Bay_Beach.jpg",
-      "focal": "center 54%"
-    },
-    "night": {
-      "filename": "Saint Martin at night in January 2012 - panoramio.jpg",
-      "creator": "Michael A. Orlando",
-      "licence": "CC BY-SA 3.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Saint_Martin_at_night_in_January_2012_-_panoramio.jpg",
-      "focal": "center 50%"
-    }
-  },
-  "nyc": {
-    "timezone": "America/New_York",
-    "morning": {
-      "filename": "Hudson River Panorama of Manhattan.jpg",
-      "creator": "ChoiChoi4life",
-      "licence": "CC BY-SA 4.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Hudson_River_Panorama_of_Manhattan.jpg",
-      "focal": "center 47%"
-    },
-    "midday": {
-      "filename": "Midtown Manhattan Skyline 2026 095.jpg",
-      "creator": "Kidfly182",
-      "licence": "CC BY 4.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Midtown_Manhattan_Skyline_2026_095.jpg",
-      "focal": "center 55%"
-    },
-    "night": {
-      "filename": "Manhattan Skyline night.jpg",
-      "creator": "Kai Pilger",
-      "licence": "CC BY-SA 4.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:Manhattan_Skyline_night.jpg",
-      "focal": "center 55%"
-    }
+ 'use strict';
+ const L={by2:'https://creativecommons.org/licenses/by/2.0/',by3:'https://creativecommons.org/licenses/by/3.0/',by4:'https://creativecommons.org/licenses/by/4.0/',sa2:'https://creativecommons.org/licenses/by-sa/2.0/',sa3:'https://creativecommons.org/licenses/by-sa/3.0/',sa4:'https://creativecommons.org/licenses/by-sa/4.0/',cc0:'https://creativecommons.org/publicdomain/zero/1.0/'};
+ const img=(filename,creator,license,licenseUrl,focal='center')=>({filename,creator,license,licenseUrl,page:'https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(filename).replaceAll('%20','_'),focal});
+ const scenes={
+  ibiza:{name:'Ibiza',tz:'Europe/Madrid',photos:{
+   morning:img('Sunrise Ibiza.JPG','Juliahoffmann27','CC BY-SA 3.0',L.sa3,'center 49%'),
+   midday:img('Ibiza City Dalt Vila from seaport asv2023-04.jpg','A.Savin, Wikipedia','Free Art License','https://artlibre.org/licence/lal/en/','center 48%'),
+   golden:img('Ibiza-Sunset.jpg','acediscovery','CC BY 4.0',L.by4,'center 48%'),
+   night:img('Ibiza night.JPG','Vwpolonia75','CC BY-SA 3.0',L.sa3,'center 52%')
+  }},
+  lisbon:{name:'Lisbon',tz:'Europe/Lisbon',photos:{
+   morning:img('Early morning in Lisbon (34983167855).jpg','Susanne Nilsson','CC BY-SA 2.0',L.sa2,'center 45%'),
+   midday:img('The rooftops of Lisbon.jpg','Bert K.','CC BY 2.0',L.by2,'center 52%'),
+   golden:img('Lisbon sunset.jpg','Eurico Craveiro','CC BY-SA 4.0',L.sa4,'center 49%'),
+   night:img('Lisbon (Alfama Graça) photographed by night (27542313670).jpg','Pedro Ribeiro Simões','CC BY 2.0',L.by2,'center 52%')
+  }},
+  sint_maarten:{name:'Sint Maarten / Saint-Martin',tz:'America/Lower_Princes',photos:{
+   morning:img('Sunrise over Simpson Bay, St Maarten, Oct 2014 (15571250198).jpg','alljengi','CC BY-SA 2.0',L.sa2,'center 55%'),
+   midday:img('St. Maarten Philipsburg Great Bay Beach.jpg','Dr. Thomas Liptak','CC BY-SA 4.0',L.sa4,'center 54%'),
+   golden:img('Sunset on Maho Beach, St Maarten, Oct 2014 (15732989042).jpg','alljengi','CC BY-SA 2.0',L.sa2,'center 55%'),
+   night:img('On The Night Shift - Flickr - A Guy Named Nyal.jpg','A Guy Named Nyal','CC BY 2.0',L.by2,'center 50%')
+  }},
+  nyc:{name:'New York City',tz:'America/New_York',photos:{
+   morning:img('Sunrise over Manhattan, New York (49270363953).jpg','Pierre Blaché','CC0 1.0',L.cc0,'center 52%'),
+   midday:img('Midtown Manhattan Skyline 2026 095.jpg','Kidfly182','CC BY 4.0',L.by4,'center 55%'),
+   golden:img('New york city sunset.jpg','Jpaul10','CC BY 3.0',L.by3,'center 53%'),
+   night:img('New York City Skyline at night.jpg','Jerry Steinfield','CC BY-SA 4.0',L.sa4,'center 49%')
+  }}
+ };
+ function regionOf(value){
+  const s=String(value||'').toLowerCase();
+  if(/ibiza|eivissa/.test(s))return 'ibiza';
+  if(/lisbon|lisboa/.test(s))return 'lisbon';
+  if(/maarten|saint.martin|st. martin/.test(s))return 'sint_maarten';
+  if(/new york|nyc/.test(s))return 'nyc';
+  return null;
+ }
+ function localHour(date,tz){
+  const hour=new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour:'2-digit',hourCycle:'h23'}).formatToParts(date).find(p=>p.type==='hour');
+  return Number(hour.value);
+ }
+ function timeBand(hour){
+  // Editorial bands, NOT astronomy-derived sunset times. Four distinct photographed moods.
+  if(hour>=5&&hour<10)return 'morning';
+  if(hour>=10&&hour<17)return 'midday';
+  if(hour>=17&&hour<20)return 'golden';
+  return 'night';
+ }
+ function imageURL(file){return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(file)+'?width=1920'}
+ function initialize(){
+  const select=document.getElementById('destinationInput'),app=document.getElementById('appShell'),
+   credit=document.getElementById('destinationImageCredit');
+  if(!select||!app||!credit)return;
+  let request=0,active='';
+  function activate(force=false){
+   if(app.hidden)return;
+   const region=regionOf(select.value);if(!region)return;
+   if(!force&&region===active)return;
+   active=region;
+   const scene=scenes[region], band=timeBand(localHour(new Date(),scene.tz));
+   const photo=scene.photos[band],fallback=scene.photos.midday,ticket=++request;
+   const copy=(item,actualBand)=>{
+    credit.replaceChildren();
+    const original=document.createElement('a');
+    original.href=item.page;original.target='_blank';original.rel='noopener noreferrer';
+    original.textContent=scene.name+' · '+actualBand+' scene · '+item.creator;
+    const rights=document.createElement('a');
+    rights.href=item.licenseUrl;rights.target='_blank';rights.rel='noopener noreferrer';
+    rights.textContent=item.license;
+    credit.append(original,document.createTextNode(' · '),rights);
+    document.body.dataset.photoTime=actualBand;
+   };
+   function apply(item,actualBand){
+    if(ticket!==request)return;
+    document.body.style.setProperty('--destination-photo','url("'+imageURL(item.filename)+'")');
+    document.body.style.setProperty('--destination-focal',item.focal);
+    copy(item,actualBand);
+   }
+   function load(item,actualBand,onFailure){
+    const preview=new Image();preview.decoding='async';
+    preview.onload=()=>apply(item,actualBand);
+    preview.onerror=()=>{if(ticket===request&&onFailure)onFailure();};
+    preview.src=imageURL(item.filename);
+   }
+   document.body.dataset.destination=region;
+   document.body.classList.add('destination-active');
+   document.body.style.removeProperty('--destination-photo');
+   copy(photo,band);
+   load(photo,band,()=>{if(photo.filename!==fallback.filename)load(fallback,'midday',()=>{document.body.style.removeProperty('--destination-photo');copy(photo,band);});});
   }
-};
-  const keyFor = value => {
-    const text=(value||'').toLowerCase();
-    if(/ibiza|eivissa/.test(text))return 'ibiza';
-    if(/lisbon|lisboa/.test(text))return 'lisbon';
-    if(/maarten|saint.martin|st. martin/.test(text))return 'sint_maarten';
-    if(/new york|nyc/.test(text))return 'nyc';
-    return null;
-  };
-  const slotForHour = hour => hour>=5&&hour<11?'morning':hour>=11&&hour<18?'midday':'night';
-  function localHour(timezone,at=new Date()) {
-    const parts = new Intl.DateTimeFormat('en-GB',{timeZone:timezone,hour:'2-digit',hourCycle:'h23'}).formatToParts(at);
-    return Number(parts.find(p=>p.type==='hour').value)%24;
-  }
-  const fileURL = filename => 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(filename)+'?width=1920';
-  // Expose a pure selector so regressions can test all local clock boundaries without network access.
-  const selectScene=(key,at=new Date())=>{
-    const config=scenes[key];
-    if(!config)return null;
-    const hour=localHour(config.timezone,at);
-    const slot=slotForHour(hour);
-    return {key,slot,hour,scene:config[slot],fallback:config.midday};
-  };
-  window.DayfolkDestinationTime=Object.freeze({keyFor,slotForHour,localHour,selectScene});
-  function initialize(){
-    const select=document.getElementById('destinationInput');
-    const app=document.getElementById('appShell');
-    const credit=document.getElementById('destinationImageCredit');
-    if(!select||!app||!credit)return;
-    const openedAt=new Date();
-    let request=0,active='';
-    function activate(){
-      const selected=selectScene(keyFor(select.value),openedAt);
-      if(!selected)return;
-      const identity=selected.key+'|'+selected.slot;
-      if(identity===active)return;
-      active=identity;
-      const ticket=++request;
-      document.body.dataset.destination=selected.key;
-      document.body.dataset.destinationTime=selected.slot;
-      document.body.classList.add('destination-active');
-      document.body.style.setProperty('--destination-focal',selected.scene.focal);
-      const updateCredit=scene=>{
-        credit.replaceChildren();
-        const link=document.createElement('a');
-        link.href=scene.page;link.target='_blank';link.rel='noopener noreferrer';
-        link.textContent='Background · '+selected.slot+': '+scene.creator;
-        const license=document.createElement('a');
-        license.href=scene.licenceUrl;license.target='_blank';license.rel='noopener noreferrer';
-        license.textContent=scene.licence;
-        credit.append(link,document.createTextNode(' · '),license);
-      };
-      const load=(scene,mayFallback)=>{
-        const image=new Image();image.decoding='async';
-        image.onload=()=>{
-          if(ticket!==request)return;
-          document.body.style.setProperty('--destination-photo','url("'+fileURL(scene.filename)+'")');
-          document.body.style.setProperty('--destination-focal',scene.focal);
-          updateCredit(scene);
-        };
-        image.onerror=()=>{
-          if(ticket!==request)return;
-          if(mayFallback&&scene.filename!==selected.fallback.filename)load(selected.fallback,false);
-          else{document.body.style.removeProperty('--destination-photo');credit.replaceChildren();}
-        };
-        image.src=fileURL(scene.filename);
-      };
-      // Keep existing photo while the next scene loads; prevent a flash of the fallback gradient.
-      load(selected.scene,true);
-    }
-    select.addEventListener('change',activate);
-    const observer=new MutationObserver(()=>{if(!app.hidden)activate();});
-    observer.observe(app,{attributes:true,attributeFilter:['hidden']});
-    if(!app.hidden)activate();
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize,{once:true});
-  else initialize();
+  select.addEventListener('change',()=>activate(true));
+  const observer=new MutationObserver(()=>{if(!app.hidden)activate();else active='';});
+  observer.observe(app,{attributes:true,attributeFilter:['hidden']});
+  if(!app.hidden)activate();
+ }
+ // Pure helpers exposed only for isolated regression tests.
+ const exported={scenes,regionOf,localHour,timeBand};
+ if(typeof module!=='undefined'&&module.exports)module.exports=exported;
+ if(typeof document==='undefined')return;
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize,{once:true});
+ else initialize();
 })();
