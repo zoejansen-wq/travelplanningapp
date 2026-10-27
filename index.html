@@ -6,8 +6,11 @@
   <meta name="theme-color" content="#FFF8EE">
   <title>Dayfolk — room for a good day</title>
   <link rel="stylesheet" href="summer-planner.css">
+  <link rel="stylesheet" href="destination-glass.css">
+  <script defer src="destination-stage.js"></script>
 </head>
 <body>
+  <div class="destination-photo-credit" id="destinationImageCredit" aria-label="Destination background photograph attribution"></div>
   <a class="skip-link" href="#plan">Skip to your planner</a>
   <section class="setup-screen" id="setupScreen" aria-labelledby="setupTitle">
     <div class="brand setup-brand"><span class="brand-mark">↗</span><span>dayfolk</span></div>
@@ -91,9 +94,9 @@
       <div class="topline">
         <div class="crumb"><span class="pin">●</span><span id="crumbLocation">Ibiza Town</span><span>·</span><span id="crumbPurpose">Your day, your pace</span></div>
         <div class="top-actions">
-          <span class="live-pill"><i class="live-dot"></i><span id="scanStatus">Source snapshot · dates need checking</span></span>
+          <span class="live-pill"><span id="scanStatus">Source snapshot · dates need checking</span></span>
           <span class="date-pill" id="headerDate">Monday, October 5</span>
-          <span class="avatar" aria-label="Your profile">Z</span>
+          <!-- Account/profile is intentionally not advertised before accounts exist. -->
         </div>
       </div>
 
@@ -133,8 +136,8 @@
         <section aria-labelledby="ideasTitle">
           <div class="section-head">
             <div>
-              <h2 id="ideasTitle">Find your next little adventure</h2>
-              <p id="ideasDescription">Six ideas to start. Keep what you like; explore more when you’re ready.</p>
+              <h2 id="ideasTitle">Explore places worth your time</h2>
+              <p id="ideasDescription">Browse photo-credited places, then add ideas to your day.</p>
             </div>
 
           </div>
@@ -265,7 +268,7 @@
           <button id="showMoreIdeas" class="button secondary" type="button">Show 6 more ideas</button>
           <p class="small-print">Route times and stay lengths are estimates. Prices, weather and schedules can change; check the linked source before you go. Photos are credited to their contributors and shown with their source dates. <a href="sources.html">Activity sources ↗</a></p>
           <div class="plan-support">            <div class="plan-note"><span class="spark">✳</span><span>Your budget is a quiet guide. Free and paid ideas stay visible; only things you add count toward this total.</span></div>
-            <button id="finishDay" class="button secondary" type="button" hidden>Done for today</button>
+
             <div class="trip-guide" id="tripGuide" hidden></div>
             <div id="planNearby" class="nearby-panel" aria-live="polite"><h3>Near your plan</h3><div class="nearby-links"></div><p class="nearby-note">Check live opening hours in Maps. Food stops are not added to your budget unless you choose them.</p></div>
             <a class="shop-link" id="planShopLink" href="https://www.google.com/maps/search/supermarkets+near+Ibiza+Town" target="_blank" rel="noreferrer" hidden>Find a quick snack near your plan ↗</a>
@@ -294,7 +297,7 @@
             <div class="period-tabs" id="periodTabs" hidden></div>
             <div class="plan-total"><div><span>Planned choices</span><br><strong id="planTotal">Free</strong></div><small>of €<span id="guideValue">60</span> guide</small></div>
             <p class="plan-count" id="planActivityCount">Room for your first idea</p></header>
-            <div class="plan-scroll" id="planContent" role="region" aria-label="Activities in your day" tabindex="0"><div class="day-progress"><div class="progress-ring" id="dayProgress" role="progressbar" aria-label="Places visited" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressValue">0</span></div><div><strong id="progressLabel">A little room for possibility</strong><p id="progressHint">Add your first idea to shape the day.</p></div></div><div id="dayClosing" class="day-closing" role="status" hidden></div>
+            <div class="plan-scroll" id="planContent" role="region" aria-label="Activities in your day" tabindex="0">
             <div class="plan-items" id="planItems">
               <div class="dayparts" id="dayparts">
                 <section class="daypart" data-period="morning"><div class="daypart-head">Morning <span>☀</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
@@ -778,12 +781,11 @@
             row.draggable = !item.fixed;
             row.dataset.itemId = item.id;
             row.dataset.kind = item.kind || "walk";
-            const complete = document.createElement("input"); complete.type = "checkbox"; complete.checked = Boolean(item.done); complete.setAttribute("aria-label", "Mark " + item.title + " as visited"); complete.addEventListener("change", function () { item.done = complete.checked; recordChoice("plan-complete", {id:item.id,done:item.done}); updateTotal(); });
+
             const costLabel = item.cost === null ? "" : (item.cost === 0 ? "Free" : (item.priceStatus === "from" ? "from " : "") + moneyLabel(item.cost,item.currency));
             const info = (item.fixed ? item.time + " · " + item.duration + (item.confirmed ? " · confirmed booking" : " · timed idea — booking not confirmed") : "Flexible · " + item.area) + (costLabel ? " · " + costLabel : "");
             row.innerHTML = "<label class='plan-time'>" + (item.fixed ? item.time : "↕") + "</label><details class='plan-item-info'><summary class='plan-item-title'></summary><p class='plan-item-sub'></p></details><div class='plan-controls'></div>";
-            row.querySelector(".plan-time").replaceChildren(complete);
-            row.classList.toggle("completed", Boolean(item.done));
+
             row.querySelector(".plan-item-title").textContent = item.title;
             row.querySelector(".plan-item-sub").textContent = info;
             if (item.timeBox && !item.fixed) {const box=document.createElement('details');box.className='personal-timebox';const summary=document.createElement('summary');summary.textContent='Your time box';const text=document.createElement('p');text.textContent=item.timeBox+' min · your intention, not a booking duration';box.append(summary,text);row.querySelector('.plan-item-sub').after(box);}
@@ -1038,11 +1040,6 @@
         moreInterests.querySelector('summary').textContent=['water','nightlife','shopping','wellness','culture'].includes(activeFilter)?categoryLabels[activeFilter]:'More interests';
       }
       document.getElementById('showMoreIdeas').addEventListener('click',function(){visibleIdeaLimit+=6;renderDiscoveryPage();});
-      const shuffleButton=document.createElement('button');
-      shuffleButton.type='button';shuffleButton.className='button secondary';
-      shuffleButton.textContent='Surprise me';shuffleButton.setAttribute('aria-label','Shuffle the current discoveries');
-      document.getElementById('showMoreIdeas').insertAdjacentElement('afterend',shuffleButton);
-      shuffleButton.addEventListener('click',function(){discoveryShuffle++;visibleIdeaLimit=6;renderDiscoveryPage();});
 
       function setView(view) {
         currentView=view;
@@ -1078,7 +1075,7 @@
           const iso=shiftDate(begin,i), day=new Date(iso+'T12:00:00Z');const cell=document.createElement('button');cell.type='button';cell.className='calendar-cell';cell.classList.toggle('today',iso===todayISO());cell.classList.toggle('outside-month',currentView==='month'&&day.getUTCMonth()!==date.getUTCMonth());cell.setAttribute('aria-label','Open '+dateLabel(iso));
           const number=document.createElement('span');number.className='calendar-number';number.textContent=currentView==='week'?dateLabel(iso,{weekday:'short',day:'numeric'}):day.getUTCDate();cell.appendChild(number);
           const events=plansByDate.get(iso)||[];
-          events.slice(0,currentView==='week'?5:2).forEach(function(item){const event=document.createElement('span');event.className='calendar-event';event.dataset.tint=categoryTints[item.kind]||'mint';event.textContent=(item.done?'✓ ':'')+(item.fixed?item.time+' · ':'')+item.title;cell.appendChild(event);});
+          events.slice(0,currentView==='week'?5:2).forEach(function(item){const event=document.createElement('span');event.className='calendar-event';event.dataset.tint=categoryTints[item.kind]||'mint';event.textContent=(item.fixed?item.time+' · ':'')+item.title;cell.appendChild(event);});
           if(!events.length&&currentView==='week'){const empty=document.createElement('span');empty.className='calendar-empty';empty.textContent='A little room to explore';cell.appendChild(empty);}
           if(events.length>(currentView==='week'?5:2)){const extra=document.createElement('span');extra.textContent='+'+(events.length-(currentView==='week'?5:2))+' more';cell.appendChild(extra);}
           cell.addEventListener('click',function(){ensureDay(iso);calendarCursor=iso;setView('day');openPlanReview();});grid.appendChild(cell);
@@ -1093,17 +1090,10 @@
       function renderPlannerViews(){
         document.querySelectorAll('.plan-item').forEach(function(row){row.dataset.tint=categoryTints[row.dataset.kind]||'mint';});
         document.querySelectorAll('.daypart-items').forEach(function(list){const rows=Array.from(list.querySelectorAll('.plan-item'));rows.forEach(function(row,index){row.hidden=index>=3&&!expandedPlanParts.has(list.closest(".daypart").dataset.period);});if(rows.length>3&&!expandedPlanParts.has(list.closest(".daypart").dataset.period)){const more=document.createElement('button');more.type='button';more.className='button ghost';more.textContent='Show '+(rows.length-3)+' more';more.addEventListener('click',function(){expandedPlanParts.add(list.closest('.daypart').dataset.period);rows.forEach(function(row){row.hidden=false;});more.remove();});list.appendChild(more);}});
-        const done=plan.filter(function(item){return item.done;}).length;
-        const progress=document.getElementById('dayProgress');const percentage=plan.length?Math.round(done/plan.length*100):0;
-        progress.style.setProperty('--progress',percentage+'%');progress.setAttribute('aria-valuenow',percentage);document.getElementById('progressValue').textContent=done;
-        document.getElementById('progressLabel').textContent=plan.length?done+' of '+plan.length+' visited':'A little room for possibility';
-        document.getElementById('progressHint').textContent=plan.length?(done===plan.length?'☀ A day worth keeping.':'No rush. Leave a little space between stops.'):'Add your first idea to shape the day.';
-        document.getElementById('finishDay').hidden=!plan.length;
-        document.getElementById('dayClosing').hidden=true;
         syncPersistentPlan();
         renderCalendar();
       }
-      document.getElementById('finishDay').addEventListener('click',function(){const done=plan.filter(function(item){return item.done;}).length;const closing=document.getElementById('dayClosing');closing.hidden=false;closing.textContent='☀ That’s your day. '+done+' visited'+(plan.length-done?' · '+(plan.length-done)+' ideas can wait for another day.':'. A little adventure, well spent.');recordChoice('day-finish',{visited:done,remaining:plan.length-done});});
+
       function openQuickAdd(){document.getElementById('quickAddForm').reset();document.getElementById('quickDate').value=selectedDate;document.getElementById('quickError').hidden=true;document.getElementById('quickParseHint').textContent='';openDialog('quickAddDialog');document.getElementById('quickTitle').focus();}
       document.getElementById('openQuickAdd').addEventListener('click',openQuickAdd);
       function parseQuickInput(){
