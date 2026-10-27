@@ -562,7 +562,7 @@
         document.getElementById("budgetGuide").value = budget;
         document.getElementById("guideValue").textContent = budget;
         document.getElementById("contextLocation").textContent = destination;
-        document.querySelector("#daily-context span:first-child").lastChild.textContent = selectedValue("placeType") === "current" ? " · demo area" : " · selected area";
+        // Destination name is updated through the stable #contextLocation ID above.
         const stay = document.getElementById("stayInput").value.trim();
         stayArea = stay;
         const stayContext = document.getElementById("stayContext");
@@ -615,7 +615,7 @@
         applyFilters();
         const headline=document.getElementById("mainHeadline");headline.tabIndex=-1;headline.focus();
         paused=reducedMotion();updateReelControl();startReel();
-        recordChoice("setup", {dates:dateList.slice(), dailyBudget:budget, stay:stay, groupAges:selectedValue("partyType") === "group" && minAge ? [Number(minAge),Number(maxAge)] : null});
+        recordChoice("setup", {dates:dateList.slice(), dailyBudget:budget, stay:stay, groupAges:selectedValue("partyType") === "group" && minAge && maxAge ? [Number(minAge),Number(maxAge)] : null});
       }
       function todayISO() { return new Intl.DateTimeFormat("en-CA", {timeZone:"Europe/Madrid",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
       document.getElementById("editPurpose").addEventListener("click", function () {
