@@ -26,6 +26,11 @@
       const key=keyFor(select.value);
       if(!key)return;
       const scene=scenes[key], ticket=++request;
+      // Apply the destination palette immediately, even on slow or offline connections.
+      document.body.dataset.destination=key;
+      document.body.classList.add('destination-active');
+      document.body.style.removeProperty('--destination-photo');
+      document.body.style.setProperty('--destination-focal',scene.focal);
       const img=new Image(); img.decoding='async';
       img.onload=()=>{
         if(ticket!==request)return;
