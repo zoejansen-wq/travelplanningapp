@@ -7,6 +7,7 @@
   <title>Dayfolk — room for a good day</title>
   <link rel="stylesheet" href="summer-planner.css">
   <link rel="stylesheet" href="destination-glass.css">
+  <link rel="stylesheet" href="golden-city.css">
   <script defer src="destination-stage.js"></script>
 </head>
 <body>
@@ -86,21 +87,22 @@
       
     </aside>
     <main class="main-area" id="discover">
+      <section class="destination-hero" aria-label="Destination overview">
       <div class="topline">
-        <div class="crumb"><span class="pin">●</span><span id="crumbLocation">Ibiza Town</span><span>·</span><span id="crumbPurpose">Your day, your pace</span></div>
+        <div class="crumb"><span class="pin">●</span><span id="crumbLocation">Ibiza Town</span><span>·</span><span id="crumbPurpose">Your day, your pace</span><button class="hero-change" id="heroChangeDestination" type="button" aria-label="Change destination">Change place</button></div>
         <div class="top-actions">
-          <span class="live-pill"><span id="scanStatus">Source snapshot · dates need checking</span></span>
+          <span class="live-pill"><span id="scanStatus">Source snapshot · check your date</span></span>
           <span class="date-pill" id="headerDate">Monday, October 5</span>
           <!-- Account/profile is intentionally not advertised before accounts exist. -->
         </div>
       </div>
 
       <div class="intro">
-        <div>
+        <div class="hero-story">
           <p class="eyebrow">Room for a good day</p>
           <h1 id="mainHeadline">Your day,<br>at your pace.</h1>
           <p class="intro-copy" id="introCopy">Pick a place that catches your eye. We’ll help you give it a place in your day.</p>
-          <p class="eyebrow" id="catalogPolicyNote">Photo-credited places only · opening times and access must be checked with each source</p>
+          <details class="hero-provenance"><summary aria-label="Explain data quality and photo requirements">How is this data checked?</summary><p id="catalogPolicyNote">Photo-credited places only · opening times and access must be checked with each source.</p><p>Collection timestamps describe research snapshots, not confirmed open-now availability. Check each activity’s original source for your travel date.</p></details>
         </div>
         <div class="edit-budget">
           <label for="budgetGuide">Today’s spend guide
@@ -120,19 +122,21 @@
         <span id="stayContext" hidden></span>
       </div>
 
+      </section><!-- destination hero -->
+
       <section class="trailer" aria-label="Ibiza activity photo trailer">
         <div class="trailer-visual"><img class="trailer-image" id="trailerImage" alt="" decoding="async" fetchpriority="high"><img id="trailerIncoming" class="trailer-incoming" alt="" aria-hidden="true" decoding="async"></div>
         <div class="trailer-content"><p class="eyebrow">A feel for the day</p><h2 class="trailer-title" id="trailerTitle"></h2><p class="trailer-caption" id="trailerCaption"></p><div id="trailerCredit" class="trailer-credits"></div><div class="trailer-tools"><span class="reel-count" id="reelCount"></span><button class="reel-button" id="pauseReel" type="button" aria-label="Pause photo trailer">Pause</button><button class="reel-button" id="nextReel" type="button" aria-label="Next photo">Next →</button></div><button id="exploreReel" class="button secondary" type="button">See this idea</button><p class="trailer-disclaimer">A little inspiration, not a live view. Check the source for dates and availability.</p><p id="reelStatus" class="sr-only" role="status"></p></div>
       </section>
 
-      <div class="planner-toolbar"><div class="view-tabs" role="group" aria-label="Planner view"><button class="active" data-view="day" type="button">Day</button><button data-view="week" type="button">Week</button><button data-view="month" type="button">Month</button></div><button id="openQuickAdd" class="button primary" type="button">+ Add to plan</button></div>
-      <section id="calendarScreen" hidden aria-label="Calendar"><div class="calendar-heading"><button id="calendarPrev" class="button ghost" aria-label="Previous period" type="button">←</button><h2 id="calendarTitle"></h2><button id="calendarNext" class="button ghost" aria-label="Next period" type="button">→</button><button id="calendarToday" class="button secondary" type="button">Today</button></div><p class="calendar-hint">Choose a day to see its plan. All times are local to your trip.</p><div id="calendarGrid" class="calendar-grid"></div></section>
+      
+      <section id="calendarScreen" hidden aria-label="Calendar"><div class="calendar-heading"><h2 id="calendarTitle"></h2><button id="calendarToday" class="button secondary" type="button">Today</button></div><p class="calendar-hint">Choose a day to see its plan. All times are local to your trip.</p><div id="calendarGrid" class="calendar-grid"></div></section>
       <div class="layout-grid" id="dayScreen">
         <section aria-labelledby="ideasTitle">
           <div class="section-head">
             <div>
               <h2 id="ideasTitle">Explore places worth your time</h2>
-              <p id="ideasDescription">Browse photo-credited places, then add ideas to your day.</p>
+              <p id="ideasDescription">Choose one good idea to start your day.</p>
             </div>
 
           </div>
@@ -289,7 +293,7 @@
             <button class="plan-handle" id="planHandle" type="button" aria-expanded="false" aria-controls="planContent"><span class="sheet-grabber" aria-hidden="true"></span><span class="plan-bar-copy"><strong>Your day <span id="barDate"></span></strong><span id="barSummary">Room for your first idea</span></span><span class="sheet-chevron" aria-hidden="true">⌃</span></button>
             <header class="plan-header" id="planHeader">
             <div class="plan-top"><div><span class="plan-day" id="planDayName">MON · OCT 5</span><h2 id="planTitle">Your day, so far</h2></div><button class="button ghost sheet-expand" id="planExpand" type="button">Full view</button></div>
-            <div class="period-tabs" id="periodTabs" hidden></div>
+            <div class="planner-view-tools"><div class="view-tabs" role="group" aria-label="Planner view"><button class="active" data-view="day" type="button">Day</button><button data-view="week" type="button">Week</button><button data-view="month" type="button">Month</button></div><div class="planner-date-arrows"><button id="calendarPrev" class="button ghost" aria-label="Previous period" type="button">←</button><button id="calendarNext" class="button ghost" aria-label="Next period" type="button">→</button></div></div><button id="openQuickAdd" class="button secondary" type="button">+ Add your own idea</button><div class="period-tabs" id="periodTabs" hidden></div>
             <div class="plan-total"><div><span>Planned choices</span><br><strong id="planTotal">Free</strong></div><small>of €<span id="guideValue">60</span> guide</small></div>
             <p class="plan-count" id="planActivityCount">Room for your first idea</p></header>
             <div class="plan-scroll" id="planContent" role="region" aria-label="Activities in your day" tabindex="0">
@@ -301,7 +305,7 @@
                 <section class="daypart" data-period="night"><div class="daypart-head">Night <span>✦</span></div><div class="daypart-items"><div class="plan-empty">Room for a little adventure</div></div></section>
               </div>
             </div>
-            </div><footer class="plan-footer"><button class="button primary" id="reviewPlan" type="button">Review my day</button><a class="plan-saved-link" href="#saved">Saved for later · <span id="planSavedCount">0</span></a></footer>
+            </div><footer class="plan-footer"><button class="button secondary" id="reviewPlan" type="button">Review my day</button><a class="plan-saved-link" href="#saved">Saved for later · <span id="planSavedCount">0</span></a></footer>
           </section>
         </aside>
       </div>
@@ -403,6 +407,7 @@
         card.querySelector(".idea-title").textContent = activity.title;
         card.querySelector(".idea-sub").textContent = activity.description;
         card.querySelector(".idea-facts").textContent = activity.area + " · " + activity.duration;
+        card.querySelector(".idea-facts").classList.add("activity-meta");
         const sourceRow = card.querySelector(".source-row"); sourceRow.innerHTML = "";
         const source = document.createElement("a"); source.href = activity.sourceUrl; source.target = "_blank"; source.rel = "noreferrer"; source.textContent = activity.sourceLabel;
         const place = document.createElement("a"); place.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(activity.title + " " + activity.area); place.target = "_blank"; place.rel = "noreferrer"; place.textContent = "Place & photos ↗";
@@ -613,6 +618,7 @@
       document.getElementById("editPurpose").addEventListener("click", function () {
         setPlanSheet("collapsed",false); document.body.classList.remove("planner-browsing"); document.getElementById("setupScreen").hidden = false; document.getElementById("appShell").hidden = true; document.querySelector(".mobile-nav").hidden = true; showSetupStep(0);
       });
+      document.getElementById('heroChangeDestination').addEventListener('click',function(){document.getElementById('editPurpose').click();});
       document.getElementById("startPlanning").addEventListener("click", startPlanning);
       function selectPlanDate(date) {
         selectedDate = date;
@@ -894,7 +900,11 @@
           if (matches && !card.classList.contains("hidden-card")) shown++;
           const add = card.querySelector(".add-to-plan");
           add.disabled = !activityCanBeAdded(card);
-          add.textContent = add.disabled ? "Check another day / source" : (card.dataset.fixedTime ? "Add timed idea" : "Add to day");
+          const added=plan.some(function(item){return item.id===card.dataset.id;});
+          add.classList.toggle('primary',!added);
+          add.classList.toggle('secondary',added);
+          add.textContent = add.disabled ? "Check date / source" : added ? "✓ Added to your day" : "Add to day";
+          add.setAttribute('aria-label', added?'Already in your day; manage it in planner':'Add '+card.querySelector('.idea-title').textContent+' to your day');
         });
         const details = document.getElementById("filteredTours");
         details.hidden = !locationHasSourceSet || !Array.from(details.querySelectorAll(".idea-card")).some(function (card) { return card.style.display !== "none"; });
@@ -948,9 +958,18 @@
       cards.forEach(function(card) {
         card.dataset.tint = categoryTints[card.dataset.kind] || 'mint';
         card.querySelector('.status-tag').textContent=categoryLabels[card.dataset.kind]+(card.dataset.minAge?' · '+card.dataset.minAge+(card.dataset.maxAge?'–'+card.dataset.maxAge:'+'):'');
-        card.querySelector('.like-btn').textContent = '♡ Like';
-        card.querySelector('.dislike-btn').textContent = '× Hide';
-        card.querySelector('.save-btn').textContent = '⌑ Save';
+        card.querySelector('.like-btn').textContent = 'More like this';
+        card.querySelector('.dislike-btn').textContent = 'Not for me';
+        card.querySelector('.save-btn').textContent = '♧';
+        card.querySelector('.save-btn').setAttribute('aria-label', 'Save '+card.querySelector('.idea-title').textContent+' for later');
+        card.querySelector('.save-btn').setAttribute('title','Save for later');
+        const feedbackActions=card.querySelector('.feedback-actions');
+        if(feedbackActions && !feedbackActions.closest('details')){
+          const quiet=document.createElement('details');quiet.className='quiet-feedback';
+          const trigger=document.createElement('summary');trigger.textContent='Your preference';trigger.setAttribute('aria-label','More like this or not for me');
+          feedbackActions.parentNode.insertBefore(quiet,feedbackActions);
+          quiet.append(trigger,feedbackActions);
+        }
         const details = document.createElement('details'); details.className = 'activity-details';
         const summary = document.createElement('summary'); summary.textContent = 'Details & sources'; details.appendChild(summary);
         const main = card.querySelector('.idea-main');
