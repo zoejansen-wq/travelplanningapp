@@ -60,11 +60,11 @@
   "sint_maarten": {
     "timezone": "America/Lower_Princes",
     "morning": {
-      "filename": "St. Maarten Philipsburg Great Bay Beach.jpg",
-      "creator": "Dr. Thomas Liptak",
-      "licence": "CC BY-SA 4.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:St._Maarten_Philipsburg_Great_Bay_Beach.jpg",
+      "filename": "Sunrise over Simpson Bay, St Maarten, Oct 2014 (15571250198).jpg",
+      "creator": "alljengi",
+      "licence": "CC BY-SA 2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "page": "https://commons.wikimedia.org/wiki/File:Sunrise_over_Simpson_Bay%2C_St_Maarten%2C_Oct_2014_(15571250198).jpg",
       "focal": "center 54%"
     },
     "midday": {
