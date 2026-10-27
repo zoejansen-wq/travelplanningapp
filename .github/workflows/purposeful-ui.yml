@@ -9,6 +9,7 @@ on:
       - 'tests/test-destination-time.cjs'
       - 'credits.html'
       - 'tests/test-purposeful-ui.cjs'
+      - 'tests/test-build-my-day.cjs'
       - '.github/workflows/purposeful-ui.yml'
   pull_request:
   workflow_dispatch:
@@ -22,6 +23,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: node tests/test-build-my-day.cjs
       - run: node tests/test-purposeful-ui.cjs
       - run: node tests/test-destination-time.cjs
       - run: node tests/test-mup-ranking.cjs
