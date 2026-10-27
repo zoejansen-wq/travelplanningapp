@@ -519,7 +519,7 @@
         document.getElementById('weatherSource').replaceChildren();
         const weatherSource=document.getElementById('weatherSource');
         if(context){const link=document.createElement('a');link.href='https://open-meteo.com/';link.textContent='Open-Meteo · forecast checked '+context.checked_at.slice(0,10);link.target='_blank';link.rel='noreferrer';weatherSource.appendChild(link);}else weatherSource.textContent='Forecast not available for this date; check conditions before you go.';
-        document.getElementById('scanStatus').textContent=set?'Weekly collection · '+set.generatedAt+' · recheck access and prices':locationHasSourceSet?'Curated Ibiza snapshot · Oct 5. Recheck your date.':'No collection for this place yet';
+        document.getElementById('scanStatus').textContent=set?'Research updated '+set.generatedAt+' · check your date':locationHasSourceSet?'Curated Ibiza snapshot · Oct 5. Recheck your date.':'No collection for this place yet';
         const boat = document.getElementById("boatCard");
         const available = date === boat.dataset.availableDate && selectedRegionId==='ibiza';
         boat.querySelector(".add-to-plan").disabled = !available;
@@ -865,7 +865,8 @@
         card.querySelector(".add-to-plan").addEventListener("click", function () {
           if (!activityCanBeAdded(card)) { toast("Check the source: this idea does not fit the selected day or group ages."); return; }
           const id = card.dataset.id;
-          if (plan.some(function (item) { return item.id === id; })) { toast("Already in this day’s plan."); return; }
+          const existingIndex=plan.findIndex(function(item){return item.id===id;});
+          if(existingIndex>=0){const removed=plan.splice(existingIndex,1)[0];recordChoice('plan-remove',{id:id,method:'card-undo'});updateTotal();applyFilters();toast(removed.title+' removed from your day.');return;}
           const fixedTime = card.dataset.fixedTime || "";
           if (fixedTime && selectedDate !== card.dataset.availableDate) { toast("Check availability for this date before adding a timed idea."); return; }
           const suggestedSlot=(card.dataset.bestParts||'').split(',')[0];
@@ -876,6 +877,7 @@
           recordChoice("plan-add", {id:id,cost:item.cost,slot:item.slot,fixed:item.fixed,bookingConfirmed:false});
           updateTotal();
           planAddedFeedback(item, card, selectedDate);
+          applyFilters();
         });
       });
       function activityFitsGroup(card) {
@@ -905,8 +907,10 @@
           const added=plan.some(function(item){return item.id===card.dataset.id;});
           add.classList.toggle('primary',!added);
           add.classList.toggle('secondary',added);
-          add.textContent = add.disabled ? "Check date / source" : added ? "✓ Added to your day" : "Add to day";
-          add.setAttribute('aria-label', added?'Already in your day; manage it in planner':'Add '+card.querySelector('.idea-title').textContent+' to your day');
+          const planned=added?plan.find(function(item){return item.id===card.dataset.id;}):null;
+          const part=planned&&planned.slot?planned.slot[0].toUpperCase()+planned.slot.slice(1):'your day';
+          add.textContent = add.disabled ? "Check date / source" : added ? "✓ Added to "+part+" · Undo" : "Add to day";
+          add.setAttribute('aria-label', added?'Remove '+card.querySelector('.idea-title').textContent+' from your day':'Add '+card.querySelector('.idea-title').textContent+' to your day');
         });
         const details = document.getElementById("filteredTours");
         details.hidden = !locationHasSourceSet || !Array.from(details.querySelectorAll(".idea-card")).some(function (card) { return card.style.display !== "none"; });
@@ -1053,7 +1057,7 @@
         const count=Math.min(visibleIdeaLimit,eligible.length);
         const more=document.getElementById('showMoreIdeas'); more.hidden=count>=eligible.length;
         more.textContent='Show '+Math.min(6,eligible.length-count)+' more ideas';
-        document.getElementById('resultsNote').textContent=eligible.length ? 'Showing '+count+' of '+eligible.length+' photo-credited ideas · more places in research review' : 'No photo-credited ideas for this date and category yet. Try another interest or date.';
+        document.getElementById('resultsNote').textContent=eligible.length ? 'Showing '+count+' of '+eligible.length+' ideas' : 'No photo-credited ideas for this date and category yet. Try another interest or date.';
         document.querySelectorAll('[data-filter]').forEach(function(button){button.setAttribute('aria-pressed',button.dataset.filter===activeFilter?'true':'false');button.classList.toggle('active',button.dataset.filter===activeFilter);});
         moreInterests.querySelector('summary').textContent=['water','nightlife','shopping','wellness','culture'].includes(activeFilter)?categoryLabels[activeFilter]:'More interests';
       }
