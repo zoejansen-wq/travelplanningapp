@@ -9,26 +9,22 @@
   ibiza:{name:'Ibiza',tz:'Europe/Madrid',photos:{
    morning:img('Sunrise Ibiza.JPG','Juliahoffmann27','CC BY-SA 3.0',L.sa3,'center 49%'),
    midday:img('Ibiza City Dalt Vila from seaport asv2023-04.jpg','A.Savin, Wikipedia','Free Art License','https://artlibre.org/licence/lal/en/','center 48%'),
-   golden:img('Ibiza-Sunset.jpg','acediscovery','CC BY 4.0',L.by4,'center 48%'),
    night:img('Ibiza night.JPG','Vwpolonia75','CC BY-SA 3.0',L.sa3,'center 52%')
   }},
   lisbon:{name:'Lisbon',tz:'Europe/Lisbon',photos:{
-   morning:img('Early morning in Lisbon (34983167855).jpg','Susanne Nilsson','CC BY-SA 2.0',L.sa2,'center 45%'),
+   morning:img('Lisbon Sunrise (16910916059).jpg','mhx (Marcus Holland-Moritz)','CC BY-SA 2.0',L.sa2,'center 53%'),
    midday:img('The rooftops of Lisbon.jpg','Bert K.','CC BY 2.0',L.by2,'center 52%'),
-   golden:img('Lisbon sunset.jpg','Eurico Craveiro','CC BY-SA 4.0',L.sa4,'center 49%'),
-   night:img('Lisbon (Alfama Graça) photographed by night (27542313670).jpg','Pedro Ribeiro Simões','CC BY 2.0',L.by2,'center 52%')
+   night:img('Lisbon at night (24553104372).jpg','Boris Dzhingarov','CC BY 2.0',L.by2,'center 52%')
   }},
   sint_maarten:{name:'Sint Maarten / Saint-Martin',tz:'America/Lower_Princes',photos:{
    morning:img('Sunrise over Simpson Bay, St Maarten, Oct 2014 (15571250198).jpg','alljengi','CC BY-SA 2.0',L.sa2,'center 55%'),
    midday:img('St. Maarten Philipsburg Great Bay Beach.jpg','Dr. Thomas Liptak','CC BY-SA 4.0',L.sa4,'center 54%'),
-   golden:img('Sunset on Maho Beach, St Maarten, Oct 2014 (15732989042).jpg','alljengi','CC BY-SA 2.0',L.sa2,'center 55%'),
-   night:img('On The Night Shift - Flickr - A Guy Named Nyal.jpg','A Guy Named Nyal','CC BY 2.0',L.by2,'center 50%')
+   night:img('Saint Martin at night in January 2012 - panoramio.jpg','Michael A. Orlando','CC BY-SA 3.0',L.sa3,'center 50%')
   }},
   nyc:{name:'New York City',tz:'America/New_York',photos:{
-   morning:img('Sunrise over Manhattan, New York (49270363953).jpg','Pierre Blaché','CC0 1.0',L.cc0,'center 52%'),
+   morning:img('Hudson River Panorama of Manhattan.jpg','ChoiChoi4life','CC BY-SA 4.0',L.sa4,'center 47%'),
    midday:img('Midtown Manhattan Skyline 2026 095.jpg','Kidfly182','CC BY 4.0',L.by4,'center 55%'),
-   golden:img('New york city sunset.jpg','Jpaul10','CC BY 3.0',L.by3,'center 53%'),
-   night:img('New York City Skyline at night.jpg','Jerry Steinfield','CC BY-SA 4.0',L.sa4,'center 49%')
+   night:img('Manhattan Skyline night.jpg','Kai Pilger','CC BY-SA 4.0',L.sa4,'center 49%')
   }}
  };
  function regionOf(value){
@@ -44,10 +40,8 @@
   return Number(hour.value);
  }
  function timeBand(hour){
-  // Editorial bands, NOT astronomy-derived sunset times. Four distinct photographed moods.
-  if(hour>=5&&hour<10)return 'morning';
-  if(hour>=10&&hour<17)return 'midday';
-  if(hour>=17&&hour<20)return 'golden';
+  if(hour>=5&&hour<11)return 'morning';
+  if(hour>=11&&hour<18)return 'midday';
   return 'night';
  }
  function imageURL(file){return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(file)+'?width=1920'}
@@ -55,13 +49,14 @@
   const select=document.getElementById('destinationInput'),app=document.getElementById('appShell'),
    credit=document.getElementById('destinationImageCredit');
   if(!select||!app||!credit)return;
+  const openedAt=new Date();
   let request=0,active='';
   function activate(force=false){
    if(app.hidden)return;
    const region=regionOf(select.value);if(!region)return;
    if(!force&&region===active)return;
    active=region;
-   const scene=scenes[region], band=timeBand(localHour(new Date(),scene.tz));
+   const scene=scenes[region], band=timeBand(localHour(openedAt,scene.tz));
    const photo=scene.photos[band],fallback=scene.photos.midday,ticket=++request;
    const copy=(item,actualBand)=>{
     credit.replaceChildren();
