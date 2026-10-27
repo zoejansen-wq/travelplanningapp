@@ -1,0 +1,158 @@
+/* Dayfolk destination-first surface: photography supports, never obscures, choices. */
+:root {
+  --glass-rim:rgba(255,255,255,.68);
+  --glass-light:rgba(255,253,248,.86);
+  --glass-strong:rgba(255,253,248,.94);
+  --glass-shadow:0 24px 65px rgba(18,36,49,.20), inset 0 1px 0 rgba(255,255,255,.8);
+}
+body.destination-active{
+  background:#16344b;
+  --ink:#203142;--muted:#4e5e68;--line:rgba(34,63,74,.14);
+  --surface:rgba(255,255,255,.91);
+  --paper:#f7f6ef;
+}
+body.destination-active::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(100deg,rgba(5,22,38,.54),rgba(11,35,45,.18) 55%,rgba(7,31,42,.38)),var(--destination-photo,linear-gradient(120deg,#173b51,#568490));
+  background-position:center,var(--destination-focal,center);
+  background-size:cover;
+  background-repeat:no-repeat;
+  animation:destination-appear .65s ease-out both;
+}
+body.destination-active::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(4,24,38,.12),rgba(4,24,38,.08) 45%,rgba(5,27,36,.32));
+}
+body.destination-active .app-shell{
+  position:relative;z-index:1;
+  min-height:100dvh;
+  background:transparent!important;
+}
+body.destination-active .main-area{
+  background:transparent!important;
+  position:relative;
+}
+body.destination-active .side-rail{
+  background:rgba(246,249,247,.84)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(140%);backdrop-filter:blur(24px) saturate(140%);
+  border-right:1px solid var(--glass-rim);
+  box-shadow:12px 0 42px rgba(12,32,44,.13);
+}
+body.destination-active .topline,
+body.destination-active .daily-context,
+body.destination-active .view-tabs,
+body.destination-active .type-filters,
+body.destination-active .planner-toolbar,
+body.destination-active .plan-support .plan-note,
+body.destination-active .results-note,
+body.destination-active .calendar-screen,
+body.destination-active .saved-box,
+body.destination-active .taste-note{
+  background:var(--glass-light)!important;
+  border:1px solid var(--glass-rim)!important;
+  border-radius:20px;
+  box-shadow:var(--glass-shadow);
+  -webkit-backdrop-filter:blur(22px) saturate(145%);
+  backdrop-filter:blur(22px) saturate(145%);
+}
+body.destination-active .topline {padding:12px 18px;margin-bottom:22px}
+body.destination-active .daily-context{padding:13px 18px;margin-bottom:20px}
+body.destination-active .intro{
+  position:relative;
+  max-width:810px;
+  padding:clamp(18px,3vw,34px);
+  margin:0 0 24px;
+  border-radius:28px;
+  background:linear-gradient(105deg,rgba(8,35,51,.78),rgba(9,39,51,.46));
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 20px 70px rgba(4,23,36,.20);
+  -webkit-backdrop-filter:blur(13px);
+  backdrop-filter:blur(13px);
+  color:#fff;
+}
+body.destination-active .intro .eyebrow,
+body.destination-active .intro .intro-copy,
+body.destination-active .intro h1{color:#fff!important}
+body.destination-active .intro-copy{max-width:530px}
+body.destination-active .intro .eyebrow{opacity:.90}
+body.destination-active .section-head{
+  padding:12px 18px; margin-bottom:14px;border-radius:18px;
+  color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.43);
+}
+body.destination-active .section-head p{color:rgba(255,255,255,.90)!important}
+body.destination-active .idea-card{
+  background:var(--glass-strong)!important;
+  border:1px solid rgba(255,255,255,.7)!important;
+  box-shadow:var(--glass-shadow);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  backdrop-filter:blur(20px) saturate(140%);
+}
+body.destination-active .idea-photo img{object-fit:cover}
+body.destination-active .plan-panel{
+  background:var(--glass-strong)!important;
+  border:1px solid var(--glass-rim)!important;
+  box-shadow:0 22px 75px rgba(3,20,31,.25);
+  -webkit-backdrop-filter:blur(28px) saturate(145%);
+  backdrop-filter:blur(28px) saturate(145%);
+}
+body.destination-active .filter-chip,
+body.destination-active .button:not(.primary),
+body.destination-active .view-tabs button,
+body.destination-active .period-tabs button{
+  background:rgba(255,255,255,.79);
+  border-color:rgba(31,65,80,.18);
+}
+body.destination-active .filter-chip.active,
+body.destination-active .view-tabs button.active{background:#f2f6ef;border-color:#2f7772}
+body.destination-active .date-pill,body.destination-active .live-pill{
+  background:rgba(255,255,255,.8);color:#24404c;
+}
+.destination-photo-credit{
+  display:none;
+  position:fixed;right:16px;bottom:12px;z-index:15;
+  background:rgba(10,29,40,.68);color:#fff!important;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.25);border-radius:99px;
+  padding:6px 12px;font-size:12px;
+  max-width:min(350px,calc(100vw - 32px));
+}
+.destination-photo-credit a{color:#fff;text-underline-offset:2px}
+body.destination-active .destination-photo-credit{display:block}
+body.destination-active:has(.setup-screen:not([hidden])) .destination-photo-credit{bottom:12px}
+body.destination-active .setup-screen{position:relative;z-index:1;background:var(--glass-strong)}
+/* Sidebar and content stay readable without relying on blur support. */
+@supports not (backdrop-filter:blur(2px)){
+  body.destination-active .idea-card,
+  body.destination-active .plan-panel,
+  body.destination-active .topline,
+  body.destination-active .daily-context,
+  body.destination-active .type-filters{background:#fdfbf7!important}
+}
+@media(max-width:1023px){
+  body.destination-active .app-shell{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  body.destination-active .main-area{padding-top:14px}
+  body.destination-active .intro{padding:22px 20px;margin-bottom:14px}
+  body.destination-active .topline{margin-bottom:14px}
+  body.destination-active .section-head{padding:8px 6px}
+  body.destination-active .mobile-nav{
+    background:rgba(250,251,249,.90);
+    -webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);
+    border-top:1px solid rgba(255,255,255,.75)
+  }
+  body.destination-active .destination-photo-credit{
+    bottom:calc(85px + env(safe-area-inset-bottom));right:10px;
+    font-size:10px;padding:4px 8px;max-width:200px;
+  }
+  body.destination-active:has(.setup-screen:not([hidden])) .destination-photo-credit{bottom:10px}
+}
+@media(prefers-reduced-transparency:reduce){
+  body.destination-active .idea-card,
+  body.destination-active .plan-panel,
+  body.destination-active .topline,
+  body.destination-active .daily-context,
+  body.destination-active .type-filters{background:#fdfbf7!important;backdrop-filter:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+  body.destination-active::before{animation:none}
+}
+@keyframes destination-appear{from{opacity:.2}to{opacity:1}}
