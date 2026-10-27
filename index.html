@@ -298,7 +298,7 @@
             <div class="plan-top"><div><span class="plan-day" id="planDayName">MON · OCT 5</span><h2 id="planTitle">Your day, so far</h2></div><button class="button ghost sheet-expand" id="planExpand" type="button">Full view</button></div>
             <div class="planner-view-tools"><div class="view-tabs" role="group" aria-label="Planner view"><button class="active" data-view="day" type="button">Day</button><button data-view="week" type="button">Week</button><button data-view="month" type="button">Month</button></div><div class="planner-date-arrows"><button id="calendarPrev" class="button ghost" aria-label="Previous period" type="button">←</button><button id="calendarNext" class="button ghost" aria-label="Next period" type="button">→</button></div></div><button id="openQuickAdd" class="button secondary" type="button">+ Add your own idea</button><div class="period-tabs" id="periodTabs" hidden></div>
             <div class="plan-total"><div><span>Planned choices</span><br><strong id="planTotal">Free</strong></div><small>of €<span id="guideValue">60</span> guide</small></div>
-            <p class="plan-count" id="planActivityCount">Room for your first idea</p><p class="planner-parts-progress" id="plannerPartProgress" role="status" aria-live="polite">0 of 4 parts planned</p></header>
+            <p class="plan-count" id="planActivityCount">Room for your first idea</p><p class="plan-count" id="planPartsProgress" aria-live="polite">0 of 4 day parts planned</p><p class="planner-parts-progress" id="plannerPartProgress" role="status" aria-live="polite">0 of 4 parts planned</p></header>
             <div class="plan-scroll" id="planContent" role="region" aria-label="Activities in your day" tabindex="0">
             <div class="plan-items" id="planItems">
               <div class="dayparts" id="dayparts">
@@ -1184,6 +1184,11 @@
       }
       function syncPersistentPlan() {
         const count=plan.length;
+        const filledParts=new Set(plan.map(function(item){return item.slot;}).filter(function(slot){return ['morning','afternoon','evening','night'].includes(slot);}));
+        document.getElementById('planPartsProgress').textContent=filledParts.size+' of 4 day parts planned';
+        planPanel.classList.toggle('has-planned-ideas',count>0);
+        document.getElementById('reviewPlan').classList.toggle('primary',count>0);
+        document.getElementById('reviewPlan').classList.toggle('secondary',count===0);
         const label=count?count+' '+(count===1?'activity':'activities')+' planned':'Room for your first idea';
         document.getElementById('planActivityCount').textContent=label;
         const usedDayParts=new Set(plan.map(function(item){return item.slot;}).filter(function(slot){return ['morning','afternoon','evening','night'].includes(slot);}));
@@ -1201,7 +1206,7 @@
         document.querySelectorAll('.add-to-plan').forEach(function(button){
           if(!button.dataset.originalLabel)button.dataset.originalLabel=button.textContent;
           const card=button.closest('.idea-card');const item=card&&plan.find(function(entry){return entry.id===card.dataset.id;});
-          button.textContent=item?'✓ Added to '+item.slot[0].toUpperCase()+item.slot.slice(1):button.dataset.originalLabel;
+          button.textContent=item?'✓ Added to '+item.slot[0].toUpperCase()+item.slot.slice(1)+' · Undo':button.dataset.originalLabel;
           button.setAttribute('aria-pressed',String(Boolean(item)));
         });
       }
