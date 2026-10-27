@@ -9,25 +9,21 @@
   ibiza:{name:'Ibiza',tz:'Europe/Madrid',photos:{
    morning:img('Sunrise Ibiza.JPG','Juliahoffmann27','CC BY-SA 3.0',L.sa3,'center 49%'),
    midday:img('Ibiza City Dalt Vila from seaport asv2023-04.jpg','A.Savin, Wikipedia','Free Art License','https://artlibre.org/licence/lal/en/','center 48%'),
-   golden:img('Ibiza-Sunset.jpg','acediscovery','CC BY 4.0',L.by4,'center 48%'),
    night:img('Ibiza night.JPG','Vwpolonia75','CC BY-SA 3.0',L.sa3,'center 52%')
   }},
   lisbon:{name:'Lisbon',tz:'Europe/Lisbon',photos:{
    morning:img('Lisbon Sunrise (16910916059).jpg','mhx (Marcus Holland-Moritz)','CC BY-SA 2.0',L.sa2,'center 53%'),
    midday:img('The rooftops of Lisbon.jpg','Bert K.','CC BY 2.0',L.by2,'center 52%'),
-   golden:img('Lisbon sunset.jpg','Eurico Craveiro','CC BY-SA 4.0',L.sa4,'center 49%'),
    night:img('Lisbon at night (24553104372).jpg','Boris Dzhingarov','CC BY 2.0',L.by2,'center 52%')
   }},
   sint_maarten:{name:'Sint Maarten / Saint-Martin',tz:'America/Lower_Princes',photos:{
    morning:img('Sunrise over Simpson Bay, St Maarten, Oct 2014 (15571250198).jpg','alljengi','CC BY-SA 2.0',L.sa2,'center 55%'),
    midday:img('St. Maarten Philipsburg Great Bay Beach.jpg','Dr. Thomas Liptak','CC BY-SA 4.0',L.sa4,'center 54%'),
-   golden:img('Maho Beach sunset, St Maarten, Oct 2014 (15546596890).jpg','alljengi','CC BY-SA 2.0',L.sa2,'center 55%'),
    night:img('Saint Martin at night in January 2012 - panoramio.jpg','Michael A. Orlando','CC BY-SA 3.0',L.sa3,'center 50%')
   }},
   nyc:{name:'New York City',tz:'America/New_York',photos:{
    morning:img('Hudson River Panorama of Manhattan.jpg','ChoiChoi4life','CC BY-SA 4.0',L.sa4,'center 47%'),
    midday:img('Midtown Manhattan Skyline 2026 095.jpg','Kidfly182','CC BY 4.0',L.by4,'center 55%'),
-   golden:img('New york city sunset.jpg','Jpaul10','CC BY 3.0',L.by3,'center 53%'),
    night:img('Manhattan Skyline night.jpg','Kai Pilger','CC BY-SA 4.0',L.sa4,'center 49%')
   }}
  };
@@ -44,9 +40,8 @@
   return Number(hour.value);
  }
  function timeBand(hour){
-  if(hour>=5&&hour<10)return 'morning';
-  if(hour>=10&&hour<17)return 'midday';
-  if(hour>=17&&hour<20)return 'golden';
+  if(hour>=5&&hour<11)return 'morning';
+  if(hour>=11&&hour<18)return 'midday';
   return 'night';
  }
  function imageURL(file){return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(file)+'?width=1920'}
