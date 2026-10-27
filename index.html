@@ -104,21 +104,22 @@
           <p class="intro-copy" id="introCopy">Pick a place that catches your eye. We’ll help you give it a place in your day.</p>
           <details class="hero-provenance"><summary aria-label="Explain data quality and photo requirements">How is this data checked?</summary><p id="catalogPolicyNote">Photo-credited places only · opening times and access must be checked with each source.</p><p>Collection timestamps describe research snapshots, not confirmed open-now availability. Check each activity’s original source for your travel date.</p></details>
         </div>
+
+      </div>
+
+      <div class="daily-context" id="daily-context" aria-label="Today's local context">
         <div class="edit-budget">
           <label for="budgetGuide">Today’s spend guide
             <input class="budget-input" id="budgetGuide" type="number" min="0" step="5" value="60" aria-label="Today's budget guide in euros">
           </label>
           <span class="edit-pencil" aria-hidden="true">✎</span>
         </div>
-      </div>
-
-      <div class="daily-context" id="daily-context" aria-label="Today's local context">
-        <span><strong id="contextLocation">Ibiza Town</strong> · demo area</span>
+        <span><strong id="contextLocation">Ibiza Town</strong></span>
         <span class="context-sep">/</span>
         <span id="weatherConditions">Mostly clear</span>
         <span id="weatherRange">21–28°C</span>
         <span id="sunsetTime">Sunset 19:30</span>
-        <span class="area-hint" id="weatherSource">Source snapshot: <a href="https://www.alltrails.com/trail/spain/ibiza/paseo-por-ibiza" target="_blank" rel="noreferrer">AllTrails · Oct 5</a></span>
+        <span class="area-hint" id="weatherSource" hidden></span>
         <span id="stayContext" hidden></span>
       </div>
 
