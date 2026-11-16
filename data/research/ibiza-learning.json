@@ -1,0 +1,44 @@
+{
+  "iteration": 1,
+  "strategy_stats": {
+    "beach": {
+      "last_results": {
+        "category_rate": 0,
+        "coordinates_rate": 0,
+        "last_source_update": null,
+        "records": 0,
+        "schedule_rate": 0,
+        "score": 0
+      },
+      "runs": 1,
+      "score": 0.0,
+      "successes": 0
+    },
+    "nature": {
+      "last_results": {
+        "category_rate": 0,
+        "coordinates_rate": 0,
+        "last_source_update": null,
+        "records": 0,
+        "schedule_rate": 0,
+        "score": 0
+      },
+      "runs": 1,
+      "score": 0.0,
+      "successes": 0
+    },
+    "walk": {
+      "last_results": {
+        "category_rate": 0,
+        "coordinates_rate": 0,
+        "last_source_update": null,
+        "records": 0,
+        "schedule_rate": 0,
+        "score": 0
+      },
+      "runs": 1,
+      "score": 0.0,
+      "successes": 0
+    }
+  }
+}
