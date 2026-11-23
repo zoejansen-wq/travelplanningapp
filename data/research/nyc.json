@@ -1,0 +1,163 @@
+{
+  "collected_at": "2026-11-23T13:04:28+00:00",
+  "collection_attempts": [],
+  "coverage_by_category": {},
+  "errors": [
+    {
+      "reason": "HTTP Error 502: Bad Gateway",
+      "strategy": "beach"
+    },
+    {
+      "reason": "HTTP Error 502: Bad Gateway",
+      "strategy": "walk"
+    },
+    {
+      "reason": "HTTP Error 502: Bad Gateway",
+      "strategy": "nature"
+    }
+  ],
+  "event_place_candidates": [],
+  "events": [],
+  "places": [],
+  "publication_status": "review_only",
+  "quality": {
+    "category_rate": 0,
+    "coordinates_rate": 0,
+    "last_source_update": null,
+    "records": 0,
+    "schedule_rate": 0,
+    "score": 0
+  },
+  "query_proposals": [
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "New York City public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "free events public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "parks events public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "New York City walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "free events walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "parks events walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "New York City nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "free events nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "parks events nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "New York City cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "free events cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "parks events cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "New York City local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "free events local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "parks events local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "New York City craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "free events craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "parks events craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    }
+  ],
+  "region": "nyc",
+  "schemaVersion": "0.1",
+  "source": "OpenStreetMap via Overpass + region-allowed official feeds",
+  "state": "partial"
+}

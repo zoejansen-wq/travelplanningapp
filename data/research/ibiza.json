@@ -1,0 +1,163 @@
+{
+  "collected_at": "2026-11-23T13:04:26+00:00",
+  "collection_attempts": [],
+  "coverage_by_category": {},
+  "errors": [
+    {
+      "reason": "HTTP Error 502: Bad Gateway",
+      "strategy": "beach"
+    },
+    {
+      "reason": "The read operation timed out",
+      "strategy": "walk"
+    },
+    {
+      "reason": "HTTP Error 502: Bad Gateway",
+      "strategy": "nature"
+    }
+  ],
+  "event_place_candidates": [],
+  "events": [],
+  "places": [],
+  "publication_status": "review_only",
+  "quality": {
+    "category_rate": 0,
+    "coordinates_rate": 0,
+    "last_source_update": null,
+    "records": 0,
+    "schedule_rate": 0,
+    "score": 0
+  },
+  "query_proposals": [
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "Ibiza public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "mercadillo public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "agenda cultural public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "Ibiza walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "mercadillo walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "agenda cultural walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "Ibiza nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "mercadillo nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "agenda cultural nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "Ibiza cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "mercadillo cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "agenda cultural cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "Ibiza local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "mercadillo local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "agenda cultural local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "Ibiza craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "mercadillo craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "agenda cultural craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    }
+  ],
+  "region": "ibiza",
+  "schemaVersion": "0.1",
+  "source": "OpenStreetMap via Overpass + region-allowed official feeds",
+  "state": "partial"
+}

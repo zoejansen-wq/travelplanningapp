@@ -1,0 +1,163 @@
+{
+  "collected_at": "2026-11-23T13:04:28+00:00",
+  "collection_attempts": [],
+  "coverage_by_category": {},
+  "errors": [
+    {
+      "reason": "The read operation timed out",
+      "strategy": "beach"
+    },
+    {
+      "reason": "HTTP Error 502: Bad Gateway",
+      "strategy": "walk"
+    },
+    {
+      "reason": "The read operation timed out",
+      "strategy": "nature"
+    }
+  ],
+  "event_place_candidates": [],
+  "events": [],
+  "places": [],
+  "publication_status": "review_only",
+  "quality": {
+    "category_rate": 0,
+    "coordinates_rate": 0,
+    "last_source_update": null,
+    "records": 0,
+    "schedule_rate": 0,
+    "score": 0
+  },
+  "query_proposals": [
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "Sint Maarten / Saint-Martin public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "marché public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "beach",
+      "query": "evenements public beaches official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "beach"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "Sint Maarten / Saint-Martin walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "marché walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "walk",
+      "query": "evenements walking routes official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "walk"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "Sint Maarten / Saint-Martin nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "marché nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "nature",
+      "query": "evenements nature trails official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "nature"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "Sint Maarten / Saint-Martin cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "marché cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "culture",
+      "query": "evenements cultural events official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "culture"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "Sint Maarten / Saint-Martin local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "marché local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "food",
+      "query": "evenements local markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "food"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "Sint Maarten / Saint-Martin craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "marché craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    },
+    {
+      "access": "official_or_open_data_only",
+      "category": "shopping",
+      "query": "evenements craft markets official schedule",
+      "status": "query_proposal_not_executed",
+      "strategy": "shopping"
+    }
+  ],
+  "region": "sint_maarten",
+  "schemaVersion": "0.1",
+  "source": "OpenStreetMap via Overpass + region-allowed official feeds",
+  "state": "partial"
+}
